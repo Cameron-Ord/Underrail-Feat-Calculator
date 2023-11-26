@@ -7,7 +7,7 @@ import ViewStats from './ViewStats.vue';
 <template>
     <div>
         <skill-content></skill-content>
-        <view-stats></view-stats>
+        <view-stats @send_input="emit_to_main"></view-stats>
         <reset-skills></reset-skills>
     </div>
 </template>
@@ -18,6 +18,11 @@ import ViewStats from './ViewStats.vue';
             SkillContent,
             ResetSkills,
             ViewStats
+        },
+        methods:{
+            emit_to_main(skills_ref_text){
+                this.$emit('view-stats', skills_ref_text);
+            }
         }
     }
 </script>

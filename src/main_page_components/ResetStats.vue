@@ -1,6 +1,6 @@
 <template>
     <div>
-
+        <h3>Reset Stats</h3>
     </div>
 </template>
 
