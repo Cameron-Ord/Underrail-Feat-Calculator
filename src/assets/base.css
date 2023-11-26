@@ -1,0 +1,5 @@
+body{
+  font-size: clamp(0.9em, 2vw, 1.1em);
+  margin: 0px;
+  padding: 0px;
+}
