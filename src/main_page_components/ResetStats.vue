@@ -2,7 +2,6 @@
 <script setup>
 import { useStatStore } from '../stores/stat_state_store';
 const stat_store_instance = useStatStore();
-
 const set_default_values = () =>{
     const stat_limiter = 35;
     const stat_items = [];
@@ -16,7 +15,6 @@ const set_default_values = () =>{
     stat_store_instance.state.stat_count_limiter = stat_limiter;
     stat_store_instance.state.stat_items_array = stat_items;
 }
-
 </script>
 
 <template>

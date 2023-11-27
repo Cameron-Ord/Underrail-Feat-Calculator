@@ -99,6 +99,7 @@ onBeforeMount(()=>{
         display: grid;
         align-items: center;
         justify-items: center;
+        text-align: center;
     }
     >.element_wrapper{
         display: grid;
@@ -106,6 +107,9 @@ onBeforeMount(()=>{
         grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
         grid-template-rows: auto;
         gap: 50px;
+        height: 350px;
+        overflow-y: auto;
+
         >._loop_div{
             display: grid;
             align-items: center;

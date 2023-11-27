@@ -93,6 +93,7 @@ onBeforeMount(()=>{
         display: grid;
         align-items: center;
         justify-items: center;
+        text-align: center;
     }
     >.element_wrapper{
         display: grid;
