@@ -14,7 +14,8 @@ const skills = [
   'Thought Control', 'Tailoring', 'Biology', 'Chemistry', 'Electronics'
 ];
 watch(stored_values, (newVal, oldVal) => {
-    if(newVal.nums !== null && oldVal.nums !== null){
+    if(newVal.nums !== null && oldVal.nums !== null
+    && newVal.skillLimiter !== null && newVal.skillLimiter !== null){
         skillLimiter.value = newVal.skillLimiter
         for(let i = 0; i < newVal.nums.length; i++){
             const num = newVal.nums[i]
@@ -22,15 +23,12 @@ watch(stored_values, (newVal, oldVal) => {
         }
     }
 });
-
 const saveCookie = () => {
     $cookies.set('skillVal', JSON.stringify(nums.value))
 }
-
 const saveLimiter = () => {
     $cookies.set('skillLimiter', JSON.stringify(skillLimiter.value))
 }
-
 const increaseValue = (i) => {
   if (skillLimiter.value >= 0 && skillLimiter.value < 1280) {
     if (nums.value[i].skillValue < 160) {
