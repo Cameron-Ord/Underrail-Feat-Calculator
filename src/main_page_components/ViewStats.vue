@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="view_div">
         <h3 @click="send_input(this.$refs.stats)" ref="stats">View Stats</h3>
     </div>
 </template>
@@ -16,5 +16,12 @@
 </script>
 
 <style lang="scss" scoped>
-
+.view_div{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    >h3{
+        
+    }
+}
 </style>

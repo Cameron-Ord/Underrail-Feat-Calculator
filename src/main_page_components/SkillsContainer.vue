@@ -5,10 +5,12 @@ import ViewStats from './ViewStats.vue';
 </script>
 
 <template>
-    <div>
+    <div class="skills_cont_wrapper">
         <skill-content></skill-content>
-        <view-stats @send_input="emit_to_main"></view-stats>
-        <reset-skills></reset-skills>
+        <div class="controls_wrapper">
+            <view-stats @send_input="emit_to_main"></view-stats>
+            <reset-skills></reset-skills>
+        </div>
     </div>
 </template>
 
@@ -28,5 +30,14 @@ import ViewStats from './ViewStats.vue';
 </script>
 
 <style lang="scss" scoped>
-
+.skills_cont_wrapper{
+    display: grid;
+    align-items: center;
+    grid-template-rows: 1fr 0.5fr;
+    >.controls_wrapper{
+        display: grid;
+        align-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
+    }
+}
 </style>

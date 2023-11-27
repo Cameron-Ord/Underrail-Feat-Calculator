@@ -1,6 +1,8 @@
 <script setup>
+
 import { onBeforeMount, ref, watch } from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
+
 const stat_store_instance = useStatStore();
 let stat_items_array = ref(stat_store_instance.state.stat_items_array);
 let stat_count_limiter = ref(stat_store_instance.state.stat_count_limiter);
@@ -55,7 +57,7 @@ onBeforeMount(()=>{
 <template>
     <div class="_stat_content" v-if="stat_items_array !== null">
         <div class="limit_counter">
-            <h3>Stat Points used:  {{ stat_count_limiter }}</h3>
+            <h3>Stat Points used: {{ stat_count_limiter -21  }}/25</h3>
         </div>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
@@ -83,8 +85,6 @@ onBeforeMount(()=>{
                 </div>
             </div>
         </span>
-        </div>
-      <div>
     </div>
 </template>
 <style lang="scss" scoped>

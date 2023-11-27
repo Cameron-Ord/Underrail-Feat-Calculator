@@ -18,7 +18,6 @@ import ResetStats from './ResetStats.vue';
 <template>
     <div class="stats_cont_wrapper">
         <stat-content></stat-content>
-
         <div class="controls_wrapper">
             <view-skills @send_input="emit_to_main"></view-skills>
             <reset-stats></reset-stats>
@@ -30,7 +29,7 @@ import ResetStats from './ResetStats.vue';
 .stats_cont_wrapper{
     display: grid;
     align-items: center;
-    grid-template-rows: 1fr 0.25fr;
+    grid-template-rows: 1fr 0.5fr;
     >.controls_wrapper{
         display: grid;
         align-items: center;

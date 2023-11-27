@@ -48,39 +48,86 @@ onBeforeMount(()=>{
 })
 </script>
 <template>
-    <div class="skillsParent" v-if="skill_items_array !== null">
-      <span class="btnSpan">
-        <div class="skillsContainer" v-for="(value, i) in skill_items_array" :key="i">
-          <div class="nameSeperator">
-            <p class="skillName">{{ skills[i] }}</p>
-          </div>
-          <div class="skillSeperator">
-            <h3 class="value">{{ value.skillValue }}</h3>
-            <img
-              src="images/plus.svg"
-              alt="plus"
-              class="plus"
-              @click="increaseValue(i)"
-              :clicked_plus="i"
-              ref="plusClicked"
-            />
-            <img
-              src="images/minus.svg"
-              alt="minus"
-              class="minus"
-              @click="decreaseValue(i)"
-              :clicked_minus="i"
-              ref="minusClicked"
-            />
-          </div>
+    <div class="_skill_content" v-if="skill_items_array !== null">
+        <div class="limit_counter">
+            <h3>Stat Points used: {{ skill_count_limiter }}/1280</h3>
         </div>
-        <div class="skill_counter">
-            <p class="skill_pts_used">Skill Points used: {{ skill_count_limiter }}</p>
-        </div>
-      </span>
+        <span class="element_wrapper">
+            <div class="_loop_div" v-for="(value, i) in skill_items_array" :key="i">
+                <div class="_header">
+                    <p class="_skill_tag">{{ skills[i] }}</p>
+                </div>
+                <div class="_skill_values">
+                    <h3 class="_value">{{ value.skillValue }}</h3>
+                <img
+                    src="images/plus.svg"
+                    alt="plus"
+                    class="_plus"
+                    @click="increaseValue(i)"
+                    :clicked_plus="i"
+                    ref="_plus_svg"
+                />
+                <img
+                    src="images/minus.svg"
+                    alt="minus"
+                    class="_minus"
+                    @click="decreaseValue(i)"
+                    :clicked_minus="i"
+                    ref="_minus_svg"
+                />
+                </div>
+            </div>
+        </span>
     </div>
   </template>
 
 <style lang="scss" scoped>
+._skill_content{
+    display: grid;
+    align-items: center;
+    grid-template-rows: auto;
+    gap: 50px;
 
+
+    >.limit_counter{
+        display: grid;
+        align-items: center;
+        justify-items: center;
+    }
+    >.element_wrapper{
+        display: grid;
+        align-items: center;
+        grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+        grid-template-rows: auto;
+        gap: 50px;
+        height: 350px;
+        overflow-y: auto;
+        >._loop_div{
+            display: grid;
+            align-items: center;
+            grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+
+
+            >._header{
+                display: grid;
+                align-items: center;
+                justify-items: center;
+
+            }
+            >._skill_values{
+                display: grid;
+                align-items: center;
+                justify-items: center;
+                grid-template-columns: 1fr 1fr 1fr;
+
+                >._plus{
+
+    }
+                >._minus{
+
+                }
+            }
+        }
+    }
+}
 </style>
