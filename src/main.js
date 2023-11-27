@@ -7,8 +7,8 @@ import router from './router'
 import VueCookies from 'vue3-cookies';
 
 const app = createApp(App)
-
-app.use(createPinia())
+const pinia = createPinia()
+app.use(pinia)
 app.use(router)
 app.use(VueCookies, {
     expireTimes: '1d',

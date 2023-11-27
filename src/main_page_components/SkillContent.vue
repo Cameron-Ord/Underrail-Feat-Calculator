@@ -1,19 +1,34 @@
 <script setup>
-import {ref, watch, getCurrentInstance} from 'vue';
 import { useSkillsStore } from '../stores/skillsStore';
+import { ref,watch, getCurrentInstance} from 'vue';
 import { onBeforeMount } from 'vue';
 const instance = getCurrentInstance().appContext.app;
 const { $cookies } = instance.config.globalProperties;
-
-const skillStore = useSkillsStore();
-const skillLimiter = ref(null);
-const nums = ref(null)
+const stored_values = useSkillsStore();
+let skillLimiter = ref(stored_values.skillLimiter);
+let nums = ref(stored_values.nums);
 const skills = [
   'Guns', 'Throwing', 'Crossbows', 'Melee', 'Dodge', 'Evasion', 'Stealth',
   'Hacking', 'Lockpicking', 'Pickpocketing', 'Traps', 'Mechanics', 'Temporal Manipulation',
   'Persuasion', 'Intimidation', 'Mercantile', 'Metathermics', 'Psychokinesis',
   'Thought Control', 'Tailoring', 'Biology', 'Chemistry', 'Electronics'
 ];
+
+watch(skillLimiter, (newVal, oldVal) => {
+  console.log("UPDATED VALUES: ", newVal, oldVal);
+  let skillLimiter = newVal
+  console.log(skillLimiter)
+
+
+}, { deep: true });
+
+watch(stored_values, (newVal, oldVal) => {
+    if(newVal.nums !== null && oldVal.nums !== null){
+        console.log("WATCHED: ",newVal.skillLimiter, newVal.nums, oldVal.skillLimiter, oldVal.nums);
+        let skillLimiter = newVal.skillLimiter
+        console.log(skillLimiter)
+    }
+}, { deep: true });
 
 const saveCookie = () => {
     $cookies.set('skillVal', JSON.stringify(nums.value))
@@ -45,19 +60,6 @@ const decreaseValue = (i) => {
   }
 };
 
-const setSkills = () => {
-    console.log('setting',)
-    const newLimiter = 0;
-    const newNums = [];
-    for (let i = 0; i < skills.length; i++) {
-        const skill = skills[i];
-        newNums.push({
-        skillName: skill,
-        skillValue: 0,
-        });
-    }
-    return [newLimiter, newNums];
-};
  
 const convert_to_int = (num_str_array) => {
     console.log('converting')
@@ -74,15 +76,12 @@ const checkCookies = () => {
     const limiter = $cookies.get('skillLimiter');
     const nums_str = $cookies.get('skillVal');
     if(JSON.parse(limiter) !== null && JSON.parse(nums_str) !== null) {
-        console.log('not here')
-        skillLimiter.value = parseInt(limiter, 10);
+        skillLimiter.value = parseInt(JSON.parse(limiter), 10);
         nums.value = convert_to_int(JSON.parse(nums_str));
     } else {
-        const [returned_limiter, returned_nums] = setSkills();
-        console.log(returned_nums)
-        skillLimiter.value = parseInt(returned_limiter, 10);
-        nums.value = convert_to_int(returned_nums);
-        console.log(nums.value)
+        const [returned_limiter, returned_nums] = stored_values.reset_skills(skills);
+        skillLimiter.value = returned_limiter;
+        nums.value = returned_nums;
         saveCookie();
         saveLimiter();
     }
@@ -91,11 +90,6 @@ const checkCookies = () => {
 onBeforeMount(()=>{
     checkCookies();
 })
-
-watch(() => skillStore.skillLimiter, (newVal) => {
-  skillLimiter.value = newVal;
-});
-
 
 </script>
 <template>
