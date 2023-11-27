@@ -17,8 +17,20 @@ watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
 const increaseValue=(i)=>{
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
-            skill_store_instance.state.skill_items_array[i].skillValue+=5;
-            skill_store_instance.state.skill_count_limiter+=5;
+        //creating copies of values and modifying them
+            let updated_limiter = skill_count_limiter.value
+            const updated_array = [...skill_items_array.value];
+            updated_array[i].skillValue+=5;
+            updated_limiter+=5;
+        /*
+          after being modified, 
+          we assign them back to our state variables.*/
+        /*
+          this is done to maintain immutability,
+          which is important when working with vue
+        */    
+            skill_store_instance.state.skill_items_array = updated_array;
+            skill_store_instance.state.skill_count_limiter = updated_limiter
         }
     }
 }
