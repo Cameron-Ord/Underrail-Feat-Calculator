@@ -1,6 +1,11 @@
+
+<script setup>
+
+</script>
+
 <template>
     <div>
-        <h3>Reset Stats</h3>
+        <h3 @click="resetStats">Reset Stats</h3>
     </div>
 </template>
 

@@ -1,92 +1,60 @@
 <script setup>
-import { useSkillsStore } from '../stores/skillsStore';
-import { ref,watch, getCurrentInstance} from 'vue';
-import { onBeforeMount } from 'vue';
-const instance = getCurrentInstance().appContext.app;
-const { $cookies } = instance.config.globalProperties;
-const stored_values = useSkillsStore();
-let skillLimiter = ref(stored_values.skillLimiter);
-let nums = ref(stored_values.nums);
-const skills = [
-  'Guns', 'Throwing', 'Crossbows', 'Melee', 'Dodge', 'Evasion', 'Stealth',
-  'Hacking', 'Lockpicking', 'Pickpocketing', 'Traps', 'Mechanics', 'Temporal Manipulation',
-  'Persuasion', 'Intimidation', 'Mercantile', 'Metathermics', 'Psychokinesis',
-  'Thought Control', 'Tailoring', 'Biology', 'Chemistry', 'Electronics'
-];
-watch(stored_values, (newVal, oldVal) => {
-    if(newVal.nums !== null && oldVal.nums !== null
-    && newVal.skillLimiter !== null && newVal.skillLimiter !== null){
-        skillLimiter.value = newVal.skillLimiter
-        for(let i = 0; i < newVal.nums.length; i++){
-            const num = newVal.nums[i]
-            nums.value[i].skillValue = num.skillValue;
-        }
-    }
-});
-const saveCookie = () => {
-    $cookies.set('skillVal', JSON.stringify(nums.value))
-}
-const saveLimiter = () => {
-    $cookies.set('skillLimiter', JSON.stringify(skillLimiter.value))
-}
-const increaseValue = (i) => {
-  if (skillLimiter.value >= 0 && skillLimiter.value < 1280) {
-    if (nums.value[i].skillValue < 160) {
-      nums.value[i].skillValue += 5;
-      skillLimiter.value += 5;
-      saveLimiter();
-      saveCookie();
-    }
-  }
-};
+import { onBeforeMount, ref, watch } from 'vue';
+import { useSkillStore } from '../stores/skill_state_store';
+const skill_store_instance = useSkillStore();
+let skill_items_array = ref(skill_store_instance.state.skill_items_array);
+let skill_count_limiter = ref(skill_store_instance.state.skill_count_limiter);
+const skills = skill_store_instance.state.skills_list;
 
-const decreaseValue = (i) => {
-  if (skillLimiter.value > 0 && skillLimiter.value <= 1280) {
-    if (nums.value[i].skillValue > 0) {
-      nums.value[i].skillValue -= 5;
-      skillLimiter.value -= 5;
-      saveLimiter();
-      saveCookie();
-    }
-  }
-};
 
- 
-const convert_to_int = (num_str_array) => {
-    console.log('converting')
-    let i = 0;
-    while(i<num_str_array.length)
-    {
-        num_str_array[i].skillValue = parseInt(num_str_array[i].skillValue, 10)
-        i++;
-    }
-    return num_str_array
-};
-
-const checkCookies = () => {
-    const limiter = $cookies.get('skillLimiter');
-    const nums_str = $cookies.get('skillVal');
-    if(JSON.parse(limiter) !== null && JSON.parse(nums_str) !== null) {
-        skillLimiter.value = parseInt(JSON.parse(limiter), 10);
-        nums.value = convert_to_int(JSON.parse(nums_str));
-    } else {
-        const [returned_limiter, returned_nums] = stored_values.reset_skills(skills);
-        skillLimiter.value = returned_limiter;
-        nums.value = returned_nums;
-        saveCookie();
-        saveLimiter();
-    }
-};
-
-onBeforeMount(()=>{
-    checkCookies();
+watch(()=> skill_store_instance.state.skill_count_limiter, (newVal) =>{
+    skill_count_limiter.value = newVal
+    console.log(skill_count_limiter.value, "new value")
 })
 
+watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
+    skill_items_array.value = newVal
+    console.log(skill_items_array.value)
+})
+
+const increaseValue=(i)=>{
+    if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
+        if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
+            skill_store_instance.state.skill_items_array[i].skillValue+=5;
+            skill_store_instance.state.skill_count_limiter+=5;
+        }
+    }
+}
+const decreaseValue=(i)=>{
+    if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
+        if (skill_store_instance.state.skill_items_array[i].skillValue > 0) {
+            skill_store_instance.state.skill_items_array[i].skillValue-=5;
+            skill_store_instance.state.skill_count_limiter-=5;
+        }
+    }
+}
+
+const set_default_values = () =>{
+    const skill_limiter = 0;
+    const skill_items = [];
+    for(let i = 0; i < skill_store_instance.state.skills_list.length; i++){
+        const skill = skill_store_instance.state.skills_list[i];
+        skill_items.push({
+            skillName: skill,
+            skillValue: 0
+        });
+    }
+    skill_store_instance.state.skill_count_limiter = skill_limiter;
+    skill_store_instance.state.skill_items_array = skill_items;
+}
+onBeforeMount(()=>{
+    set_default_values()
+})
 </script>
 <template>
-    <div class="skillsParent" v-if="nums !== null || undefined">
+    <div class="skillsParent" v-if="skill_items_array !== null">
       <span class="btnSpan">
-        <div class="skillsContainer" v-for="(value, i) in nums" :key="i">
+        <div class="skillsContainer" v-for="(value, i) in skill_items_array" :key="i">
           <div class="nameSeperator">
             <p class="skillName">{{ skills[i] }}</p>
           </div>
@@ -111,7 +79,7 @@ onBeforeMount(()=>{
           </div>
         </div>
         <div class="skill_counter">
-            <p class="skill_pts_used">Skill Points used: {{ skillLimiter }}</p>
+            <p class="skill_pts_used">Skill Points used: {{ skill_count_limiter }}</p>
         </div>
       </span>
     </div>

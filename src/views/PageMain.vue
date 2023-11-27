@@ -9,7 +9,7 @@ import FeatsOverview from '../main_page_components/FeatsOverview.vue';
     <section class="_character_sheet">
       <article class="_sheet_wrapper">
         <stats-container @view-skills="handle_view" v-if="switch_based_bool === true"></stats-container>
-        <skills-container @view-stats="handle_view" v-if="switch_based_bool !== true"></skills-container>
+        <skills-container @view-stats="handle_view" v-if="switch_based_bool === true"></skills-container>
       </article>
     </section>
     <section class="_calculation_container">

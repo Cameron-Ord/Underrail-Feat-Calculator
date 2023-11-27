@@ -1,11 +1,61 @@
 <script setup>
+import { onBeforeMount, ref, watch } from 'vue';
+import { useStatStore } from '../stores/stat_state_store';
+const stat_store_instance = useStatStore();
+let stat_items_array = ref(stat_store_instance.state.stat_items_array);
+let stat_count_limiter = ref(stat_store_instance.state.stat_count_limiter);
+const stats = stat_store_instance.state.stats_list;
+
+watch(()=> stat_store_instance.state.stat_count_limiter, (newVal) =>{
+    stat_count_limiter.value = newVal
+    console.log(stat_count_limiter.value, "new value")
+})
+
+watch(()=> stat_store_instance.state.stat_items_array, (newVal) =>{
+    stat_items_array.value = newVal
+    console.log(stat_items_array.value)
+})
+
+const increaseValue=(i)=>{
+    if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
+        if (stat_store_instance.state.stat_items_array[i].statValue < 20) {
+            stat_store_instance.state.stat_items_array[i].statValue++;
+            stat_store_instance.state.stat_count_limiter++;
+        }
+    }
+}
+const decreaseValue=(i)=>{
+    if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
+        if (stat_store_instance.state.stat_items_array[i].statValue > 3) {
+            stat_store_instance.state.stat_items_array[i].statValue--;
+            stat_store_instance.state.stat_count_limiter--;
+        }
+    }
+}
+const set_default_values = () =>{
+    const stat_limiter = 35;
+    const stat_items = [];
+    for(let i = 0; i < stat_store_instance.state.stats_list.length; i++){
+        const stat = stat_store_instance.state.stats_list[i];
+        stat_items.push({
+            statName: stat,
+            statValue: 5
+        });
+    }
+    stat_store_instance.state.stat_count_limiter = stat_limiter;
+    stat_store_instance.state.stat_items_array = stat_items;
+}
+
+onBeforeMount(()=>{
+    set_default_values()
+})
 
 </script>
 
 <template>
-    <div class="_stat_content" v-if="nums !== undefined">
+    <div class="_stat_content" v-if="stat_items_array !== null">
       <span class="_looped_container">
-        <div class="_loop_div" v-for="(value, i) in nums" :key="i">
+        <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
           <div class="_stat_name">
             <p class="_stat_tag">{{ stats[i] }}</p>
           </div>
@@ -30,98 +80,10 @@
           </div>
         </div>
       </span>
+      <div>
+        <h3>
+            Stat Points used: {{ stat_count_limiter  }}
+        </h3>
+      </div>
     </div>
 </template>
-
-<script>
-export default{
-    data() {
-        return {
-            nums: undefined,
-            statLimiter: undefined,
-            stats: [
-            'Strength',
-            'Dexterity',
-            'Agility',
-            'Constitution',
-            'Perception',
-            'Will',
-            'Intelligence'
-            ]
-        }
-    },
-    methods:{
-        increaseValue(i){
-            console.log(this.statLimiter)
-            if(this.statLimiter !== undefined
-            && this.statLimiter >= 21 && this.statLimiter < 46){
-                if(this.nums[i].statValue < 20){
-                    this.nums[i].statValue++;
-                    this.saveCookie();
-                    this.statLimiter++;
-                    this.saveLimiter();
-                }
-            }
-        },
-        decreaseValue(i){
-            console.log(i)
-            if(this.statLimiter !== undefined
-            && this.statLimiter > 21 && this.statLimiter <= 46){
-                if(this.nums[i].statValue > 3){
-                    this.nums[i].statValue--;
-                    this.saveCookie();
-                    this.statLimiter--;
-                    this.saveLimiter();
-                }
-            }
-        },
-        saveCookie(){
-            this.$cookies.set('statVal', JSON.stringify(this.nums));
-        },
-        saveLimiter(){
-            this.$cookies.set('statLimiter', JSON.stringify(this.statLimiter));
-        },
-        set_stats(){
-            console.log('setting stats')
-            this.statLimiter = 35;
-            this.nums = [];
-            for(let i = 0; i < this.stats.length; i++){
-                const stat = this.stats[i];
-                console.log(stat);
-                this.nums.push({
-                    statName: stat,
-                    statValue: 5
-                });
-            }
-            console.log(this.nums)
-            this.$cookies.set('statLimiter', JSON.stringify(this.statLimiter));
-            this.$cookies.set('statVal', JSON.stringify(this.nums));
-        },
-        convert_to_int(num_str_array){
-            let i = 0;
-            while(i<num_str_array.length)
-            {
-                num_str_array[i].statValue = parseInt(num_str_array[i].statValue)
-                i++;
-            }
-            return num_str_array
-        },
-        check_cookies(){
-            let limiter = this.$cookies.get('statLimiter');
-            let nums = this.$cookies.get('statVal');
-            if(JSON.parse(limiter) !== null && JSON.parse(nums) !== null){
-               const statLimiter = parseInt(JSON.parse(limiter), 10);
-               const statNums = this.convert_to_int(JSON.parse(nums));
-               this.statLimiter = statLimiter;
-               this.nums = statNums
-            } else if(JSON.parse(limiter) === null && JSON.parse(nums) === null){
-                this.set_stats();
-            }
-        }
-    },
-    created(){
-        this.check_cookies();
-    }
-}
-
-</script>
