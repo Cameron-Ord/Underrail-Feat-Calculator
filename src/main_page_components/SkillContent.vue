@@ -6,17 +6,14 @@ let skill_items_array = ref(skill_store_instance.state.skill_items_array);
 let skill_count_limiter = ref(skill_store_instance.state.skill_count_limiter);
 const skills = skill_store_instance.state.skills_list;
 
-
 watch(()=> skill_store_instance.state.skill_count_limiter, (newVal) =>{
     skill_count_limiter.value = newVal
     console.log(skill_count_limiter.value, "new value")
 })
-
 watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
     skill_items_array.value = newVal
     console.log(skill_items_array.value)
 })
-
 const increaseValue=(i)=>{
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
@@ -33,7 +30,6 @@ const decreaseValue=(i)=>{
         }
     }
 }
-
 const set_default_values = () =>{
     const skill_limiter = 0;
     const skill_items = [];

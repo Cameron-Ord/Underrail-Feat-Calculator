@@ -1,5 +1,23 @@
+:root{
+  --black: #000;
+  --orange: #E27100;
+}
+
 body{
+  background-color: var(--black);
   font-size: clamp(0.9em, 2vw, 1.1em);
   margin: 0px;
   padding: 0px;
+}
+
+p,h3,h4,h1,h2,a{
+  margin: 0px;
+  padding: 0px;
+  color: var(--orange);
+  word-break: normal;
+  word-wrap: break-word;
+}
+
+img{
+  width: 25px;
 }

@@ -3,28 +3,12 @@ import StatsContainer from '../main_page_components/StatsContainer.vue';
 import SkillsContainer from '../main_page_components/SkillsContainer.vue';
 import FeatsOverview from '../main_page_components/FeatsOverview.vue';
 </script>
-
-<template>
-  <main class="_page_main">
-    <section class="_character_sheet">
-      <article class="_sheet_wrapper">
-        <stats-container @view-skills="handle_view" v-if="switch_based_bool === true"></stats-container>
-        <skills-container @view-stats="handle_view" v-if="switch_based_bool === true"></skills-container>
-      </article>
-    </section>
-    <section class="_calculation_container">
-      <article class="_calc_wrapper">
-        <feats-overview></feats-overview>
-      </article>
-    </section>
-  </main>
-</template>
-
 <script>
     export default {
         data() {
             return {
                 switch_based_bool: true,
+                ison: false
             }
         },
 
@@ -52,7 +36,47 @@ import FeatsOverview from '../main_page_components/FeatsOverview.vue';
         }
     }
 </script>
-
+<template>
+  <main class="_page_main">
+    <section class="_character_sheet">
+      <article class="_sheet_wrapper">
+        <stats-container @view-skills="handle_view" v-if="switch_based_bool === true"></stats-container>
+        <skills-container @view-stats="handle_view" v-if="switch_based_bool !== true"></skills-container>
+      </article>
+    </section>
+    <section class="_calculation_container" v-if="ison === true">
+      <article class="_calc_wrapper">
+        <feats-overview></feats-overview>
+      </article>
+    </section>
+  </main>
+</template>
 <style lang="scss" scoped>
+._page_main{
+  display: grid;
+  align-items: center;
+  min-height: 100vh;
+
+  >._calculation_container{
+    display: grid;
+    align-items: center;
+    >._calc_wrapper{
+      display: grid;
+      align-items: center;
+    }
+  }
+
+  >._character_sheet{
+    display: grid;
+    align-items: center;
+   
+
+    >._sheet_wrapper{
+      display: grid;
+      align-items: center;
+
+    }
+  }
+}
 
 </style>

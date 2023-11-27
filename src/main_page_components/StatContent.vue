@@ -54,36 +54,84 @@ onBeforeMount(()=>{
 
 <template>
     <div class="_stat_content" v-if="stat_items_array !== null">
-      <span class="_looped_container">
-        <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
-          <div class="_stat_name">
-            <p class="_stat_tag">{{ stats[i] }}</p>
-          </div>
-          <div class="_stat_values">
-            <h3 class="_value">{{ value.statValue }}</h3>
-            <img
-              src="images/plus.svg"
-              alt="plus"
-              class="_plus"
-              @click="increaseValue(i)"
-              :clicked_plus="i"
-              ref="_plus_svg"
-            />
-            <img
-              src="images/minus.svg"
-              alt="minus"
-              class="_minus"
-              @click="decreaseValue(i)"
-              :clicked_minus="i"
-              ref="_minus_svg"
-            />
-          </div>
+        <div class="limit_counter">
+            <h3>Stat Points used:  {{ stat_count_limiter }}</h3>
         </div>
-      </span>
+        <span class="element_wrapper">
+            <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
+                <div class="_header">
+                    <p class="_stat_tag">{{ stats[i] }}</p>
+                </div>
+                <div class="_stat_values">
+                    <h3 class="_value">{{ value.statValue }}</h3>
+                <img
+                    src="images/plus.svg"
+                    alt="plus"
+                    class="_plus"
+                    @click="increaseValue(i)"
+                    :clicked_plus="i"
+                    ref="_plus_svg"
+                />
+                <img
+                    src="images/minus.svg"
+                    alt="minus"
+                    class="_minus"
+                    @click="decreaseValue(i)"
+                    :clicked_minus="i"
+                    ref="_minus_svg"
+                />
+                </div>
+            </div>
+        </span>
+        </div>
       <div>
-        <h3>
-            Stat Points used: {{ stat_count_limiter  }}
-        </h3>
-      </div>
     </div>
 </template>
+<style lang="scss" scoped>
+._stat_content{
+    display: grid;
+    align-items: center;
+    grid-template-rows: auto;
+    gap: 50px;
+
+
+    >.limit_counter{
+        display: grid;
+        align-items: center;
+        justify-items: center;
+    }
+    >.element_wrapper{
+        display: grid;
+        align-items: center;
+        grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+        grid-template-rows: auto;
+        gap: 50px;
+        >._loop_div{
+            display: grid;
+            align-items: center;
+            grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+
+
+            >._header{
+                display: grid;
+                align-items: center;
+                justify-items: center;
+
+            }
+            >._stat_values{
+                display: grid;
+                align-items: center;
+                justify-items: center;
+                grid-template-columns: 1fr 1fr 1fr;
+
+                >._plus{
+
+    }
+                >._minus{
+
+                }
+            }
+        }
+    }
+}
+</style>
