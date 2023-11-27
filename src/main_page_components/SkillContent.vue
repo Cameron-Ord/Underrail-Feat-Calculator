@@ -25,8 +25,11 @@ watch(skillLimiter, (newVal, oldVal) => {
 watch(stored_values, (newVal, oldVal) => {
     if(newVal.nums !== null && oldVal.nums !== null){
         console.log("WATCHED: ",newVal.skillLimiter, newVal.nums, oldVal.skillLimiter, oldVal.nums);
-        let skillLimiter = newVal.skillLimiter
-        console.log(skillLimiter)
+        skillLimiter.value = newVal.skillLimiter
+        for(let i = 0; i < newVal.nums.length; i++){
+            const num = newVal.nums[i]
+            nums.value[i].skillValue = num.skillValue;
+        }
     }
 }, { deep: true });
 
@@ -118,6 +121,9 @@ onBeforeMount(()=>{
               ref="minusClicked"
             />
           </div>
+        </div>
+        <div class="skill_counter">
+            <p class="skill_pts_used">Skill Points used: {{ skillLimiter }}</p>
         </div>
       </span>
     </div>
