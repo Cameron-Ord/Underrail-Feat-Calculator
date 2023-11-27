@@ -13,25 +13,15 @@ const skills = [
   'Persuasion', 'Intimidation', 'Mercantile', 'Metathermics', 'Psychokinesis',
   'Thought Control', 'Tailoring', 'Biology', 'Chemistry', 'Electronics'
 ];
-
-watch(skillLimiter, (newVal, oldVal) => {
-  console.log("UPDATED VALUES: ", newVal, oldVal);
-  let skillLimiter = newVal
-  console.log(skillLimiter)
-
-
-}, { deep: true });
-
 watch(stored_values, (newVal, oldVal) => {
     if(newVal.nums !== null && oldVal.nums !== null){
-        console.log("WATCHED: ",newVal.skillLimiter, newVal.nums, oldVal.skillLimiter, oldVal.nums);
         skillLimiter.value = newVal.skillLimiter
         for(let i = 0; i < newVal.nums.length; i++){
             const num = newVal.nums[i]
             nums.value[i].skillValue = num.skillValue;
         }
     }
-}, { deep: true });
+});
 
 const saveCookie = () => {
     $cookies.set('skillVal', JSON.stringify(nums.value))
