@@ -17,28 +17,37 @@ watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
 const increaseValue=(i)=>{
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
-        //creating copies of values and modifying them
+        //Creating copies of values and modifying them
             let updated_limiter = skill_count_limiter.value
             const updated_array = [...skill_items_array.value];
             updated_array[i].skillValue+=5;
             updated_limiter+=5;
         /*
-          after being modified, 
-          we assign them back to our state variables.*/
+          After being modified, 
+          I assign them back to the state variables.*/
         /*
-          this is done to maintain immutability,
-          which is important when working with vue
+          This is done to maintain immutability,
+          which is important to maintain when working with vue.
         */    
             skill_store_instance.state.skill_items_array = updated_array;
             skill_store_instance.state.skill_count_limiter = updated_limiter
         }
+        /*
+          Basically, I am simply avoiding direct 
+          modifications/mutations with the variables
+          I want to be reactive.
+        */
     }
 }
 const decreaseValue=(i)=>{
     if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
         if (skill_store_instance.state.skill_items_array[i].skillValue > 0) {
-            skill_store_instance.state.skill_items_array[i].skillValue-=5;
-            skill_store_instance.state.skill_count_limiter-=5;
+            let updated_limiter = skill_count_limiter.value
+            const updated_array = [...skill_items_array.value];
+            updated_array[i].skillValue-=5;
+            updated_limiter-=5;
+            skill_store_instance.state.skill_items_array = updated_array;
+            skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
     }
 }
