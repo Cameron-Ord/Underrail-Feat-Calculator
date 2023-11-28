@@ -10,6 +10,7 @@
             send_input(skills_ref){
                 const skills_ref_text = skills_ref.textContent.replace(/ /g, "_");
                 this.$emit('send_input', skills_ref_text);
+                console.log('sent')
             }
         }
     }

@@ -1,19 +1,26 @@
 <script setup>
-import { onBeforeMount, ref, watch } from 'vue';
+import { useCookies } from 'vue3-cookies';
+import { ref, watch } from 'vue';
 import { useSkillStore } from '../stores/skill_state_store';
 const skill_store_instance = useSkillStore();
+const {cookies} = useCookies()
+
 let skill_items_array = ref(skill_store_instance.state.skill_items_array);
 let skill_count_limiter = ref(skill_store_instance.state.skill_count_limiter);
 const skills = skill_store_instance.state.skills_list;
 
 watch(()=> skill_store_instance.state.skill_count_limiter, (newVal) =>{
     skill_count_limiter.value = newVal
-    console.log(skill_count_limiter.value, "new value")
+    set_cookies();
 })
 watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
     skill_items_array.value = newVal
-    console.log(skill_items_array.value)
+    set_cookies();
 })
+const set_cookies = () =>{
+    cookies.set('skill_count_limiter', JSON.stringify(skill_count_limiter.value));
+    cookies.set('skill_array_values', JSON.stringify(skill_items_array.value));
+}
 const increaseValue=(i)=>{
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
@@ -30,12 +37,12 @@ const increaseValue=(i)=>{
           which is important to maintain when working with vue.
         */    
             skill_store_instance.state.skill_items_array = updated_array;
-            skill_store_instance.state.skill_count_limiter = updated_limiter
+            skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
         /*
           Basically, I am simply avoiding direct 
           modifications/mutations with the variables
-          I want to be reactive.
+          I want to be reactive. 
         */
     }
 }
@@ -51,22 +58,6 @@ const decreaseValue=(i)=>{
         }
     }
 }
-const set_default_values = () =>{
-    const skill_limiter = 0;
-    const skill_items = [];
-    for(let i = 0; i < skill_store_instance.state.skills_list.length; i++){
-        const skill = skill_store_instance.state.skills_list[i];
-        skill_items.push({
-            skillName: skill,
-            skillValue: 0
-        });
-    }
-    skill_store_instance.state.skill_count_limiter = skill_limiter;
-    skill_store_instance.state.skill_items_array = skill_items;
-}
-onBeforeMount(()=>{
-    set_default_values()
-})
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">
@@ -134,6 +125,7 @@ onBeforeMount(()=>{
                 display: grid;
                 align-items: center;
                 justify-items: center;
+                text-align: center;
 
             }
             >._skill_values{

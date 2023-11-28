@@ -10,6 +10,7 @@
             send_input(stats_ref){
                 const stats_ref_text = stats_ref.textContent.replace(/ /g, "_");
                 this.$emit('send_input',stats_ref_text);
+                console.log('sent', stats_ref_text)
             }
         }
     }

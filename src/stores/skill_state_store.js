@@ -30,8 +30,25 @@ export const useSkillStore = defineStore('skill', () => {
             'Electronics'
           ]
     };
+
+    const actions = {
+        set_default_values(){
+            const skill_limiter = 0;
+            const skill_items = [];
+            for(let i = 0; i < state.skills_list.length; i++){
+                const skill = state.skills_list[i];
+                skill_items.push({
+                    skillName: skill,
+                    skillValue: 0
+                });
+            }
+            return [skill_limiter, skill_items]
+        }
+    }
+
     return{
         state,
+        actions
     }
 })
   

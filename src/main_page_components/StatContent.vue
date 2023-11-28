@@ -1,8 +1,8 @@
 <script setup>
-
-import { onBeforeMount, ref, watch } from 'vue';
+import { useCookies } from 'vue3-cookies';
+import { ref, watch } from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
-
+const {cookies} = useCookies()
 const stat_store_instance = useStatStore();
 let stat_items_array = ref(stat_store_instance.state.stat_items_array);
 let stat_count_limiter = ref(stat_store_instance.state.stat_count_limiter);
@@ -10,47 +10,44 @@ const stats = stat_store_instance.state.stats_list;
 
 watch(()=> stat_store_instance.state.stat_count_limiter, (newVal) =>{
     stat_count_limiter.value = newVal
-    console.log(stat_count_limiter.value, "new value")
+    console.log('SET:', newVal)
+    set_cookies()
 })
 
 watch(()=> stat_store_instance.state.stat_items_array, (newVal) =>{
     stat_items_array.value = newVal
-    console.log(stat_items_array.value)
+    console.log('SET:', newVal)
+    set_cookies()
 })
-
+const set_cookies = () =>{
+    console.log('setting cookies')
+    cookies.set('stat_count_limiter', JSON.stringify(stat_count_limiter.value));
+    cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
+}
 const increaseValue=(i)=>{
     if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
         if (stat_store_instance.state.stat_items_array[i].statValue < 20) {
-            stat_store_instance.state.stat_items_array[i].statValue++;
-            stat_store_instance.state.stat_count_limiter++;
+            let updated_limiter = stat_count_limiter.value;
+            const updated_array = [...stat_items_array.value];
+            updated_array[i].statValue++;
+            updated_limiter++;
+            stat_store_instance.state.stat_items_array = updated_array;
+            stat_store_instance.state.stat_count_limiter = updated_limiter;
         }
     }
 }
 const decreaseValue=(i)=>{
     if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
         if (stat_store_instance.state.stat_items_array[i].statValue > 3) {
-            stat_store_instance.state.stat_items_array[i].statValue--;
-            stat_store_instance.state.stat_count_limiter--;
+            let updated_limiter = stat_count_limiter.value
+            const updated_array = [...stat_items_array.value];
+            updated_array[i].statValue--;
+            updated_limiter--;
+            stat_store_instance.state.stat_items_array = updated_array;
+            stat_store_instance.state.stat_count_limiter = updated_limiter;
         }
     }
 }
-const set_default_values = () =>{
-    const stat_limiter = 35;
-    const stat_items = [];
-    for(let i = 0; i < stat_store_instance.state.stats_list.length; i++){
-        const stat = stat_store_instance.state.stats_list[i];
-        stat_items.push({
-            statName: stat,
-            statValue: 5
-        });
-    }
-    stat_store_instance.state.stat_count_limiter = stat_limiter;
-    stat_store_instance.state.stat_items_array = stat_items;
-}
-
-onBeforeMount(()=>{
-    set_default_values()
-})
 
 </script>
 

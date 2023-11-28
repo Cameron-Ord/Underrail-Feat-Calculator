@@ -4,13 +4,13 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'
-import VueCookies from 'vue3-cookies';
+import { useCookies } from 'vue3-cookies';
 
 const app = createApp(App)
 const pinia = createPinia()
 app.use(pinia)
 app.use(router)
-app.use(VueCookies, {
+app.use(useCookies, {
     expireTimes: '1d',
     path: '/',
     domain: import.meta.env.VITE_APP_BASE_DOMAIN,

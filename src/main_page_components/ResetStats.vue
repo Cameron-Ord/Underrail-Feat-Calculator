@@ -35,4 +35,5 @@ const set_default_values = () =>{
     align-items: center;
     justify-items: center;
 }
-</style>
+</style>            updated_array[i].skillValue+=5;
+updated_limiter+=5;

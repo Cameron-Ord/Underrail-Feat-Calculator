@@ -7,39 +7,110 @@ import ResetStats from '../main_page_components/ResetStats.vue';
 import SkillContent from '../main_page_components/SkillContent.vue';
 import ResetSkills from '../main_page_components/ResetSkills.vue';
 import ViewStats from '../main_page_components/ViewStats.vue';
-</script>
-<script>
-    export default {
-        data() {
-            return {
-                switch_based_bool: true,
-                ison: false
-            }
-        },
+import { useCookies } from 'vue3-cookies';
+import { onBeforeMount,ref,provide} from 'vue';
+import { useStatStore } from '../stores/stat_state_store';
+import { useSkillStore } from '../stores/skill_state_store';
+const stat_store_instance = useStatStore();
+const skill_store_instance = useSkillStore();
+const featsAreLoaded = ref(false);
+const svgsAreLoaded = ref(false);
+let switch_based_bool = ref(true);
+const {cookies} = useCookies();
 
-        methods:{
-          remember_last_viewed(){
-            const last_viewed = JSON.parse(this.$cookies.get('last_viewed'));
-            if(last_viewed !== null){
-              this.switch_based_bool = last_viewed
-            }
-          },
-          handle_view(sent_ref_text){
-            console.log(sent_ref_text)
-            if(sent_ref_text === "View_Stats"){
-              this.switch_based_bool = true;
-              this.$cookies.set('last_viewed', JSON.stringify(this.switch_based_bool))
-            } else if(sent_ref_text === "View_Skills"){
-              this.switch_based_bool = false
-              this.$cookies.set('last_viewed', JSON.stringify(this.switch_based_bool))
-            }
-          },
-        },
+const updateFeatsAreLoaded = (newValue) => {
+  console.log('updating')
+  featsAreLoaded.value = newValue;
+  console.log(featsAreLoaded.value)
+}
+const updateSvgsAreLoaded = (newValue) => {
+  console.log('updating')
+  svgsAreLoaded.value = newValue;
+  console.log(svgsAreLoaded.value)
+}
+provide('svgsAreLoaded', svgsAreLoaded)
+provide('featsAreLoaded', featsAreLoaded)
+provide('updateSvgsAreLoaded', updateSvgsAreLoaded);
+provide('updateFeatsAreLoaded', updateFeatsAreLoaded);
 
-        created(){
-            this.remember_last_viewed();
-        }
-    }
+const remember_last_viewed = () =>{
+  console.log('remembering')
+  const last_viewed = cookies.get('last_viewed');
+  if(JSON.parse(last_viewed) !== null){
+    switch_based_bool.value = JSON.parse(last_viewed);
+  }
+}
+const handle_view = (sent_ref_text) =>{
+  console.log(sent_ref_text)
+  if(sent_ref_text === "View_Stats"){
+    const bool = true
+    switch_based_bool.value = bool;
+    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
+  } else if(sent_ref_text === "View_Skills"){
+    const bool = false
+    switch_based_bool.value = bool;
+    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
+  }
+}
+
+const save_cookies = (
+  default_stat_limiter,default_stat_items,
+  default_skill_limiter,default_skill_items) => {
+  cookies.set('stat_count_limiter',JSON.stringify(default_stat_limiter))
+  cookies.set('stat_array_values',JSON.stringify(default_stat_items))
+  cookies.set('skill_count_limiter',JSON.stringify(default_skill_limiter))
+  cookies.set('skill_array_values',JSON.stringify(default_skill_items))
+}
+
+const retrieve_cookies = () => {
+  const StatCL = cookies.get('stat_count_limiter');
+  const StatAV = cookies.get('stat_array_values');
+  const SkillCL = cookies.get('skill_count_limiter');
+  const SkillAV = cookies.get('skill_array_values');
+
+  return [
+    JSON.parse(SkillCL),
+    JSON.parse(SkillAV),
+    JSON.parse(StatCL),
+    JSON.parse(StatAV)
+  ]
+}
+
+const assign_default_values = () =>{
+  const [default_stat_limiter, default_stat_items] = stat_store_instance.actions.set_default_values();
+  stat_store_instance.state.stat_count_limiter = default_stat_limiter;
+  stat_store_instance.state.stat_items_array = default_stat_items;
+  const [default_skill_limiter, default_skill_items] = skill_store_instance.actions.set_default_values();
+  skill_store_instance.state.skill_count_limiter = default_skill_limiter;
+  skill_store_instance.state.skill_items_array = default_skill_items
+  console.log(default_stat_items)
+  save_cookies(
+    default_stat_limiter,default_stat_items,
+    default_skill_limiter,default_skill_items
+  );
+}
+
+onBeforeMount(()=>{
+remember_last_viewed();
+const [
+  skill_lmtr,
+  skill_vals,
+  stat_lmtr,
+  stat_vals
+] = retrieve_cookies();
+
+let missing_cookies = false;
+
+for (const value of [skill_lmtr, skill_vals,stat_lmtr,stat_vals]){
+  if(value === null){
+    missing_cookies = true;
+  }
+}
+if(missing_cookies === true){
+  assign_default_values();
+}
+})
+
 </script>
 <template>
   <main class="_page_main">
@@ -61,9 +132,9 @@ import ViewStats from '../main_page_components/ViewStats.vue';
         </div>
       </article>
     </section>
-    <section class="_calculation_container" v-if="ison === true">
+    <section class="_calculation_container">
       <article class="_calc_wrapper">
-        <feats-container></feats-container>
+        <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
         <calculation-button></calculation-button>
       </article>
     </section>
@@ -71,9 +142,12 @@ import ViewStats from '../main_page_components/ViewStats.vue';
 </template>
 <style lang="scss" scoped>
 ._page_main{
+  padding-top: 50px;
+  padding-bottom: 50px;
   display: grid;
   align-items: center;
   min-height: 100vh;
+  grid-template-rows: 1fr 0.25fr;
 
   >._calculation_container{
     display: grid;
@@ -81,6 +155,7 @@ import ViewStats from '../main_page_components/ViewStats.vue';
     >._calc_wrapper{
       display: grid;
       align-items: center;
+      grid-template-rows: 1fr;
     }
   }
 
