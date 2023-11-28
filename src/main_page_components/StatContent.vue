@@ -1,6 +1,6 @@
 <script setup>
 import { useCookies } from 'vue3-cookies';
-import { ref, watch } from 'vue';
+import { onBeforeMount, ref, watch } from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 const {cookies} = useCookies()
 const stat_store_instance = useStatStore();
@@ -49,10 +49,17 @@ const decreaseValue=(i)=>{
     }
 }
 
+onBeforeMount(()=>{
+    console.log(stat_store_instance.state.stat_count_limiter, 'state')
+    console.log(stat_store_instance.state.stat_items_array, 'state')
+    console.log(stat_count_limiter.value, 'stat count lmtr')
+    console.log(stat_items_array.value, 'stat count array')
+})
+
 </script>
 
 <template>
-    <div class="_stat_content" v-if="stat_items_array !== null">
+    <div class="_stat_content" v-if="stat_items_array !== null || stat_items_array !== undefined">
         <div class="limit_counter">
             <h3>Stat Points used: {{ stat_count_limiter -21  }}/25</h3>
         </div>

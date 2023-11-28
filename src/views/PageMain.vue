@@ -68,12 +68,23 @@ const retrieve_cookies = () => {
   const SkillCL = cookies.get('skill_count_limiter');
   const SkillAV = cookies.get('skill_array_values');
 
-  return [
-    JSON.parse(SkillCL),
-    JSON.parse(SkillAV),
-    JSON.parse(StatCL),
-    JSON.parse(StatAV)
-  ]
+  try{
+    return [
+      JSON.parse(SkillCL),
+      JSON.parse(SkillAV),
+      JSON.parse(StatCL),
+      JSON.parse(StatAV)
+    ]
+  } catch (error) {
+    console.error("Error parsing JSON: ", error)
+  }
+}
+
+const assign_predefined_values = (skill_lmtr,skill_vals,stat_lmtr,stat_vals) => {
+  stat_store_instance.state.stat_count_limiter = stat_lmtr
+  stat_store_instance.state.stat_items_array = stat_vals;
+  skill_store_instance.state.skill_count_limiter = skill_lmtr;
+  skill_store_instance.state.skill_items_array = skill_vals
 }
 
 const assign_default_values = () =>{
@@ -91,24 +102,26 @@ const assign_default_values = () =>{
 }
 
 onBeforeMount(()=>{
-remember_last_viewed();
-const [
-  skill_lmtr,
-  skill_vals,
-  stat_lmtr,
-  stat_vals
-] = retrieve_cookies();
+  remember_last_viewed();
+  const [
+    skill_lmtr,
+    skill_vals,
+    stat_lmtr,
+    stat_vals
+  ] = retrieve_cookies();
 
-let missing_cookies = false;
+  let missing_cookies = false;
 
-for (const value of [skill_lmtr, skill_vals,stat_lmtr,stat_vals]){
-  if(value === null){
-    missing_cookies = true;
+  for (const value of [skill_lmtr, skill_vals,stat_lmtr,stat_vals]){
+    if(value === null){
+      missing_cookies = true;
+    }
   }
-}
-if(missing_cookies === true){
-  assign_default_values();
-}
+  if(missing_cookies === true){
+    assign_default_values();
+  } else {
+    assign_predefined_values(skill_lmtr, skill_vals, stat_lmtr, stat_vals);
+  }
 })
 
 </script>
