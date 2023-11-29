@@ -50,27 +50,45 @@ const add_to_feats = (feat_ref, retrieved_array) => {
     }
 }
 
-const add_feat = (feat_ref, index) => {
+const add_feat = (feat_ref) => {
     const retrieved_cookies = retrieve_cookies();
     if(retrieved_cookies.length === 0){
-        const added_feat = add_init_feat(feat_ref[index]);
+        const added_feat = add_init_feat(feat_ref);
         cookies.set('chosen_feats', JSON.stringify(added_feat));
         console.log("ADDED: ", added_feat);
     } else {
-        const feat_array = add_to_feats(feat_ref[index], retrieved_cookies);
+        const feat_array = add_to_feats(feat_ref, retrieved_cookies);
         cookies.set('chosen_feats', JSON.stringify(feat_array));
         console.log("ADDED: ", feat_array);
     }
 }
 
-const remove_feat = () => {
+const retrieve_item_index = (feat_ref,retrieved_cookies) => { 
+    for(let i = 0; i < retrieved_cookies.length; i++){
+        const array_item = retrieved_cookies[i]
+        if(array_item === feat_ref.textContent){
+            const extracted_index = i;
+            return  extracted_index
+        }
+    }
+}
 
+const remove_feat = (feat_ref) => {
+    const retrieved_cookies = retrieve_cookies();
+    if(retrieved_cookies.length > 0){
+        const returned_index = retrieve_item_index(feat_ref,retrieved_cookies);
+        const mutant_cookies = [...retrieved_cookies];
+        mutant_cookies.splice(returned_index, 1);
+        cookies.set('chosen_feats', JSON.stringify(mutant_cookies));
+    } else {
+        console.error("Empty cookie array: ", retrieved_cookies)
+    }
 }
 
 const handle_click = (feat_ref, index) => {
     if(svg_list.value[index] === plus){
         feat_store_instance.state.svg_list[index] = minus
-        add_feat(feat_ref, index);
+        add_feat(feat_ref[index]);
     } else if (svg_list.value[index] === minus){
         feat_store_instance.state.svg_list[index] = plus
         remove_feat(feat_ref[index])
