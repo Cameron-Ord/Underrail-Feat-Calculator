@@ -21,12 +21,10 @@ const {cookies} = useCookies();
 const updateFeatsAreLoaded = (newValue) => {
   console.log('updating')
   featsAreLoaded.value = newValue;
-  console.log(featsAreLoaded.value)
 }
 const updateSvgsAreLoaded = (newValue) => {
   console.log('updating')
   svgsAreLoaded.value = newValue;
-  console.log(svgsAreLoaded.value)
 }
 provide('svgsAreLoaded', svgsAreLoaded)
 provide('featsAreLoaded', featsAreLoaded)

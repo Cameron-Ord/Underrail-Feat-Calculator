@@ -47,6 +47,7 @@ const invoke_axios = (stat_items, skill_items) =>{
 
 const generate_feat_list = async () =>  {
     try {
+        cookies.remove('chosen_feats');
         const stat_items = cookies.get('stat_array_values');
         const skill_items = cookies.get('skill_array_values');
         const response_data = await invoke_axios(JSON.parse(stat_items), JSON.parse(skill_items));

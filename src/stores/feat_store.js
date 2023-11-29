@@ -5,7 +5,7 @@ export const useFeatStore = defineStore('feat', () => {
         feats_list: undefined,
         svg_list: undefined,
         feats_are_loaded: false,
-        svgs_are_loaded: false
+        svgs_are_loaded: false,
     };
 
     return{
