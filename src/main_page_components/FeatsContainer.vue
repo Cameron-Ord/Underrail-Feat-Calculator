@@ -6,6 +6,7 @@ const {cookies} = useCookies()
 const feat_store_instance = useFeatStore();
 const generated_feat_list = ref(feat_store_instance.state.feats_list)
 const svg_list = ref(feat_store_instance.state.svg_list)
+const executed_without_error = ref(false);
 const plus = 'images/plus.svg';
 const minus = 'images/minus.svg';
 
@@ -54,12 +55,22 @@ const add_feat = (feat_ref) => {
     const retrieved_cookies = retrieve_cookies();
     if(retrieved_cookies.length === 0){
         const added_feat = add_init_feat(feat_ref);
-        cookies.set('chosen_feats', JSON.stringify(added_feat));
-        console.log("ADDED: ", added_feat);
+        if(added_feat.length > 0){
+            cookies.set('chosen_feats', JSON.stringify(added_feat));
+            return true
+        } else {
+            console.error("add_init_feat returned an empty array: ", added_feat);
+            return false;
+        }
     } else {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
-        cookies.set('chosen_feats', JSON.stringify(feat_array));
-        console.log("ADDED: ", feat_array);
+        if(feat_array.length > 0){
+            cookies.set('chosen_feats', JSON.stringify(feat_array));
+            return true
+        } else {
+            console.error("add_to_feats returned an empty array: ", feat_array)
+            return false;
+        }
     }
 }
 
@@ -80,18 +91,20 @@ const remove_feat = (feat_ref) => {
         const mutant_cookies = [...retrieved_cookies];
         mutant_cookies.splice(returned_index, 1);
         cookies.set('chosen_feats', JSON.stringify(mutant_cookies));
+        return true;
     } else {
-        console.error("Empty cookie array: ", retrieved_cookies)
+        console.error("Empty cookie array: ", retrieved_cookies);
+        return false;
     }
 }
 
 const handle_click = (feat_ref, index) => {
     if(svg_list.value[index] === plus){
         feat_store_instance.state.svg_list[index] = minus
-        add_feat(feat_ref[index]);
+        executed_without_error.value = add_feat(feat_ref[index]);
     } else if (svg_list.value[index] === minus){
         feat_store_instance.state.svg_list[index] = plus
-        remove_feat(feat_ref[index])
+        executed_without_error.value = remove_feat(feat_ref[index]);
     }
 }
 
