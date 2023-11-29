@@ -7,29 +7,35 @@ import ResetStats from '../main_page_components/ResetStats.vue';
 import SkillContent from '../main_page_components/SkillContent.vue';
 import ResetSkills from '../main_page_components/ResetSkills.vue';
 import ViewStats from '../main_page_components/ViewStats.vue';
+import BuildSaver from '../main_page_components/BuildSaver.vue';
 import { useCookies } from 'vue3-cookies';
 import { onBeforeMount,ref,provide} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
+
 const stat_store_instance = useStatStore();
 const skill_store_instance = useSkillStore();
 const featsAreLoaded = ref(false);
 const svgsAreLoaded = ref(false);
+const canSaveBuild = ref(false);
 let switch_based_bool = ref(true);
 const {cookies} = useCookies();
 
+const updateCanSaveBuild = (newValue) => {
+  canSaveBuild.value = newValue
+}
 const updateFeatsAreLoaded = (newValue) => {
-  console.log('updating')
   featsAreLoaded.value = newValue;
 }
 const updateSvgsAreLoaded = (newValue) => {
-  console.log('updating')
   svgsAreLoaded.value = newValue;
 }
+provide('canSaveBuild', canSaveBuild)
 provide('svgsAreLoaded', svgsAreLoaded)
 provide('featsAreLoaded', featsAreLoaded)
 provide('updateSvgsAreLoaded', updateSvgsAreLoaded);
 provide('updateFeatsAreLoaded', updateFeatsAreLoaded);
+provide('updateCanSaveBuild', updateCanSaveBuild)
 
 const remember_last_viewed = () =>{
   console.log('remembering')
@@ -146,7 +152,10 @@ onBeforeMount(()=>{
     <section class="_calculation_container">
       <article class="_calc_wrapper">
         <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
-        <calculation-button></calculation-button>
+        <div class="feat_viewer_options">
+          <calculation-button></calculation-button>
+          <build-saver v-if="canSaveBuild === true"></build-saver>
+        </div>
       </article>
     </section>
   </main>

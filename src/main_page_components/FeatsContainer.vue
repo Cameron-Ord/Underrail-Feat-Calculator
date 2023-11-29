@@ -1,14 +1,14 @@
 <script setup>
-import {ref, watch} from 'vue'
+import {ref, watch, inject} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
 import { useCookies } from 'vue3-cookies';
 const {cookies} = useCookies()
 const feat_store_instance = useFeatStore();
 const generated_feat_list = ref(feat_store_instance.state.feats_list)
 const svg_list = ref(feat_store_instance.state.svg_list)
-const executed_without_error = ref(false);
 const plus = 'images/plus.svg';
 const minus = 'images/minus.svg';
+const updateCanSaveBuild = inject('updateCanSaveBuild');
 
 //Watching for changes in the store instance.
 watch(() => feat_store_instance.state.feats_list, (value) => {
@@ -57,19 +57,19 @@ const add_feat = (feat_ref) => {
         const added_feat = add_init_feat(feat_ref);
         if(added_feat.length > 0){
             cookies.set('chosen_feats', JSON.stringify(added_feat));
-            return true
+            return [true, added_feat]
         } else {
             console.error("add_init_feat returned an empty array: ", added_feat);
-            return false;
+            return [false, []]
         }
     } else {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
         if(feat_array.length > 0){
             cookies.set('chosen_feats', JSON.stringify(feat_array));
-            return true
+            return [true, feat_array]
         } else {
             console.error("add_to_feats returned an empty array: ", feat_array)
-            return false;
+            return [false, []];
         }
     }
 }
@@ -91,20 +91,30 @@ const remove_feat = (feat_ref) => {
         const mutant_cookies = [...retrieved_cookies];
         mutant_cookies.splice(returned_index, 1);
         cookies.set('chosen_feats', JSON.stringify(mutant_cookies));
-        return true;
+        return [true, mutant_cookies];
     } else {
         console.error("Empty cookie array: ", retrieved_cookies);
-        return false;
+        return [false, []];
     }
 }
 
 const handle_click = (feat_ref, index) => {
     if(svg_list.value[index] === plus){
         feat_store_instance.state.svg_list[index] = minus
-        executed_without_error.value = add_feat(feat_ref[index]);
+        const [successful, modified_array] = add_feat(feat_ref[index]);
+        if(successful === true && modified_array.length > 0){
+            updateCanSaveBuild(true)
+        } else {
+            updateCanSaveBuild(false)
+        }
     } else if (svg_list.value[index] === minus){
         feat_store_instance.state.svg_list[index] = plus
-        executed_without_error.value = remove_feat(feat_ref[index]);
+        const [successful, modified_array] = remove_feat(feat_ref[index]);
+        if(successful === true && modified_array.length > 0){
+            updateCanSaveBuild(true)
+        } else {
+            updateCanSaveBuild(false)
+        }
     }
 }
 
