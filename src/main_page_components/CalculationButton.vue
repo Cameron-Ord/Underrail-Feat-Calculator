@@ -41,13 +41,17 @@ const invoke_axios = (stat_items, skill_items) =>{
 const retrieve_cookies = () => {
     const stat_items = cookies.get('stat_array_values');
     const skill_items = cookies.get('skill_array_values');
-    const parsed_stat_items = JSON.parse(stat_items);
-    const parsed_skill_items = JSON.parse(skill_items);
-
-    if(parsed_skill_items === null || parsed_stat_items === null){
+    try {
+        const parsed_stat_items = JSON.parse(stat_items);
+        const parsed_skill_items = JSON.parse(skill_items);
+        if(parsed_skill_items === null || parsed_stat_items === null){
+            return [[],[]]
+        } else {
+            return [parsed_stat_items, parsed_skill_items]
+        }
+    } catch (error) {
+        console.log('Error parsing JSON')
         return [[],[]]
-    } else {
-        return [parsed_stat_items, parsed_skill_items]
     }
 }
 
@@ -80,8 +84,8 @@ const generate_feat_list = async () =>  {
                 if(response_data.length > 0 && initialized_button_array.length > 0){
                     feat_store_instance.state.svg_list = initialized_button_array;
                     feat_store_instance.state.feats_list = response_data;
-                    if(feat_store_instance.state.svg_list
-                    && feat_store_instance.state.feats_list){
+                    if(feat_store_instance.state.svg_list !== undefined
+                    && feat_store_instance.state.feats_list !== undefined){
                         make_visible();
                         set_grid();
                     }
