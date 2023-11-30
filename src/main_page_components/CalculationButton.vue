@@ -9,22 +9,16 @@ const updateFeatsAreLoaded = inject('updateFeatsAreLoaded');
 const updateSvgsAreLoaded = inject('updateSvgsAreLoaded');
 
 const set_grid = () => {
-    if(feat_store_instance.state.feats_list !== undefined 
-    && feat_store_instance.state.svg_list !== undefined){
-        let page_main = document.querySelector('._page_main');
-        let calc_wrapper = document.querySelector('._calc_wrapper');
+    let page_main = document.querySelector('._page_main');
+    let calc_wrapper = document.querySelector('._calc_wrapper');
 
-        page_main['style']['grid-template-rows'] = '1fr 0.5fr';
-        calc_wrapper['style']['grid-template-rows'] = '1fr 0.5fr';
-    }
+    page_main['style']['grid-template-rows'] = '1fr 0.5fr';
+    calc_wrapper['style']['grid-template-rows'] = '1fr 0.5fr';
 }
 
 const make_visible = () => {
-    if(feat_store_instance.state.feats_list !== undefined 
-    && feat_store_instance.state.svg_list !== undefined){
-        updateFeatsAreLoaded(true)
-        updateSvgsAreLoaded(true)
-    }
+    updateFeatsAreLoaded(true)
+    updateSvgsAreLoaded(true)
 }
 
 const invoke_axios = (stat_items, skill_items) =>{
@@ -37,35 +31,63 @@ const invoke_axios = (stat_items, skill_items) =>{
             skills:skill_items
         }
         }).then((response)=>{
-            const response_data = response['data'];
-            resolve(response_data);
+            resolve(response);
         }).catch((error)=>{
             reject(error);
         })
     })
 }
 
+const retrieve_cookies = () => {
+    const stat_items = cookies.get('stat_array_values');
+    const skill_items = cookies.get('skill_array_values');
+    const parsed_stat_items = JSON.parse(stat_items);
+    const parsed_skill_items = JSON.parse(skill_items)
+
+    if(parsed_skill_items === null || parsed_stat_items === null){
+        return [[],[]]
+    } else {
+        return [parsed_stat_items, parsed_skill_items]
+    }
+}
+
+const create_buttons = (response_data) => {
+    const plus = 'images/plus.svg';
+    const initialized_button_array = [] 
+    let i = 0;
+    while (i < response_data.length){
+        initialized_button_array.push(plus);
+        i++;
+    }
+    if(initialized_button_array.length > 0){
+        return initialized_button_array
+    } else {
+        return []
+    }
+}
+
 const generate_feat_list = async () =>  {
     try {
         cookies.remove('chosen_feats');
-        const stat_items = cookies.get('stat_array_values');
-        const skill_items = cookies.get('skill_array_values');
-        const response_data = await invoke_axios(JSON.parse(stat_items), JSON.parse(skill_items));
-        
-        const plus = 'images/plus.svg';
-        let initialized_button_array = [] 
-        let i = 0;
-        while (i < response_data.length)
-        {
-            initialized_button_array.push(plus);
-            i++;
-        }
-
-        feat_store_instance.state.svg_list = initialized_button_array;
-        feat_store_instance.state.feats_list = response_data;
-        make_visible();
-        set_grid();
-
+        const [stat_items, skill_items] = retrieve_cookies();
+        if(stat_items.length > 0 && skill_items.length > 0){
+            const response = await invoke_axios(stat_items, skill_items);
+            if(response.status >= 200 && response.status < 300){
+                const response_data = response['data'];
+                const initialized_button_array = create_buttons(response_data)
+                if(response_data.length > 0 && initialized_button_array.length > 0){
+                    feat_store_instance.state.svg_list = initialized_button_array;
+                    feat_store_instance.state.feats_list = response_data;
+                    if(feat_store_instance.state.svg_list
+                    && feat_store_instance.state.feats_list){
+                        make_visible();
+                        set_grid();
+                    }
+                } else {
+                    console.log('Query returned 0 results.')
+                }
+            }
+        }        
     } catch (error) {
         console.error('Failed to resolve promise: ',error);
     }

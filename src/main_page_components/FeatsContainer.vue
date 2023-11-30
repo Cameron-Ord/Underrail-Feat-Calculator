@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch, inject} from 'vue'
+import {ref, watch} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
 import { useCookies } from 'vue3-cookies';
 const {cookies} = useCookies()
@@ -8,7 +8,6 @@ const generated_feat_list = ref(feat_store_instance.state.feats_list)
 const svg_list = ref(feat_store_instance.state.svg_list)
 const plus = 'images/plus.svg';
 const minus = 'images/minus.svg';
-const updateCanSaveBuild = inject('updateCanSaveBuild');
 
 //Watching for changes in the store instance.
 watch(() => feat_store_instance.state.feats_list, (value) => {
@@ -103,17 +102,21 @@ const handle_click = (feat_ref, index) => {
         feat_store_instance.state.svg_list[index] = minus
         const [successful, modified_array] = add_feat(feat_ref[index]);
         if(successful === true && modified_array.length > 0){
-            updateCanSaveBuild(true)
+            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
+            feat_store_instance.state.can_save_build = bool_to_assign
         } else {
-            updateCanSaveBuild(false)
+            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
+            feat_store_instance.state.can_save_build = bool_to_assign
         }
     } else if (svg_list.value[index] === minus){
         feat_store_instance.state.svg_list[index] = plus
         const [successful, modified_array] = remove_feat(feat_ref[index]);
         if(successful === true && modified_array.length > 0){
-            updateCanSaveBuild(true)
+            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
+            feat_store_instance.state.can_save_build = bool_to_assign
         } else {
-            updateCanSaveBuild(false)
+            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
+            feat_store_instance.state.can_save_build = bool_to_assign
         }
     }
 }

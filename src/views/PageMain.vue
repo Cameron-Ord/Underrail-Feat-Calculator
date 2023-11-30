@@ -9,33 +9,33 @@ import ResetSkills from '../main_page_components/ResetSkills.vue';
 import ViewStats from '../main_page_components/ViewStats.vue';
 import BuildSaver from '../main_page_components/BuildSaver.vue';
 import { useCookies } from 'vue3-cookies';
-import { onBeforeMount,ref,provide} from 'vue';
+import { onBeforeMount,ref,provide, watch} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
-
+import { useFeatStore } from '../stores/feat_store';
+const {cookies} = useCookies();
 const stat_store_instance = useStatStore();
 const skill_store_instance = useSkillStore();
+const feat_store_instance = useFeatStore();
 const featsAreLoaded = ref(false);
 const svgsAreLoaded = ref(false);
-const canSaveBuild = ref(false);
+const canSaveBuild = ref(feat_store_instance.state.can_save_build);
 let switch_based_bool = ref(true);
-const {cookies} = useCookies();
 
-const updateCanSaveBuild = (newValue) => {
-  canSaveBuild.value = newValue
-}
+watch(()=>feat_store_instance.state.can_save_build, (boolean) => {
+  canSaveBuild.value = boolean;
+})
+
 const updateFeatsAreLoaded = (newValue) => {
   featsAreLoaded.value = newValue;
 }
 const updateSvgsAreLoaded = (newValue) => {
   svgsAreLoaded.value = newValue;
 }
-provide('canSaveBuild', canSaveBuild)
 provide('svgsAreLoaded', svgsAreLoaded)
 provide('featsAreLoaded', featsAreLoaded)
 provide('updateSvgsAreLoaded', updateSvgsAreLoaded);
 provide('updateFeatsAreLoaded', updateFeatsAreLoaded);
-provide('updateCanSaveBuild', updateCanSaveBuild)
 
 const remember_last_viewed = () =>{
   console.log('remembering')
