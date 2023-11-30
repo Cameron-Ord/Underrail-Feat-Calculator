@@ -38,11 +38,15 @@ const signup_api = (username, password) => {
 }
 
 const submit_signup_form = async (username, password) =>{
+    console.log("LOGIN DATA: ",username, password)
     const signup_response = await signup_api(username, password);
     if(signup_response.status >= 200 && signup_response.status < 300){
         const login_response = await log_user_in(username,password);
         if(login_response.status >= 200 && login_response.status < 300){
-            cookies.set('client_session', JSON.stringify(login_response['data']));
+            const Client_ID = login_response['data']['Client_ID_Value'];
+            const Client_Session_Token = login_response['data']['Client_Session_Token']
+            cookies.set('Client_ID', JSON.stringify(Client_ID));
+            cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
         } else {
             console.log("Error logging in.")
         }
@@ -56,10 +60,19 @@ const submit_signup_form = async (username, password) =>{
 <template>
     <div class="signup_form">
         <input placeholder="Username" type="text" ref="username">
-        <input placeholder="..." type="password" ref="password" @keyup.enter="submit_signup_form($refs.username, $refs.password)">
+        <input placeholder="..." type="password" ref="password" @keyup.enter="submit_signup_form($refs.username.value, $refs.password.value)">
     </div>
 </template>
 
 <style lang="scss" scoped>
-
+.signup_form{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-template-rows: 50px 50px;
+    >input{
+        width: 70%;
+        max-width: 225px;
+    }
+}
 </style>

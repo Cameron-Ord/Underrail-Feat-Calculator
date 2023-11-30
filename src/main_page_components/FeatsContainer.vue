@@ -33,7 +33,7 @@ const retrieve_cookies = () =>{
 const add_init_feat = (feat_ref) =>{
     const init_array = [];
     if(feat_ref){
-        init_array.push(feat_ref.textContent);
+        init_array.push({"Feat": feat_ref.textContent});
         return init_array;
     } else {
         return [];
@@ -43,7 +43,7 @@ const add_init_feat = (feat_ref) =>{
 const add_to_feats = (feat_ref, retrieved_array) => {
     const retrieved_array_copy = retrieved_array;
     if(feat_ref){
-        retrieved_array_copy.push(feat_ref.textContent);
+        retrieved_array_copy.push({"Feat": feat_ref.textContent});
         return retrieved_array_copy
     } else {
         return []
@@ -75,7 +75,7 @@ const add_feat = (feat_ref) => {
 
 const retrieve_item_index = (feat_ref,retrieved_cookies) => { 
     for(let i = 0; i < retrieved_cookies.length; i++){
-        const array_item = retrieved_cookies[i]
+        const array_item = retrieved_cookies[i]["Feat"]
         if(array_item === feat_ref.textContent){
             const extracted_index = i;
             return  extracted_index
