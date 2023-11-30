@@ -24,6 +24,7 @@ let switch_based_bool = ref(true);
 
 watch(()=>feat_store_instance.state.can_save_build, (boolean) => {
   canSaveBuild.value = boolean;
+  console.log('Can save build: ', boolean)
 })
 
 const updateFeatsAreLoaded = (newValue) => {

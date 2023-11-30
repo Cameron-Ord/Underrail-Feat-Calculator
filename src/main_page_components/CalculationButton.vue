@@ -42,7 +42,7 @@ const retrieve_cookies = () => {
     const stat_items = cookies.get('stat_array_values');
     const skill_items = cookies.get('skill_array_values');
     const parsed_stat_items = JSON.parse(stat_items);
-    const parsed_skill_items = JSON.parse(skill_items)
+    const parsed_skill_items = JSON.parse(skill_items);
 
     if(parsed_skill_items === null || parsed_stat_items === null){
         return [[],[]]
@@ -69,6 +69,8 @@ const create_buttons = (response_data) => {
 const generate_feat_list = async () =>  {
     try {
         cookies.remove('chosen_feats');
+        const bool = feat_store_instance.mutators.update_can_save_build(false);
+        feat_store_instance.state.can_save_build = bool;
         const [stat_items, skill_items] = retrieve_cookies();
         if(stat_items.length > 0 && skill_items.length > 0){
             const response = await invoke_axios(stat_items, skill_items);
