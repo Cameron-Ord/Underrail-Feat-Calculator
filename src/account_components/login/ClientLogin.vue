@@ -1,6 +1,9 @@
 <script setup>
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
+import { useMenuStore } from '../../stores/menu_store';
+const menu_store_instance = useMenuStore();
+
 const {cookies} = useCookies();
 
 const use_api=(username,password)=>{
@@ -26,8 +29,13 @@ const submit_login_form = async (username, password) =>{
     if(response.status >= 200 && response.status < 300){
         const Client_ID = response['data']['Client_ID_Value'];
         const Client_Session_Token = response['data']['Client_Session_Token']
-        cookies.set('Client_ID', JSON.stringify(Client_ID));
-        cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
+        try{
+            cookies.set('Client_ID', JSON.stringify(Client_ID));
+            cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
+            menu_store_instance.state.logged_in = true;
+        } catch (error) {
+            console.error("Error Parsing JSON..")
+        }
     }
 }
 </script>

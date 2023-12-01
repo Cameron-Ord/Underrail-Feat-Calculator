@@ -12,7 +12,7 @@ const set_grid = () => {
     let page_main = document.querySelector('._page_main');
     let calc_wrapper = document.querySelector('._calc_wrapper');
 
-    page_main['style']['grid-template-rows'] = '1fr 0.5fr';
+    page_main['style']['grid-template-rows'] = '1fr 0.75fr';
     calc_wrapper['style']['grid-template-rows'] = '1fr 0.5fr';
 }
 

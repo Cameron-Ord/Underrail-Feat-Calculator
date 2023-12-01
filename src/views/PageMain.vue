@@ -162,7 +162,13 @@ onBeforeMount(()=>{
   </main>
 </template>
 <style lang="scss" scoped>
+
+._page_main.modify_opacity{
+  opacity: 0;
+}
 ._page_main{
+  transition: opacity 0.5s;
+  opacity: 1;
   padding-top: 50px;
   padding-bottom: 50px;
   display: grid;
