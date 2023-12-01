@@ -56,7 +56,7 @@ const retrieve_cookies = () => {
 }
 
 const create_buttons = (response_data) => {
-    const plus = 'images/plus.svg';
+    const plus = '/images/plus.svg';
     const initialized_button_array = [] 
     let i = 0;
     while (i < response_data.length){

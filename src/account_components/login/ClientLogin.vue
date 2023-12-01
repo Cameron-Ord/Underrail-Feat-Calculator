@@ -35,6 +35,7 @@ const submit_login_form = async (username, password) =>{
             cookies.set('Client_ID', JSON.stringify(Client_ID));
             cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
             menu_store_instance.state.logged_in = true;
+            cookies.set('is_logged', JSON.stringify(true));
             router.push('/');
         } catch (error) {
             console.error("Error Parsing JSON..")

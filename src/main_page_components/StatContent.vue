@@ -64,7 +64,7 @@ const decreaseValue=(i)=>{
                 <div class="_stat_values">
                     <h3 class="_value">{{ value.statValue }}</h3>
                 <img
-                    src="images/plus.svg"
+                    src="/images/plus.svg"
                     alt="plus"
                     class="_plus"
                     @click="increaseValue(i)"
@@ -72,7 +72,7 @@ const decreaseValue=(i)=>{
                     ref="_plus_svg"
                 />
                 <img
-                    src="images/minus.svg"
+                    src="/images/minus.svg"
                     alt="minus"
                     class="_minus"
                     @click="decreaseValue(i)"

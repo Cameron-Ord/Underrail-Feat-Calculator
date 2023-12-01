@@ -85,9 +85,10 @@ const log_out = () =>{
     const {cookies} = useCookies();
     cookies.remove('Client_ID');
     cookies.remove('Client_Session_Token');
+    menu_store_instance.state.logged_in = false;
+    cookies.set('is_logged', JSON.stringify(false));
     const current_location = router.currentRoute.value.path;
     if(current_location != '/'){
-        menu_store_instance.state.logged_in = false;
         toggle_menu()
         router.push('/')
     } else {

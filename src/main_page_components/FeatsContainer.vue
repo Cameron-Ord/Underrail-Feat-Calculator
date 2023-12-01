@@ -6,8 +6,8 @@ const {cookies} = useCookies()
 const feat_store_instance = useFeatStore();
 const generated_feat_list = ref(feat_store_instance.state.feats_list)
 const svg_list = ref(feat_store_instance.state.svg_list)
-const plus = 'images/plus.svg';
-const minus = 'images/minus.svg';
+const plus = '/images/plus.svg';
+const minus = '/images/minus.svg';
 
 //Watching for changes in the store instance.
 watch(() => feat_store_instance.state.feats_list, (value) => {

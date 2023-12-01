@@ -13,18 +13,24 @@ import { onBeforeMount,ref,provide, watch} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
 import { useFeatStore } from '../stores/feat_store';
+import { useMenuStore } from '../stores/menu_store';
 const {cookies} = useCookies();
 const stat_store_instance = useStatStore();
 const skill_store_instance = useSkillStore();
 const feat_store_instance = useFeatStore();
+const menu_store_instance = useMenuStore();
 const featsAreLoaded = ref(false);
 const svgsAreLoaded = ref(false);
 const canSaveBuild = ref(feat_store_instance.state.can_save_build);
+const is_logged_in = ref(menu_store_instance.state.logged_in)
 let switch_based_bool = ref(true);
+
+watch(()=>menu_store_instance.state.logged_in, (boolean)=>{
+  is_logged_in.value = boolean;
+})
 
 watch(()=>feat_store_instance.state.can_save_build, (boolean) => {
   canSaveBuild.value = boolean;
-  console.log('Can save build: ', boolean)
 })
 
 const updateFeatsAreLoaded = (newValue) => {
@@ -106,7 +112,17 @@ const assign_default_values = () =>{
   );
 }
 
+const check_if_logged = () => {
+  const is_logged = cookies.get('is_logged');
+  const parsed = JSON.parse(is_logged);
+  if(parsed !== null){
+    menu_store_instance.state.logged_in = parsed;
+  }
+}
+
 onBeforeMount(()=>{
+  const false_bool = false
+  feat_store_instance.state.can_save_build = false_bool;
   remember_last_viewed();
   const [
     skill_lmtr,
@@ -127,6 +143,8 @@ onBeforeMount(()=>{
   } else {
     assign_predefined_values(skill_lmtr, skill_vals, stat_lmtr, stat_vals);
   }
+
+  check_if_logged()
 })
 
 </script>
@@ -155,7 +173,7 @@ onBeforeMount(()=>{
         <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
         <div class="feat_viewer_options">
           <calculation-button></calculation-button>
-          <build-saver v-if="canSaveBuild === true"></build-saver>
+          <build-saver v-if="canSaveBuild === true && is_logged_in === true"></build-saver>
         </div>
       </article>
     </section>

@@ -51,6 +51,7 @@ const submit_signup_form = async (username, password) =>{
                 cookies.set('Client_ID', JSON.stringify(Client_ID));
                 cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
                 router.push('/');
+                cookies.set('is_logged', JSON.stringify(true));
             } catch (error) {
                 console.log('Error parsing JSON..')
             }
