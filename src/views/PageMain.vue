@@ -165,8 +165,10 @@ onBeforeMount(()=>{
 
 ._page_main.modify_opacity{
   opacity: 0;
+  pointer-events: none;
 }
 ._page_main{
+  pointer-events: auto;
   transition: opacity 0.5s;
   opacity: 1;
   padding-top: 50px;

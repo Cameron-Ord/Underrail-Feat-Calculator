@@ -9,29 +9,36 @@ const router = useRouter();
 
 
 watch(()=>menu_store_instance.state.logged_in, (value)=>{
-    console.log(value)
     logged_in.value = value;
 })
 
 const get_page=()=>{
     const current_path = router.currentRoute.value.path;
-
+    let page
     switch (current_path) {
         case "/":
+            page = document.querySelector('._page_main');
             break;
         case "/login":
+            page = document.querySelector('.login_page');
             break;
         case "/signup":
+            page = document.querySelector('.signup_page');
             break;
         case "/profile":
+            page = document.querySelector('.profile_page');
             break;
         case "/builds":
+            page = document.querySelector('.builds_page');
             break;
         case "/about":
+            page = document.querySelector('.about_page');
             break
         default:
+            page = null;
             break;
     }
+    return page
 }
 
 const toggle_menu = () =>{
@@ -39,11 +46,12 @@ const toggle_menu = () =>{
     const main_div = document.querySelector('.mobile_menu');
     const main_button = document.querySelector('.icon_container');
     const current_page = get_page();
-    current_page.classList.toggle('modify_opacity');
-    main_button.classList.toggle('open');
-    mobile_menu.classList.toggle('closing');
-    main_div.classList.toggle('closing');
-
+    if(current_page !== null){
+        current_page.classList.toggle('modify_opacity');
+        main_button.classList.toggle('open');
+        mobile_menu.classList.toggle('closing');
+        main_div.classList.toggle('closing');
+    }
     if(main_div.classList.contains('closing')){
         setTimeout(()=>{
             main_div.classList.toggle('open');
@@ -57,6 +65,7 @@ const toggle_menu = () =>{
 const go_home=()=>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/'){
+        toggle_menu()
         router.push('/')
     } else {
         toggle_menu();
@@ -66,6 +75,7 @@ const go_home=()=>{
 const view_profile = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/profile'){
+        toggle_menu()
         router.push('/profile')
     } else {
         toggle_menu();
@@ -78,6 +88,7 @@ const log_out = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/'){
         menu_store_instance.state.logged_in = false;
+        toggle_menu()
         router.push('/')
     } else {
         router.go();
@@ -87,6 +98,7 @@ const log_out = () =>{
 const view_all = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/builds'){
+        toggle_menu()
         router.push('/builds')
     } else {
         toggle_menu();
@@ -95,6 +107,7 @@ const view_all = () =>{
 const goto_log_in = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/login'){
+        toggle_menu()
         router.push('/login')
     } else {
         toggle_menu();
@@ -103,6 +116,7 @@ const goto_log_in = () =>{
 const goto_sign_up = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/signup'){
+        toggle_menu()
         router.push('/signup')
     } else {
         toggle_menu();
@@ -111,6 +125,7 @@ const goto_sign_up = () =>{
 const goto_about = () =>{
     const current_location = router.currentRoute.value.path;
     if(current_location != '/about'){
+        toggle_menu()
         router.push('/about')
     } else {
         toggle_menu();
@@ -153,12 +168,15 @@ const goto_about = () =>{
 <style lang="scss" scoped>
 .mobile_menu.open.closing{
     opacity: 0;
+    pointer-events: none;
 }
 .mobile_menu.open{
   transform: translateY(0);
   opacity: 1;
+  pointer-events: auto;
 }
 .mobile_menu{
+    pointer-events: none;
     display: grid;
     align-items: center;
     left: 0;

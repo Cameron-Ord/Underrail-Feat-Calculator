@@ -2,6 +2,8 @@
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
 import { useMenuStore } from '../../stores/menu_store';
+import { useRouter } from 'vue-router';
+const router = useRouter()
 const menu_store_instance = useMenuStore();
 
 const {cookies} = useCookies();
@@ -33,6 +35,7 @@ const submit_login_form = async (username, password) =>{
             cookies.set('Client_ID', JSON.stringify(Client_ID));
             cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
             menu_store_instance.state.logged_in = true;
+            router.push('/');
         } catch (error) {
             console.error("Error Parsing JSON..")
         }

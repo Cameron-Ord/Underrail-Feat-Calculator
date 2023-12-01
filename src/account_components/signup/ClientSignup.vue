@@ -2,6 +2,8 @@
 <script setup>
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
+import { useRouter } from 'vue-router';
+const router = useRouter();
 const {cookies} = useCookies();
 const log_user_in = (username, password) => {
     return new Promise((resolve, reject)=>{
@@ -45,9 +47,14 @@ const submit_signup_form = async (username, password) =>{
         if(login_response.status >= 200 && login_response.status < 300){
             const Client_ID = login_response['data']['Client_ID_Value'];
             const Client_Session_Token = login_response['data']['Client_Session_Token']
-            cookies.set('Client_ID', JSON.stringify(Client_ID));
-            cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
-        } else {
+            try{
+                cookies.set('Client_ID', JSON.stringify(Client_ID));
+                cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
+                router.push('/');
+            } catch (error) {
+                console.log('Error parsing JSON..')
+            }
+        } else { 
             console.log("Error logging in.")
         }
     } else {
