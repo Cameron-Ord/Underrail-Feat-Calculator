@@ -1,14 +1,19 @@
 <script setup>
 import {ref, watch} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
+import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
 const {cookies} = useCookies()
 const feat_store_instance = useFeatStore();
+const menu_store_instance = useMenuStore();
 const generated_feat_list = ref(feat_store_instance.state.feats_list)
 const svg_list = ref(feat_store_instance.state.svg_list)
+const logged_in = ref(menu_store_instance.state.logged_in)
 const plus = '/images/plus.svg';
 const minus = '/images/minus.svg';
-
+watch(()=> menu_store_instance.state.logged_in, (value)=>{
+    logged_in.value = value;
+})
 //Watching for changes in the store instance.
 watch(() => feat_store_instance.state.feats_list, (value) => {
     console.log("UPDATED VALUE: ", value)
@@ -126,7 +131,7 @@ const handle_click = (feat_ref, index) => {
     <div class="_feats_">
         <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
             <p ref="featText">{{ item }}</p>
-            <img
+            <img v-if="logged_in === true"
             :src="svg_list[i]"
             alt="plus"
             class="plus"
