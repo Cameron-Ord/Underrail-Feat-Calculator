@@ -57,6 +57,12 @@ const set_default_values = () =>{
     display: grid;
     align-items: center;
     justify-items: center;
+    >h3{
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom:solid var(--orange) 1px;
+        border-top:solid var(--orange) 1px;
+        cursor: pointer;
+    }
 }
-</style>            updated_array[i].skillValue+=5;
-updated_limiter+=5;
+</style>

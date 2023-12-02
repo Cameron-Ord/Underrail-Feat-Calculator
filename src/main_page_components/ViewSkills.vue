@@ -22,7 +22,11 @@
     align-items: center;
     justify-items: center;
     >h3{
-        
+        padding-top: 5px;
+        padding-bottom: 5px;
+        border-bottom:solid var(--orange) 1px;
+        border-top:solid var(--orange) 1px;
+        cursor: pointer;
     }
 }
 </style>

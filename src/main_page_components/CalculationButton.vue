@@ -12,8 +12,8 @@ const set_grid = () => {
     let page_main = document.querySelector('._page_main');
     let calc_wrapper = document.querySelector('._calc_wrapper');
 
-    page_main['style']['grid-template-rows'] = '1fr 0.75fr';
-    calc_wrapper['style']['grid-template-rows'] = '1fr 0.5fr';
+    page_main['style']['grid-template-rows'] = '1fr 0.85fr';
+    calc_wrapper['style']['grid-template-rows'] = '1fr 0.75fr';
 }
 
 const make_visible = () => {
@@ -113,7 +113,15 @@ const generate_feat_list = async () =>  {
     align-items: center;
     justify-items: center;
     >h3{
+        cursor: pointer;
+        padding-top: 3.5px;
+        padding-bottom: 3.5px;
+        padding-right: 5px;
+        padding-left: 5px;
+
         text-align: center;
+        border-top: solid var(--orange) 1px;
+        border-bottom: solid var(--orange) 1px;
     }
 }
 </style>

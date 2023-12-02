@@ -79,10 +79,27 @@ const submit_build = async (input_tag_content) => {
     display: grid;
     align-items: center;
     justify-items: center;
+    row-gap: 25px;
     >input{
+        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.2);
+        border-width: 1px;
+        border-radius: 5px;
+        border-color: var(--orange);
+        padding: 2.5px;
+        background-color: var(--black);
         text-align: center;
+        color: var(--orange);
+        font-weight: 900;
+        width: 70%;
+        font-size: 16px;
+        max-width: 175px;
     }
     >h3{
+        cursor: pointer;
+        padding-top: 2.5px;
+        padding-bottom: 2.5px;
+        border-bottom: solid var(--orange) 1px;
+        border-top: solid var(--orange) 1px;
         text-align: center;
     }
 }

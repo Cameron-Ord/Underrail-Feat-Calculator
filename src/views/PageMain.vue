@@ -203,6 +203,11 @@ onBeforeMount(()=>{
       display: grid;
       align-items: center;
       grid-template-rows: 1fr;
+      >.feat_viewer_options{
+        display: grid;
+        align-items: center;
+        row-gap: 25px;
+      }
     }
   }
 

@@ -129,35 +129,59 @@ const handle_click = (feat_ref, index) => {
 </script>
 <template>
     <div class="_feats_">
-        <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
-            <p ref="featText">{{ item }}</p>
-            <img v-if="logged_in === true"
-            :src="svg_list[i]"
-            alt="plus"
-            class="plus"
-            @click="handle_click($refs.featText, i)"
-            :clicked_plus="i"
-            ref="input_svg"
-            />
+        <div class="width_div">
+            <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
+                <p ref="featText">{{ item }}</p>
+                <img v-if="logged_in === true"
+                :src="svg_list[i]"
+                alt="plus"
+                class="plus"
+                @click="handle_click($refs.featText, i)"
+                :clicked_plus="i"
+                ref="input_svg"
+                />
+            </div>
         </div>
     </div>
 </template>
 <style lang="scss" scoped>
 ._feats_{
+    border-top: solid var(--orange) 1px;
+    border-bottom: solid var(--orange) 1px;
+    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
     display: grid;
     align-items: center;
-    height: 375px;
+    height: 350px;
+    justify-items: center;
     overflow-y: auto;
-    grid-template-rows: auto;
-    gap: 50px;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-    >.feat_container{
+    >.width_div{
+        grid-template-rows: auto;
+        row-gap: 25px;
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
         display: grid;
         align-items: center;
-        justify-items: center;
+        width: 90%;
 
-        >p{
-            text-align: center;
+        >.feat_container{
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            row-gap: 10px;
+
+            >img{
+                border: solid var(--orange) 1px;
+                box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
+            }
+
+            >p{
+
+                padding-bottom: 2.5px;
+                padding-top: 2.5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
+                text-align: center;
+            }
         }
     }
 }

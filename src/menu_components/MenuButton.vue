@@ -60,9 +60,10 @@ const toggleMenu = () => {
     text-align: start;
     justify-items: start;
     position: fixed;
-    left: 10px;
+    left: 15px;
     bottom: 10px;
     opacity: 1;
     transition: opacity 0.3s, transform 0.3s;
+    cursor: pointer;
 }
 </style>

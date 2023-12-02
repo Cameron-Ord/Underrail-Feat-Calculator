@@ -211,6 +211,13 @@ const goto_about = () =>{
             display: grid;
             align-items: center;
             justify-items: center;
+            >h3{
+                padding-bottom: 5px;
+                padding-top: 5px;
+                cursor: pointer;
+                border-top: solid var(--orange) 1px;
+                border-bottom: solid var(--orange) 1px;
+            }
         }
     }
 }

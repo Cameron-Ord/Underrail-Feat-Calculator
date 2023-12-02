@@ -71,22 +71,22 @@ const decreaseValue=(i)=>{
                 </div>
                 <div class="_skill_values">
                     <h3 class="_value">{{ value.skillValue }}</h3>
-                <img
-                    src="/images/plus.svg"
-                    alt="plus"
-                    class="_plus"
-                    @click="increaseValue(i)"
-                    :clicked_plus="i"
-                    ref="_plus_svg"
-                />
-                <img
-                    src="/images/minus.svg"
-                    alt="minus"
-                    class="_minus"
-                    @click="decreaseValue(i)"
-                    :clicked_minus="i"
-                    ref="_minus_svg"
-                />
+                    <img
+                        src="/images/plus.svg"
+                        alt="plus"
+                        class="_plus"
+                        @click="increaseValue(i)"
+                        :clicked_plus="i"
+                        ref="_plus_svg"
+                    />
+                    <img
+                        src="/images/minus.svg"
+                        alt="minus"
+                        class="_minus"
+                        @click="decreaseValue(i)"
+                        :clicked_minus="i"
+                        ref="_minus_svg"
+                    />
                 </div>
             </div>
         </span>
@@ -98,7 +98,7 @@ const decreaseValue=(i)=>{
     display: grid;
     align-items: center;
     grid-template-rows: auto;
-    gap: 50px;
+    row-gap: 50px;
 
 
     >.limit_counter{
@@ -106,39 +106,62 @@ const decreaseValue=(i)=>{
         align-items: center;
         justify-items: center;
         text-align: center;
+        >h3{
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-bottom:solid var(--orange) 1px;
+            border-top:solid var(--orange) 1px;
+        }
     }
     >.element_wrapper{
         display: grid;
         align-items: center;
         grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
         grid-template-rows: auto;
-        gap: 50px;
+        row-gap: 25px;
         height: 350px;
         overflow-y: auto;
+        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+        border-top: solid var(--orange) 1px;
+        border-bottom: solid var(--orange) 1px;
+        padding-top: 10px;
+        padding-bottom: 10px;
         >._loop_div{
             display: grid;
             align-items: center;
             grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
-
+            justify-items: center;
+            grid-template-rows: auto;
+            row-gap: 15px;
 
             >._header{
                 display: grid;
                 align-items: center;
                 justify-items: center;
                 text-align: center;
-
+                >._skill_tag{
+                    padding-top: 2.5px;
+                    padding-bottom: 2.5px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                }
             }
             >._skill_values{
                 display: grid;
                 align-items: center;
                 justify-items: center;
                 grid-template-columns: 1fr 1fr 1fr;
+                width: 80%;
+                padding-top: 2.5px;
+                padding-bottom: 2.5px;
 
                 >._plus{
-
-    }
+                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
+                    border: solid var(--orange) 1px;
+                }
                 >._minus{
-
+                    border: solid var(--orange) 1px;
+                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
                 }
             }
         }
