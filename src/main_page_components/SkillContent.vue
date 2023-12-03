@@ -116,7 +116,7 @@ const decreaseValue=(i)=>{
     >.element_wrapper{
         display: grid;
         align-items: center;
-        grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+        grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
         grid-template-rows: auto;
         row-gap: 25px;
         height: 350px;
@@ -129,7 +129,7 @@ const decreaseValue=(i)=>{
         >._loop_div{
             display: grid;
             align-items: center;
-            grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;

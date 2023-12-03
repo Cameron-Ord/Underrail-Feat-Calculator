@@ -107,7 +107,7 @@ const decreaseValue=(i)=>{
     >.element_wrapper{
         display: grid;
         align-items: center;
-        grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+        grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
         height: 350px;
         overflow-y: auto;
         box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
@@ -120,7 +120,7 @@ const decreaseValue=(i)=>{
 
             display: grid;
             align-items: center;
-            grid-template-columns: repeat(auto-fit,minmax(125px,1fr));
+            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;

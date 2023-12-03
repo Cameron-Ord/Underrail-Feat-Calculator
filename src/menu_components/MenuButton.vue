@@ -65,5 +65,7 @@ const toggleMenu = () => {
     opacity: 1;
     transition: opacity 0.3s, transform 0.3s;
     cursor: pointer;
+    text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.10);
+
 }
 </style>

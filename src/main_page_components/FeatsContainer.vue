@@ -159,7 +159,7 @@ const handle_click = (feat_ref, index) => {
         padding-bottom: 25px;
         grid-template-rows: auto;
         row-gap: 25px;
-        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         display: grid;
         align-items: center;
         width: 90%;

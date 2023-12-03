@@ -227,7 +227,8 @@ onBeforeMount(()=>{
           >.controls_wrapper{
               display: grid;
               align-items: center;
-              grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
+              row-gap: 20px;
+              grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
           }
       }
 
@@ -238,7 +239,7 @@ onBeforeMount(()=>{
         >.controls_wrapper{
             display: grid;
             align-items: center;
-            grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
         }
       }
 
