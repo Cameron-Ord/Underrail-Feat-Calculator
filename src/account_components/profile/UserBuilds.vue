@@ -83,8 +83,8 @@ onBeforeMount(()=>{
             </div>
         </div>
         <div class="index_controls">
-            <p @click="decrement">arrow</p>
-            <p @click="increment">arrow</p>
+            <p @click="decrement">Previous</p>
+            <p @click="increment">Next</p>
         </div>
     </div>
 </template>
@@ -104,6 +104,12 @@ onBeforeMount(()=>{
         align-items: center;
         grid-template-columns: 1fr 1fr;
         width: 80%;
+        >p{
+            cursor: pointer;
+            padding: 5px;
+            border-top: solid var(--orange) 1px;
+            border-bottom: solid var(--orange) 1px;
+        }
     }
     >.loop_div{
         box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
