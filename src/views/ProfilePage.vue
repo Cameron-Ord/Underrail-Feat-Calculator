@@ -47,7 +47,11 @@ onBeforeMount(()=>{
     display: grid;
     align-items: center;
     min-height: 100vh;
-    grid-template-rows: 0.25fr 0.75fr;
+    row-gap: 50px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     >.info_section{
         display: grid;
         align-items: center;

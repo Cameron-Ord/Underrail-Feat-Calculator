@@ -17,5 +17,19 @@
 </template>
 
 <style lang="scss" scoped>
-
+.hero_about{
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    text-align: start;
+    row-gap: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-top: solid var(--orange) 1px;
+    border-bottom: solid var(--orange) 1px;
+    >p{
+        width: 90%;
+        text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
+    }
+}
 </style>

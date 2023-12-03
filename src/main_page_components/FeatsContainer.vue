@@ -155,9 +155,11 @@ const handle_click = (feat_ref, index) => {
     justify-items: center;
     overflow-y: auto;
     >.width_div{
+        padding-top: 25px;
+        padding-bottom: 25px;
         grid-template-rows: auto;
         row-gap: 25px;
-        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
         display: grid;
         align-items: center;
         width: 90%;
@@ -166,7 +168,8 @@ const handle_click = (feat_ref, index) => {
             display: grid;
             align-items: center;
             justify-items: center;
-            row-gap: 10px;
+            row-gap: 15px;
+            padding: 5px;
 
             >img{
                 border: solid var(--orange) 1px;
@@ -174,7 +177,8 @@ const handle_click = (feat_ref, index) => {
             }
 
             >p{
-
+                
+                width: 100%;
                 padding-bottom: 2.5px;
                 padding-top: 2.5px;
                 padding-left: 5px;

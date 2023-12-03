@@ -41,10 +41,17 @@ onBeforeMount(()=>{
   pointer-events: none;
 }
 .about_page{
+    padding-top: 50px;
+    padding-bottom: 50px;
+    grid-template-rows: 0.75fr 1fr 0.75fr;
     display: grid;
     align-items: center;
     min-height: 100vh;
     opacity: 1;
     transition: opacity 0.3s ease-in-out;
+    >.about_section{
+      display: grid;
+      align-items: center;
+    }
 }
 </style>

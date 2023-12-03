@@ -144,6 +144,7 @@ const decreaseValue=(i)=>{
                     padding-bottom: 2.5px;
                     padding-left: 5px;
                     padding-right: 5px;
+                    font-weight: 600;
                 }
             }
             >._skill_values{

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { onBeforeMount,ref } from 'vue';
 import { useCookies } from 'vue3-cookies';
 const user_builds = ref([])
-
+let index = ref(0);
 const get_user_builds = () =>{
     const {cookies} = useCookies();
     const client_id = cookies.get('Client_ID');
@@ -24,47 +24,67 @@ const get_user_builds = () =>{
     })
 }
 
+const decrement = () =>{
+    if(index.value < user_builds.value.length){
+        let index_copy = index.value;
+        index_copy = (index.value - 1 + user_builds.value.length) % user_builds.value.length;
+        index.value = index_copy;
+    }
+}
+
+const increment = () =>{
+    if(index.value < user_builds.value.length){
+        let index_copy = index.value;
+        index_copy = (index.value + 1) % user_builds.value.length;
+        index.value = index_copy;
+    }
+}
+
 onBeforeMount(()=>{
     get_user_builds()
 })
 
 </script>
 <template>
-    <div class="user_builds">
-        <div class="loop_div" v-for="(item, i) in user_builds" :key="i"> 
+    <div class="user_builds" v-if="user_builds.length > 0">
+        <div class="loop_div"> 
             <div class="build_title_div">
-                <h3>{{ item['Build_Title'] }}</h3>
+                <h3>{{ user_builds[index]['Build_Title'] }}</h3>
             </div>
-            <div class="seperator" v-if="user_builds[i]['Feat_Slice'].length > 0">
+            <div class="seperator" v-if="user_builds[index]['Feat_Slice'].length > 0">
                 <div class="loop_header">
                     <h3>FEATS:</h3>
                 </div>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(feat, f) in item['Feat_Slice']" :key="f">
+                    <div class="inner_loop_div" v-for="(feat, f) in user_builds[index]['Feat_Slice']" :key="f">
                         <p>{{ feat['Name'] }}</p>
                     </div>
                 </div>
             </div>
-            <div class="seperator" v-if="user_builds[i]['Skill_Slice'].length > 0">
+            <div class="seperator" v-if="user_builds[index]['Skill_Slice'].length > 0">
                 <div class="loop_header">
                     <h3>SKILLS:</h3>
                 </div>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(skill, s) in item['Skill_Slice']" :key="s">
+                    <div class="inner_loop_div" v-for="(skill, s) in user_builds[index]['Skill_Slice']" :key="s">
                         <p>{{ skill['Name'] }} - {{ skill['Value'] }}</p>
                     </div>
                 </div>
             </div>
-            <div class="seperator" v-if="user_builds[i]['Stat_Slice'].length > 0">
+            <div class="seperator" v-if="user_builds[index]['Stat_Slice'].length > 0">
                 <div class="loop_header">
                     <h3>STATS:</h3>
                 </div>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(stat, t) in item['Stat_Slice']" :key="t">
+                    <div class="inner_loop_div" v-for="(stat, t) in user_builds[index]['Stat_Slice']" :key="t">
                         <p>{{ stat['Name'] }} - {{ stat['Value'] }}</p>
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="index_controls">
+            <p @click="decrement">arrow</p>
+            <p @click="increment">arrow</p>
         </div>
     </div>
 </template>
@@ -74,26 +94,45 @@ onBeforeMount(()=>{
     display: grid;
     align-items: center;
     grid-template-rows: auto;
-    overflow-y: auto;
-    height: 375px;
     width: 100%;
-    gap: 50px;
+    row-gap: 50px;
+    justify-items: center;
+
+    >.index_controls{
+        justify-items: center;
+        display: grid;
+        align-items: center;
+        grid-template-columns: 1fr 1fr;
+        width: 80%;
+    }
     >.loop_div{
+        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+        width: 90%;
         display: grid;
         align-items: center;
         grid-template-rows: auto;
-        gap: 25px;
+        row-gap:25px;
+        border: solid var(--orange) 1px;
+        padding-top: 25px;
+        padding-bottom: 25px;
         >.build_title_div{
+            padding-top: 10px;
+            padding-bottom: 10px;
             display: grid;
             align-items: center;
             justify-items: center;
+            >h3{
+                padding: 5px;
+                border-top: solid var(--orange) 1px;
+                border-bottom: solid var(--orange) 1px;
+            }
         }
         >.seperator{
             display: grid;
             align-items: center;
             grid-template-rows: auto;
-            gap: 15px;
-
+            row-gap: 25px;
+            justify-items: center;
             >.loop_header{
                 display: grid;
                 justify-items: center;
@@ -105,7 +144,13 @@ onBeforeMount(()=>{
                 grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
                 justify-items: center;
                 grid-template-rows: auto;
-                gap: 10px;
+                row-gap: 10px;
+                width: 85%;
+                padding-top: 25px;
+                padding-bottom: 25px;
+                border-bottom: solid var(--orange) 1px;
+                border-top: solid var(--orange) 1px;
+                
                 >.inner_loop_div{
                     display: grid;
                     justify-items: center;

@@ -32,9 +32,16 @@ onBeforeMount(()=>{
   pointer-events: none;
 }
 .builds_page{
+    opacity: 1;
+    pointer-events: auto;
+    transition: opacity 0.3s ease-in-out;
     display: grid;
     align-items: center;
     min-height: 100vh;
+    padding-top: 50px;
+    padding-bottom: 50px;
+    margin-top: 25px;
+    margin-bottom: 25px;
     >.every_build_ever{
         display: grid;
         align-items: center;
