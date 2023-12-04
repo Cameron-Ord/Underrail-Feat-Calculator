@@ -16,6 +16,7 @@
 
 <style lang="scss" scoped>
 .hero_about{
+    width: 100%;
     display: grid;
     align-items: center;
     justify-items: center;
@@ -31,5 +32,26 @@
         width: 90%;
         text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
     }
+}
+@media only screen and (min-width: 770px){
+    .hero_about{
+        width: 80%;
+        border-left: solid var(--orange) 1px;
+        border-right: solid var(--orange) 1px;
+
+    >p{
+        width: 80%;
+    }
+}
+}
+
+@media only screen and (min-width: 1024px){
+    .hero_about{
+        width: 70%;
+
+>p{
+    width: 80%;
+}
+}
 }
 </style>

@@ -204,7 +204,7 @@ const goto_about = () =>{
         padding-top: 5px;
         transition: opacity 0.3s, transform 0.3s;
         transform: translateY(100%);
-        grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
         grid-template-rows: auto;
         gap: 25px;
         >.content_div{
@@ -220,5 +220,20 @@ const goto_about = () =>{
             }
         }
     }
+}
+@media only screen and (min-width: 770px){
+    .mobile_menu{
+    >.menu_wrapper{
+        grid-template-columns: repeat(auto-fit, minmax(275px,1fr));
+        >.content_div{
+            >h3{
+            }
+        }
+    }
+}
+}
+
+@media only screen and (min-width: 1024px){
+
 }
 </style>

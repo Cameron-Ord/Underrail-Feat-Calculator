@@ -124,4 +124,11 @@ const generate_feat_list = async () =>  {
         border-bottom: solid var(--orange) 1px;
     }
 }
+@media only screen and (min-width: 770px){
+
+}
+
+@media only screen and (min-width: 1024px){
+
+}
 </style>

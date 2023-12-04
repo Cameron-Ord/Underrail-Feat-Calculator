@@ -154,6 +154,7 @@ const handle_click = (feat_ref, index) => {
     height: 350px;
     justify-items: center;
     overflow-y: auto;
+    width: 100%;
     >.width_div{
         padding-top: 25px;
         padding-bottom: 25px;
@@ -188,5 +189,47 @@ const handle_click = (feat_ref, index) => {
             }
         }
     }
+}
+
+@media only screen and (min-width: 770px){
+._feats_{
+    width: 85%;
+    border-right: solid var(--orange) 1px;
+    border-left: solid var(--orange) 1px;
+    >.width_div{
+        grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+        
+            >.feat_container{
+        
+                >img{
+            }
+
+                >p{
+        
+                }
+            }
+        }
+    }
+
+}
+
+@media only screen and (min-width: 1024px){
+    ._feats_{
+        width: 45%;
+    >.width_div{
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        
+            >.feat_container{
+        
+                >img{
+            }
+
+                >p{
+        
+                }
+            }
+        }
+    }
+
 }
 </style>

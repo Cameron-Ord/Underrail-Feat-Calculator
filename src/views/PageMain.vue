@@ -202,6 +202,7 @@ onBeforeMount(()=>{
     >._calc_wrapper{
       display: grid;
       align-items: center;
+      justify-items: center;
       grid-template-rows: 1fr;
       >.feat_viewer_options{
         display: grid;
@@ -224,9 +225,11 @@ onBeforeMount(()=>{
           display: grid;
           align-items: center;
           grid-template-rows: 1fr 0.4fr;
+          justify-items: center;
           >.controls_wrapper{
               display: grid;
               align-items: center;
+              width: 80%;
               row-gap: 20px;
               grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
           }
@@ -236,9 +239,12 @@ onBeforeMount(()=>{
         display: grid;
         align-items: center;
         grid-template-rows: 1fr 0.4fr;
+        justify-items: center;
         >.controls_wrapper{
             display: grid;
             align-items: center;
+            width: 80%;
+            row-gap: 20px;
             grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
         }
       }
@@ -246,5 +252,35 @@ onBeforeMount(()=>{
     }
   }
 }
+@media only screen and (min-width: 1024px){
+  ._page_main{
+  >._calculation_container{
+    >._calc_wrapper{
+      >.feat_viewer_options{
+      }
+    }
+  }
 
+  >._character_sheet{
+
+    >._sheet_wrapper{
+
+      >.skills_cont_wrapper{
+        
+          >.controls_wrapper{
+            width: 50%;
+          }
+      }
+
+      >.stats_cont_wrapper{
+        >.controls_wrapper{
+          width: 50%;
+       
+        }
+      }
+
+    }
+  }
+}
+}
 </style>

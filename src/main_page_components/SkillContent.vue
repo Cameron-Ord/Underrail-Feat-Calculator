@@ -99,6 +99,7 @@ const decreaseValue=(i)=>{
     align-items: center;
     grid-template-rows: auto;
     row-gap: 50px;
+    width: 100%;
 
 
     >.limit_counter{
@@ -116,8 +117,8 @@ const decreaseValue=(i)=>{
     >.element_wrapper{
         display: grid;
         align-items: center;
+        justify-items: center;
         grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-        grid-template-rows: auto;
         row-gap: 25px;
         height: 350px;
         overflow-y: auto;
@@ -152,7 +153,7 @@ const decreaseValue=(i)=>{
                 align-items: center;
                 justify-items: center;
                 grid-template-columns: 1fr 1fr 1fr;
-                width: 80%;
+                width: 90%;
                 padding-top: 2.5px;
                 padding-bottom: 2.5px;
 
@@ -167,5 +168,64 @@ const decreaseValue=(i)=>{
             }
         }
     }
+}
+@media only screen and (min-width: 770px){
+    ._skill_content{
+        row-gap: 75px;
+        width: 85%;
+ 
+    >.limit_counter{
+        >h3{
+        }
+    }
+    >.element_wrapper{
+        grid-template-columns: repeat(auto-fit,minmax(275px,1fr));
+        border-right: solid var(--orange) 1px;
+        border-left: solid var(--orange) 1px;
+        >._loop_div{
+ 
+            >._header{
+                >._skill_tag{
+                }
+            }
+            >._skill_values{
+                
+                >._plus{
+                }
+                >._minus{
+                }
+            }
+        }
+    }
+}
+}
+
+@media only screen and (min-width: 1024px){
+    ._skill_content{
+        row-gap: 75px;
+        width: 45%;
+ 
+    >.limit_counter{
+        >h3{
+        }
+    }
+    >.element_wrapper{
+        grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+        >._loop_div{
+ 
+            >._header{
+                >._skill_tag{
+                }
+            }
+            >._skill_values{
+                
+                >._plus{
+                }
+                >._minus{
+                }
+            }
+        }
+    }
+}
 }
 </style>

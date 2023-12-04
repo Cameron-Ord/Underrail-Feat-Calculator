@@ -57,7 +57,13 @@ const set_default_values = () =>{
         border-bottom:solid var(--orange) 1px;
         border-top:solid var(--orange) 1px;
         cursor: pointer;
-
     }
+}
+@media only screen and (min-width: 770px){
+
+}
+
+@media only screen and (min-width: 1024px){
+
 }
 </style>

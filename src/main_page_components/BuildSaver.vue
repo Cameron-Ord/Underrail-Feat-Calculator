@@ -103,4 +103,28 @@ const submit_build = async (input_tag_content) => {
         text-align: center;
     }
 }
+@media only screen and (min-width: 770px){
+    .build_saver{
+ 
+    >input{
+        max-width: 225px;
+    }
+    >h3{
+   
+    }
+}
+}
+
+@media only screen and (min-width: 1024px){
+    .build_saver{
+ 
+ >input{
+    max-width: 225px;
+
+ }
+ >h3{
+
+ }
+}
+}
 </style>

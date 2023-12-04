@@ -45,4 +45,11 @@ onBeforeMount(()=>{
     grid-template-rows: auto;
     gap: 10px;
 }
+@media only screen and (min-width: 770px){
+
+}
+
+@media only screen and (min-width: 1024px){
+
+}
 </style>

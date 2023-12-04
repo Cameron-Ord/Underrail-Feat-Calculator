@@ -43,7 +43,7 @@ onBeforeMount(()=>{
 .about_page{
     padding-top: 50px;
     padding-bottom: 50px;
-    grid-template-rows: 0.75fr 1fr 0.75fr;
+    grid-template-rows: 0.85fr 1fr 0.75fr;
     display: grid;
     align-items: center;
     min-height: 100vh;
@@ -52,6 +52,18 @@ onBeforeMount(()=>{
     >.about_section{
       display: grid;
       align-items: center;
+      justify-items: center;
     }
+}
+@media only screen and (min-width: 1024px){
+  .about_page{
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    >.about_section{
+      display: grid;
+      align-items: center;
+      justify-items: center;
+    }
+}
 }
 </style>
