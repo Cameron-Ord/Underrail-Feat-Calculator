@@ -21,6 +21,7 @@ const get_all_builds = async () =>{
     const response = await build_API();
     if(response.status >= 200 && response.status < 300){
         all_builds.value = response['data'];
+        console.log(all_builds.value)
     }
 }
 const decrement = () =>{
@@ -40,6 +41,7 @@ const increment = () =>{
 }
 onBeforeMount(()=>{
     get_all_builds()
+    
 })
 </script>
 
@@ -146,7 +148,7 @@ onBeforeMount(()=>{
             >.loop_container{
                 display: grid;
                 align-items: center;
-                grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+                grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
                 justify-items: center;
                 grid-template-rows: auto;
                 row-gap: 10px;

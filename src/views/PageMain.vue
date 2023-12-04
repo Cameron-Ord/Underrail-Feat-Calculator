@@ -224,7 +224,7 @@ onBeforeMount(()=>{
       >.skills_cont_wrapper{
           display: grid;
           align-items: center;
-          grid-template-rows: 1fr 0.4fr;
+          grid-template-rows: 1fr 0.5fr;
           justify-items: center;
           >.controls_wrapper{
               display: grid;
@@ -238,7 +238,7 @@ onBeforeMount(()=>{
       >.stats_cont_wrapper{
         display: grid;
         align-items: center;
-        grid-template-rows: 1fr 0.4fr;
+        grid-template-rows: 1fr 0.5fr;
         justify-items: center;
         >.controls_wrapper{
             display: grid;
