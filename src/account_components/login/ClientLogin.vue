@@ -9,7 +9,6 @@ const menu_store_instance = useMenuStore();
 const {cookies} = useCookies();
 
 const use_api=(username,password)=>{
-    console.log(username, password)
     return new Promise((resolve, reject)=>{
         axios({
             url:`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/login`,

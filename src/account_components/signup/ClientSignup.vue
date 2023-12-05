@@ -40,7 +40,6 @@ const signup_api = (username, password) => {
 }
 
 const submit_signup_form = async (username, password) =>{
-    console.log("LOGIN DATA: ",username, password)
     const signup_response = await signup_api(username, password);
     if(signup_response.status >= 200 && signup_response.status < 300){
         const login_response = await log_user_in(username,password);

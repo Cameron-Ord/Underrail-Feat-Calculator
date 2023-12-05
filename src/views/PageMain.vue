@@ -45,14 +45,12 @@ provide('updateSvgsAreLoaded', updateSvgsAreLoaded);
 provide('updateFeatsAreLoaded', updateFeatsAreLoaded);
 
 const remember_last_viewed = () =>{
-  console.log('remembering')
   const last_viewed = cookies.get('last_viewed');
   if(JSON.parse(last_viewed) !== null){
     switch_based_bool.value = JSON.parse(last_viewed);
   }
 }
 const handle_view = (sent_ref_text) =>{
-  console.log(sent_ref_text)
   if(sent_ref_text === "View_Stats"){
     const bool = true
     switch_based_bool.value = bool;
@@ -105,7 +103,6 @@ const assign_default_values = () =>{
   const [default_skill_limiter, default_skill_items] = skill_store_instance.actions.set_default_values();
   skill_store_instance.state.skill_count_limiter = default_skill_limiter;
   skill_store_instance.state.skill_items_array = default_skill_items
-  console.log(default_stat_items)
   save_cookies(
     default_stat_limiter,default_stat_items,
     default_skill_limiter,default_skill_items
@@ -199,10 +196,11 @@ onBeforeMount(()=>{
   >._calculation_container{
     display: grid;
     align-items: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
     >._calc_wrapper{
       display: grid;
       align-items: center;
-      justify-items: center;
       grid-template-rows: 1fr;
       >.feat_viewer_options{
         display: grid;
@@ -215,7 +213,8 @@ onBeforeMount(()=>{
   >._character_sheet{
     display: grid;
     align-items: center;
-   
+    padding-top: 10px;
+    padding-bottom: 10px;
 
     >._sheet_wrapper{
       display: grid;
@@ -224,28 +223,28 @@ onBeforeMount(()=>{
       >.skills_cont_wrapper{
           display: grid;
           align-items: center;
-          grid-template-rows: 1fr 0.5fr;
+          grid-template-rows: 1fr 0.25fr;
           justify-items: center;
           >.controls_wrapper{
               display: grid;
               align-items: center;
               width: 80%;
               row-gap: 20px;
-              grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+              grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
           }
       }
 
       >.stats_cont_wrapper{
         display: grid;
         align-items: center;
-        grid-template-rows: 1fr 0.5fr;
+        grid-template-rows: 1fr 0.25fr;
         justify-items: center;
         >.controls_wrapper{
             display: grid;
             align-items: center;
             width: 80%;
             row-gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+            grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
         }
       }
 
@@ -254,6 +253,8 @@ onBeforeMount(()=>{
 }
 @media only screen and (min-width: 1024px){
   ._page_main{
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 1fr;
   >._calculation_container{
     >._calc_wrapper{
       >.feat_viewer_options{
@@ -266,15 +267,19 @@ onBeforeMount(()=>{
     >._sheet_wrapper{
 
       >.skills_cont_wrapper{
+        grid-template-rows: auto;
+        row-gap: 25px;
         
           >.controls_wrapper{
-            width: 50%;
+            width: 80%;
           }
       }
 
       >.stats_cont_wrapper{
+        grid-template-rows: auto;
+        row-gap: 25px;
         >.controls_wrapper{
-          width: 50%;
+          width: 80%;
        
         }
       }

@@ -47,10 +47,10 @@ onBeforeMount(()=>{
 
 <template>
     <div class="all_builds" v-if="all_builds.length > 0">
+        <div class="build_title_div">
+            <h3>{{ all_builds[index]['Build_Title'] }}</h3>
+        </div>
         <div class="loop_div"> 
-            <div class="build_title_div">
-                <h3>{{ all_builds[index]['Build_Title'] }}</h3>
-            </div>
             <div class="seperator" v-if="all_builds[index]['Feat_Slice'].length > 0">
                 <div class="loop_header">
                     <h3>FEATS:</h3>
@@ -97,6 +97,19 @@ onBeforeMount(()=>{
     width: 100%;
     row-gap: 50px;
     justify-items: center;
+
+    >.build_title_div{
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            >h3{
+                padding: 5px;
+                border-top: solid var(--orange) 1px;
+                border-bottom: solid var(--orange) 1px;
+            }
+        }
     >.index_controls{
         justify-items: center;
         display: grid;
@@ -111,28 +124,15 @@ onBeforeMount(()=>{
         }
     }
     >.loop_div{
-        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
         width: 90%;
-        max-width: 450px;
+        max-width: 600px;
         display: grid;
         align-items: center;
         grid-template-rows: auto;
         row-gap:25px;
-        border: solid var(--orange) 1px;
         padding-top: 25px;
         padding-bottom: 25px;
-        >.build_title_div{
-            padding-top: 10px;
-            padding-bottom: 10px;
-            display: grid;
-            align-items: center;
-            justify-items: center;
-            >h3{
-                padding: 5px;
-                border-top: solid var(--orange) 1px;
-                border-bottom: solid var(--orange) 1px;
-            }
-        }
+
         >.seperator{
             display: grid;
             align-items: center;
@@ -155,8 +155,8 @@ onBeforeMount(()=>{
                 width: 85%;
                 padding-top: 25px;
                 padding-bottom: 25px;
-                border-bottom: solid var(--orange) 1px;
-                border-top: solid var(--orange) 1px;
+                box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+                border: solid var(--orange) 1px;
                 >.inner_loop_div{
                     display: grid;
                     justify-items: center;
@@ -169,17 +169,14 @@ onBeforeMount(()=>{
 }
 @media only screen and (min-width: 770px){
     .all_builds{
+        row-gap: 75px;
     >.index_controls{
         >p{
         }
     }
     >.loop_div{
-        max-width: 500px;
-        width: 70%;
-        >.build_title_div{
-            >h3{
-            }
-        }
+        max-width: 700px;
+        width: 80%;
         >.seperator{
             >.loop_header{
             }
@@ -195,22 +192,24 @@ onBeforeMount(()=>{
 
 @media only screen and (min-width: 1024px){
     .all_builds{
+        row-gap: 75px;
     >.index_controls{
         width: 30%;
         >p{
         }
     }
     >.loop_div{
-        max-width: 500px;
-        width: 70%;
-        >.build_title_div{
-            >h3{
-            }
-        }
+        max-width: none;
+        width: 90%;
+        grid-template-columns:  1fr 1fr 1fr;
+        
         >.seperator{
+        
             >.loop_header{
+
             }
             >.loop_container{
+                
                 grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
                 >.inner_loop_div{
                 }

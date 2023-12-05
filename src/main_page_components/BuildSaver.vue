@@ -3,7 +3,6 @@ import axios from 'axios';
 import {useCookies} from 'vue3-cookies';
 const {cookies} = useCookies();
 const use_api = (data_array, input_tag_content) =>{
-    console.log(data_array, input_tag_content)
     return new Promise((resolve, reject) => {
         axios({
             url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/savebuild`,
@@ -35,14 +34,12 @@ const retrieve_cookies = () => {
     const parsed_array = [];
     for(let i = 0; i < item_array.length; i++){
         const item = item_array[i];
-        console.log(item)
         try{
             parsed_array.push(JSON.parse(item)); 
         } catch (error) {
             console.log('Error parsing JSON on: ', item);
         }
     }
-    console.log(parsed_array, "ITEM ARRAY")
     return parsed_array
 }
 
@@ -52,7 +49,6 @@ const submit_build = async (input_tag_content) => {
         let no_missing_data = true;
         for(let i = 0; i < item_array.length; i++){
             const item = item_array[i];
-            console.log(item)
             if(item === null){
                 no_missing_data = false;
             }

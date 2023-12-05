@@ -5,7 +5,7 @@
 <template>
     <div class="hero_about">
         <p>
-            If you wish to view the source code for this project, links are provided at the bottom of the page,
+            If you wish to view the source code for this project, links are provided here,
             along with my contact information if you with to get in touch!
         </p>
         <p>

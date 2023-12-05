@@ -9,11 +9,17 @@ const updateFeatsAreLoaded = inject('updateFeatsAreLoaded');
 const updateSvgsAreLoaded = inject('updateSvgsAreLoaded');
 
 const set_grid = () => {
+    console.log('setting grid..')
     let page_main = document.querySelector('._page_main');
     let calc_wrapper = document.querySelector('._calc_wrapper');
+    console.log('setting grid..', page_main)
 
-    page_main['style']['grid-template-rows'] = '1fr 0.8r';
-    calc_wrapper['style']['grid-template-rows'] = '1fr 0.5fr';
+    if(window.innerWidth < 1024){
+        page_main['style']['grid-template-rows'] = '1fr 1fr';
+        calc_wrapper['style']['row-gap'] = '25px';
+    } else if(window.innerWidth >= 1024){
+        calc_wrapper['style']['row-gap'] = '25px';
+    }
 }
 
 const make_visible = () => {
@@ -72,6 +78,7 @@ const create_buttons = (response_data) => {
 
 const generate_feat_list = async () =>  {
     try {
+
         cookies.remove('chosen_feats');
         const bool = feat_store_instance.mutators.update_can_save_build(false);
         feat_store_instance.state.can_save_build = bool;

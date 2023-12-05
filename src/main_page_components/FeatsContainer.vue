@@ -11,18 +11,18 @@ const svg_list = ref(feat_store_instance.state.svg_list)
 const logged_in = ref(menu_store_instance.state.logged_in)
 const plus = '/images/plus.svg';
 const minus = '/images/minus.svg';
+const feat_counter = ref(0);
 watch(()=> menu_store_instance.state.logged_in, (value)=>{
     logged_in.value = value;
 })
 //Watching for changes in the store instance.
 watch(() => feat_store_instance.state.feats_list, (value) => {
-    console.log("UPDATED VALUE: ", value)
-    generated_feat_list.value = feat_store_instance.state.feats_list
+    generated_feat_list.value = value
+    feat_counter.value = 0;
 })
 
 watch(() => feat_store_instance.state.svg_list, (value) => {
-    console.log("UPDATED VALUE: ", value)
-    svg_list.value = feat_store_instance.state.svg_list
+    svg_list.value = value
 })
 
 const retrieve_cookies = () =>{
@@ -68,9 +68,12 @@ const add_feat = (feat_ref) => {
         }
     } else {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
-        if(feat_array.length > 0){
+        if(feat_array.length > 0 && feat_array.length < 15){
             cookies.set('chosen_feats', JSON.stringify(feat_array));
             return [true, feat_array]
+        } else if(feat_array.length >= 15){
+            console.log('reached maximum allowed feats')
+            return [false, feat_array]
         } else {
             console.error("add_to_feats returned an empty array: ", feat_array)
             return [false, []];
@@ -109,9 +112,16 @@ const handle_click = (feat_ref, index) => {
         if(successful === true && modified_array.length > 0){
             const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
             feat_store_instance.state.can_save_build = bool_to_assign
+            feat_counter.value = modified_array.length;
+        } else if(successful === false && modified_array.length >= 15){
+            feat_store_instance.state.svg_list[index] = plus
+            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
+            feat_store_instance.state.can_save_build = bool_to_assign
+            feat_counter.value = modified_array.length;
         } else {
             const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
             feat_store_instance.state.can_save_build = bool_to_assign
+            feat_counter.value = modified_array.length;
         }
     } else if (svg_list.value[index] === minus){
         feat_store_instance.state.svg_list[index] = plus
@@ -119,93 +129,131 @@ const handle_click = (feat_ref, index) => {
         if(successful === true && modified_array.length > 0){
             const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
             feat_store_instance.state.can_save_build = bool_to_assign
+            feat_counter.value = modified_array.length;
         } else {
             const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
             feat_store_instance.state.can_save_build = bool_to_assign
+            feat_counter.value = modified_array.length;
         }
     }
 }
 
 </script>
 <template>
-    <div class="_feats_">
-        <div class="width_div">
-            <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
-                <p ref="featText">{{ item }}</p>
-                <img v-if="logged_in === true"
-                :src="svg_list[i]"
-                alt="plus"
-                class="plus"
-                @click="handle_click($refs.featText, i)"
-                :clicked_plus="i"
-                ref="input_svg"
-                />
+    <div class="container">
+        <div class="counter">
+            <h3>
+                Feat slots used: {{ feat_counter }}/15
+            </h3>
+        </div>
+        <div class="_feats_">
+            <div class="width_div">
+                <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
+                    <p ref="featText">{{ item }}</p>
+                    <img v-if="logged_in === true"
+                    :src="svg_list[i]"
+                    alt="plus"
+                    class="plus"
+                    @click="handle_click($refs.featText, i)"
+                    :clicked_plus="i"
+                    ref="input_svg"
+                    />
+                </div>
             </div>
         </div>
     </div>
+    
 </template>
 <style lang="scss" scoped>
-._feats_{
-    border-top: solid var(--orange) 1px;
-    border-bottom: solid var(--orange) 1px;
-    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+
+.container{
     display: grid;
     align-items: center;
-    height: 350px;
-    justify-items: center;
-    overflow-y: auto;
-    width: 100%;
-    >.width_div{
-        padding-top: 25px;
-        padding-bottom: 25px;
-        grid-template-rows: auto;
-        row-gap: 25px;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    row-gap: 25px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    >.counter{
         display: grid;
         align-items: center;
-        width: 90%;
+        justify-items: center;
+        text-align: center;
+        >h3{
+            padding-top: 5px;
+            padding-bottom: 5px;
+            border-top: solid var(--orange) 1px;
+            border-bottom: solid var(--orange) 1px;
+        }
+    }
 
-        >.feat_container{
+        >._feats_{
+        border-top: solid var(--orange) 1px;
+        border-bottom: solid var(--orange) 1px;
+        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+        display: grid;
+        align-items: center;
+        height: 350px;
+        justify-items: center;
+        overflow-y: auto;
+        width: 100%;
+        padding-top: 10px;
+        padding-bottom: 10px;
+   
+        >.width_div{
+            padding-top: 25px;
+            padding-bottom: 25px;
+            grid-template-rows: auto;
+            row-gap: 25px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
             display: grid;
             align-items: center;
-            justify-items: center;
-            row-gap: 15px;
-            padding: 5px;
+            width: 90%;
 
-            >img{
-                border: solid var(--orange) 1px;
-                box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
-            }
+            >.feat_container{
+                display: grid;
+                align-items: center;
+                justify-items: center;
+                row-gap: 15px;
 
-            >p{
-                
-                width: 100%;
-                padding-bottom: 2.5px;
-                padding-top: 2.5px;
-                padding-left: 5px;
-                padding-right: 5px;
-                text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
-                text-align: center;
+                >img{
+                    border: solid var(--orange) 1px;
+                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
+                }
+
+                >p{
+                    
+                    width: 100%;
+                    padding-bottom: 2.5px;
+                    padding-top: 2.5px;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
+                    text-align: center;
+                }
             }
         }
     }
+
 }
-
 @media only screen and (min-width: 770px){
-._feats_{
-    width: 85%;
-    border-right: solid var(--orange) 1px;
-    border-left: solid var(--orange) 1px;
-    >.width_div{
-        grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-        
-            >.feat_container{
-        
-                >img{
-            }
 
-                >p{
-        
+    .container{
+        justify-items: center;
+        >._feats_{
+            width: 85%;
+            border-right: solid var(--orange) 1px;
+            border-left: solid var(--orange) 1px;
+            >.width_div{
+                grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
+                
+                    >.feat_container{
+                
+                    >img{
+                    
+                    }
+
+                    >p{
+                
+                    }
                 }
             }
         }
@@ -214,10 +262,13 @@ const handle_click = (feat_ref, index) => {
 }
 
 @media only screen and (min-width: 1024px){
-    ._feats_{
-        width: 45%;
+.container{
+    >._feats_{
+        width: 70%;
+    height: 350px;
+
     >.width_div{
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
         
             >.feat_container{
         
@@ -230,6 +281,7 @@ const handle_click = (feat_ref, index) => {
             }
         }
     }
+}
 
 }
 </style>

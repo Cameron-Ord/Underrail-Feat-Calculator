@@ -10,17 +10,14 @@ const stats = stat_store_instance.state.stats_list;
 
 watch(()=> stat_store_instance.state.stat_count_limiter, (newVal) =>{
     stat_count_limiter.value = newVal
-    console.log('SET:', newVal)
     set_cookies()
 })
 
 watch(()=> stat_store_instance.state.stat_items_array, (newVal) =>{
     stat_items_array.value = newVal
-    console.log('SET:', newVal)
     set_cookies()
 })
 const set_cookies = () =>{
-    console.log('setting cookies')
     cookies.set('stat_count_limiter', JSON.stringify(stat_count_limiter.value));
     cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
 }
@@ -89,9 +86,10 @@ const decreaseValue=(i)=>{
     display: grid;
     align-items: center;
     grid-template-rows: auto;
-    row-gap: 50px;
+    row-gap: 25px;
     width: 100%;
-    
+    padding-top: 10px;
+    padding-bottom: 10px;
 
     >.limit_counter{
         display: grid;
@@ -164,7 +162,6 @@ const decreaseValue=(i)=>{
 }
 @media only screen and (min-width: 770px){
     ._stat_content{    
-        row-gap: 75px;
         width: 85%;
 
         >.limit_counter{
@@ -196,15 +193,15 @@ const decreaseValue=(i)=>{
 
 @media only screen and (min-width: 1024px){
     ._stat_content{    
-        row-gap: 75px;
-        width: 45%;
+        row-gap: 25px;
+        width: 70%;
 
         >.limit_counter{
             >h3{
             }
         }
         >.element_wrapper{
-            grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
 
             >._loop_div{
                 

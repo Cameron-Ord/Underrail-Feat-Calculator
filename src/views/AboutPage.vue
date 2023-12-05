@@ -2,6 +2,7 @@
 import AboutHeader from '../about_components/AboutHeader.vue';
 import AboutMiddle from '../about_components/AboutMiddle.vue';
 import AboutEnd from '../about_components/AboutEnd.vue';
+import AboutLinks from '../about_components/AboutLinks.vue';
 import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
 import { onBeforeMount } from 'vue';
@@ -30,6 +31,7 @@ onBeforeMount(()=>{
         </section>
         <section class="about_section">
             <about-end></about-end>
+            <about-links></about-links>
         </section>
     </main>
 </template>
@@ -43,7 +45,7 @@ onBeforeMount(()=>{
 .about_page{
     padding-top: 50px;
     padding-bottom: 50px;
-    grid-template-rows: 0.85fr 1fr 0.75fr;
+    grid-template-rows: 0.85fr 1fr 0.85fr;
     display: grid;
     align-items: center;
     min-height: 100vh;
@@ -53,6 +55,7 @@ onBeforeMount(()=>{
       display: grid;
       align-items: center;
       justify-items: center;
+      row-gap: 30px;
     }
 }
 @media only screen and (min-width: 1024px){
@@ -63,6 +66,7 @@ onBeforeMount(()=>{
       display: grid;
       align-items: center;
       justify-items: center;
+      row-gap: 30px;
     }
 }
 }
