@@ -21,27 +21,52 @@ const set_cookies = () =>{
     cookies.set('stat_count_limiter', JSON.stringify(stat_count_limiter.value));
     cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
 }
-const increaseValue=(i)=>{
+const increaseValue=(i, event)=>{
+    const max_points = 46;
     if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
-        if (stat_store_instance.state.stat_items_array[i].statValue < 20) {
+        const current_stat_value = stat_store_instance.state.stat_items_array[i].statValue;
+        const maximum_increase = Math.min(max_points - stat_count_limiter.value, 20 - current_stat_value);
+        if(maximum_increase > 0) {
             let updated_limiter = stat_count_limiter.value;
             const updated_array = [...stat_items_array.value];
-            updated_array[i].statValue++;
-            updated_limiter++;
+            let increase_amount;
+            if(event.shiftKey){
+                increase_amount = Math.min(5, maximum_increase);
+            }else if(event.ctrlKey){
+                increase_amount = Math.min(10, maximum_increase);
+            }else{
+                increase_amount = Math.min(1, maximum_increase);
+            }
+            updated_array[i].statValue += increase_amount;
+            updated_limiter += increase_amount;
             stat_store_instance.state.stat_items_array = updated_array;
             stat_store_instance.state.stat_count_limiter = updated_limiter;
         }
     }
 }
-const decreaseValue=(i)=>{
+const decreaseValue=(i,event)=>{
+    const minStatValue = 3;
     if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
-        if (stat_store_instance.state.stat_items_array[i].statValue > 3) {
-            let updated_limiter = stat_count_limiter.value
-            const updated_array = [...stat_items_array.value];
-            updated_array[i].statValue--;
-            updated_limiter--;
-            stat_store_instance.state.stat_items_array = updated_array;
-            stat_store_instance.state.stat_count_limiter = updated_limiter;
+        const currentStatValue = stat_store_instance.state.stat_items_array[i].statValue;
+
+        if (currentStatValue > minStatValue) {
+            let updatedLimiter = stat_count_limiter.value;
+            const updatedArray = [...stat_items_array.value];
+
+            let decreaseAmount;
+            if (event.shiftKey) {
+                decreaseAmount = Math.min(5, currentStatValue - minStatValue);
+            } else if (event.ctrlKey) {
+                decreaseAmount = Math.min(10, currentStatValue - minStatValue);
+            } else {
+                decreaseAmount = Math.min(1, currentStatValue - minStatValue);
+            }
+
+            updatedArray[i].statValue -= decreaseAmount;
+            updatedLimiter -= decreaseAmount;
+
+            stat_store_instance.state.stat_items_array = updatedArray;
+            stat_store_instance.state.stat_count_limiter = updatedLimiter;
         }
     }
 }
@@ -64,7 +89,7 @@ const decreaseValue=(i)=>{
                         src="/images/plus.svg"
                         alt="plus"
                         class="_plus"
-                        @click="increaseValue(i)"
+                        @click="increaseValue(i,$event)"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -72,7 +97,7 @@ const decreaseValue=(i)=>{
                         src="/images/minus.svg"
                         alt="minus"
                         class="_minus"
-                        @click="decreaseValue(i)"
+                        @click="decreaseValue(i,$event)"
                         :clicked_minus="i"
                         ref="_minus_svg"
                     />
