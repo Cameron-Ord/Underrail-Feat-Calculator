@@ -21,38 +21,46 @@ const set_cookies = () =>{
     cookies.set('skill_count_limiter', JSON.stringify(skill_count_limiter.value));
     cookies.set('skill_array_values', JSON.stringify(skill_items_array.value));
 }
-const increaseValue=(i)=>{
+const increaseValue=(i, event)=>{
+    const max_points = 1280;
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
-        if (skill_store_instance.state.skill_items_array[i].skillValue < 160) {
-        //Creating copies of values and modifying them
+        const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
+        const maximum_increase = Math.min(max_points - skill_count_limiter.value, 160 - current_skill_value);
+        if(maximum_increase > 0){
             let updated_limiter = skill_count_limiter.value
             const updated_array = [...skill_items_array.value];
-            updated_array[i].skillValue+=5;
-            updated_limiter+=5;
-        /*
-          After being modified, 
-          I assign them back to the state variables.*/
-        /*
-          This is done to maintain immutability,
-          which is important to maintain when working with vue.
-        */    
+            let increase_amount;
+            if(event.shiftKey){
+                increase_amount = Math.min(5, maximum_increase);
+            } else if(event.ctrlKey){
+                increase_amount = Math.min(80, maximum_increase);
+            } else {
+                increase_amount = Math.min(1, maximum_increase);
+            }
+            updated_array[i].skillValue+=increase_amount;
+            updated_limiter+=increase_amount;
             skill_store_instance.state.skill_items_array = updated_array;
             skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
-        /*
-          Basically, I am simply avoiding direct 
-          modifications/mutations with the variables
-          I want to be reactive. 
-        */
     }
 }
-const decreaseValue=(i)=>{
+const decreaseValue=(i,event)=>{
+    const minSkillValue = 0
     if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
-        if (skill_store_instance.state.skill_items_array[i].skillValue > 0) {
-            let updated_limiter = skill_count_limiter.value
+        const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
+        if(current_skill_value > minSkillValue){
+            let updated_limiter = skill_count_limiter.value;
             const updated_array = [...skill_items_array.value];
-            updated_array[i].skillValue-=5;
-            updated_limiter-=5;
+            let decrease_amount;
+            if(event.shiftKey){
+                decrease_amount = Math.min(5, current_skill_value);
+            } else if(event.ctrlKey){
+                decrease_amount = Math.min(80, current_skill_value);
+            } else {
+                decrease_amount = Math.min(1, current_skill_value);
+            }
+            updated_array[i].skillValue-=decrease_amount;
+            updated_limiter-=decrease_amount;
             skill_store_instance.state.skill_items_array = updated_array;
             skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
@@ -75,7 +83,7 @@ const decreaseValue=(i)=>{
                         src="/images/plus.svg"
                         alt="plus"
                         class="_plus"
-                        @click="increaseValue(i)"
+                        @click="increaseValue(i,$event)"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -83,7 +91,7 @@ const decreaseValue=(i)=>{
                         src="/images/minus.svg"
                         alt="minus"
                         class="_minus"
-                        @click="decreaseValue(i)"
+                        @click="decreaseValue(i,$event)"
                         :clicked_minus="i"
                         ref="_minus_svg"
                     />
