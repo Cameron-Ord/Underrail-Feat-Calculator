@@ -9,10 +9,8 @@ const updateFeatsAreLoaded = inject('updateFeatsAreLoaded');
 const updateSvgsAreLoaded = inject('updateSvgsAreLoaded');
 
 const set_grid = () => {
-    console.log('setting grid..')
     let page_main = document.querySelector('._page_main');
     let calc_wrapper = document.querySelector('._calc_wrapper');
-    console.log('setting grid..', page_main)
 
     if(window.innerWidth < 1024){
         page_main['style']['grid-template-rows'] = '1fr 1fr';
@@ -22,9 +20,21 @@ const set_grid = () => {
     }
 }
 
-const make_visible = () => {
-    updateFeatsAreLoaded(true)
-    updateSvgsAreLoaded(true)
+const reset_grid = () => {
+    let page_main = document.querySelector('._page_main');
+    let calc_wrapper = document.querySelector('._calc_wrapper');
+
+    if(window.innerWidth < 1024){
+        page_main['style']['grid-template-rows'] = '';
+        calc_wrapper['style']['row-gap'] = '';
+    } else if(window.innerWidth >= 1024){
+        calc_wrapper['style']['row-gap'] = '';
+    }
+}
+
+const make_visible = (sent_bool) => {
+    updateFeatsAreLoaded(sent_bool)
+    updateSvgsAreLoaded(sent_bool)
 }
 
 const invoke_axios = (stat_items, skill_items) =>{
@@ -77,15 +87,23 @@ const create_buttons = (response_data) => {
 }
 
 const generate_feat_list = async () =>  {
-    try {
 
         cookies.remove('chosen_feats');
         const bool = feat_store_instance.mutators.update_can_save_build(false);
         feat_store_instance.state.can_save_build = bool;
         const [stat_items, skill_items] = retrieve_cookies();
+        console.log(stat_items, skill_items)
         if(stat_items.length > 0 && skill_items.length > 0){
-            const response = await invoke_axios(stat_items, skill_items);
-            if(response.status >= 200 && response.status < 300){
+            console.log('Condition met')
+            let response;
+            try{
+                 response = await invoke_axios(stat_items, skill_items);
+            } catch (error) {
+                console.log("failed to resolve promise");
+            }
+            if(response["data"] !== null){   
+                if(response.status >= 200 && response.status < 300){
+                console.log("Response condition met")
                 const response_data = response['data'];
                 const initialized_button_array = create_buttons(response_data)
                 if(response_data.length > 0 && initialized_button_array.length > 0){
@@ -93,17 +111,22 @@ const generate_feat_list = async () =>  {
                     feat_store_instance.state.feats_list = response_data;
                     if(feat_store_instance.state.svg_list !== undefined
                     && feat_store_instance.state.feats_list !== undefined){
-                        make_visible();
+                        make_visible(true);
                         set_grid();
                     }
-                } else {
-                    console.log('Query returned 0 results.')
-                }
+                    } else {
+                        console.log('0 results')
+                    }
+                } 
+            } else {
+                console.log("response is null")
+                feat_store_instance.state.svg_list = undefined;
+                feat_store_instance.state.feats_list = undefined;
+                make_visible(false);
+                reset_grid();
             }
-        }        
-    } catch (error) {
-        console.error('Failed to resolve promise: ',error);
-    }
+        }    
+
 }
 
 </script>
