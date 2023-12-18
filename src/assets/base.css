@@ -6,12 +6,36 @@
 
 body{
   background-color: var(--black);
-  font-size: clamp(0.9em, 2vw, 1.1em);
   margin: 0px;
   padding: 0px;
 }
 
-p,h3,h4,h1,h2,a{
+h3{
+  margin: 0px;
+  padding: 0px;
+  font-size: clamp(1.15em, 2vw, 1.35em);
+  color: var(--orange);
+}
+h4{
+  margin: 0px;
+  padding: 0px;
+  font-size: clamp(1.05em, 2vw, 1.30em);
+  color: var(--orange);
+}
+h1{
+  margin: 0px;
+  padding: 0px;
+  font-size: clamp(1.35em, 2vw, 1.65em);
+  color: var(--orange);
+}
+h2{
+  margin: 0px;
+  padding: 0px;
+  font-size: clamp(1.25em, 2vw, 1.55em);
+  color: var(--orange);
+}
+p{
+  font-size: clamp(1em, 2vw, 1.25em);
   margin: 0px;
   padding: 0px;
   color: var(--orange);

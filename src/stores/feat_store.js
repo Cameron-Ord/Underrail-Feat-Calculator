@@ -6,7 +6,7 @@ export const useFeatStore = defineStore('feat', () => {
         svg_list: undefined,
         feats_are_loaded: false,
         svgs_are_loaded: false,
-        can_save_build: false
+        can_save_build: false,
     };
 
     const mutators = {

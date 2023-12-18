@@ -22,17 +22,18 @@ const set_cookies = () =>{
     cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
 }
 const increaseValue=(i, event)=>{
+    console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
     const max_points = 46;
     if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
         const current_stat_value = stat_store_instance.state.stat_items_array[i].statValue;
-        const maximum_increase = Math.min(max_points - stat_count_limiter.value, 20 - current_stat_value);
+        const maximum_increase = Math.min(max_points - stat_count_limiter.value, 20 - current_stat_value);   
         if(maximum_increase > 0) {
             let updated_limiter = stat_count_limiter.value;
             const updated_array = [...stat_items_array.value];
             let increase_amount;
-            if(event.shiftKey){
+            if(event.shiftKey === true){
                 increase_amount = Math.min(5, maximum_increase);
-            }else if(event.ctrlKey){
+            }else if(event.ctrlKey === true){
                 increase_amount = Math.min(10, maximum_increase);
             }else{
                 increase_amount = Math.min(1, maximum_increase);
@@ -45,14 +46,13 @@ const increaseValue=(i, event)=>{
     }
 }
 const decreaseValue=(i,event)=>{
+    console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
     const minStatValue = 3;
     if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
         const currentStatValue = stat_store_instance.state.stat_items_array[i].statValue;
-
         if (currentStatValue > minStatValue) {
             let updatedLimiter = stat_count_limiter.value;
             const updatedArray = [...stat_items_array.value];
-
             let decreaseAmount;
             if (event.shiftKey) {
                 decreaseAmount = Math.min(5, currentStatValue - minStatValue);
@@ -75,14 +75,10 @@ const decreaseValue=(i,event)=>{
 
 <template>
     <div class="_stat_content" v-if="stat_items_array !== null || stat_items_array !== undefined">
-        <div class="limit_counter">
-            <h3>Stat Points used: {{ stat_count_limiter -21  }}/25</h3>
-        </div>
+        <h3 class="limit_counter">Stat Points used: {{ stat_count_limiter -21  }}/25</h3>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
-                <div class="_header">
-                    <p class="_stat_tag">{{ stats[i] }}</p>
-                </div>
+                <p class="_stat_tag">{{ stats[i] }}</p>
                 <div class="_stat_values">
                     <h3 class="_value">{{ value.statValue }}</h3>
                     <img
@@ -117,53 +113,41 @@ const decreaseValue=(i,event)=>{
     padding-bottom: 10px;
 
     >.limit_counter{
-        display: grid;
-        align-items: center;
-        justify-items: center;
+        justify-self: center;
         text-align: center;
-        >h3{
-            padding-top: 5px;
-            padding-bottom: 5px;
-            border-bottom:solid var(--orange) 1px;
-            border-top:solid var(--orange) 1px;
-        }
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
     >.element_wrapper{
         display: grid;
         align-items: center;
         justify-items: center;
         grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-        height: 350px;
+        height: 400px;
         row-gap: 25px;
         overflow-y: auto;
-        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
-        border-top: solid var(--orange) 1px;
-        border-bottom: solid var(--orange) 1px;
         padding-top: 10px;
         padding-bottom: 10px;
 
         >._loop_div{
+            text-align: center;
             display: grid;
             align-items: center;
             grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;
-            
-
-            >._header{
-                display: grid;
-                align-items: center;
-                justify-items: center;
+            width: 90%;
+        
+            >._stat_tag{
                 font-weight: 600;
-                >._stat_tag{
-                    padding-top: 2.5px;
-                    padding-bottom: 2.5px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                }
-
+                padding-top: 2.5px;
+                padding-bottom: 2.5px;
+                padding-left: 5px;
+                padding-right: 5px;
             }
+
+        
             >._stat_values{
                 display: grid;
                 align-items: center;
@@ -175,11 +159,11 @@ const decreaseValue=(i,event)=>{
 
                 >._plus{
                     border: solid var(--orange) 1px;
-                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
+                    border-radius: 6px;
                 }
                 >._minus{
-                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
                     border: solid var(--orange) 1px;
+                    border-radius: 6px;
                 }
             }
         }
@@ -190,20 +174,18 @@ const decreaseValue=(i,event)=>{
         width: 85%;
 
         >.limit_counter{
-            >h3{
-            }
+
         }
         >.element_wrapper{
             grid-template-columns: repeat(auto-fit,minmax(275px,1fr));
-            border-right: solid var(--orange) 1px;
-            border-left: solid var(--orange) 1px;
+
+            
             >._loop_div{
 
-                >._header{
-                    >._stat_tag{
-                    }
-
+                
+                >._stat_tag{
                 }
+
                 >._stat_values{
                 
                     >._plus{
@@ -222,20 +204,15 @@ const decreaseValue=(i,event)=>{
         width: 70%;
 
         >.limit_counter{
-            >h3{
-            }
+
         }
         >.element_wrapper{
             grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
 
             >._loop_div{
-                
-
-                >._header{
-                    >._stat_tag{
-                    }
-
+                >._stat_tag{
                 }
+
                 >._stat_values{
                 
                     >._plus{

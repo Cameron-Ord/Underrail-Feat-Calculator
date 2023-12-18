@@ -41,9 +41,7 @@ const set_default_values = () =>{
 </script>
 
 <template>
-    <div class="reset_btn_div">
-        <h3 @click="set_default_values">Reset Stats</h3>
-    </div>
+    <h3 @click="set_default_values">Reset Stats</h3>
 </template>
 
 <script>
@@ -53,18 +51,16 @@ const set_default_values = () =>{
 </script>
 
 <style lang="scss" scoped>
-.reset_btn_div{
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    >h3{
-        padding-top: 5px;
-        padding-bottom: 5px;
-        border-bottom:solid var(--orange) 1px;
-        border-top:solid var(--orange) 1px;
-        cursor: pointer;
-    }
+h3{
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 7.5px;
+    padding-right: 7.5px;
+    border: solid var(--orange) 1px;
+    border-radius: 10px;
+    cursor: pointer;
 }
+
 @media only screen and (min-width: 770px){
 
 }

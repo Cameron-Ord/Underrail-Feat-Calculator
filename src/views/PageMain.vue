@@ -148,30 +148,26 @@ onBeforeMount(()=>{
 <template>
   <main class="_page_main">
     <section class="_character_sheet">
-      <article class="_sheet_wrapper">
-        <div class="stats_cont_wrapper" v-if="switch_based_bool === true">
+      <article class="_sheet_wrapper" v-if="switch_based_bool === true">
           <stat-content></stat-content>
-          <div class="controls_wrapper">
-              <view-skills @send_input="handle_view"></view-skills>
-              <reset-stats></reset-stats>
+          <div class="view_controls">
+            <view-skills @send_input="handle_view"></view-skills>
+            <reset-stats></reset-stats>
           </div>
-        </div>
-        <div class="skills_cont_wrapper"  v-if="switch_based_bool !== true">
+      </article>
+      <article class="_sheet_wrapper" v-if="switch_based_bool !== true">
           <skill-content></skill-content>
-          <div class="controls_wrapper">
-              <view-stats @send_input="handle_view"></view-stats>
-              <reset-skills></reset-skills>
+          <div class="view_controls">
+            <view-stats @send_input="handle_view"></view-stats>
+            <reset-skills></reset-skills>
           </div>
-        </div>
       </article>
     </section>
     <section class="_calculation_container">
       <article class="_calc_wrapper">
         <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
-        <div class="feat_viewer_options">
-          <calculation-button></calculation-button>
-          <build-saver v-if="canSaveBuild === true && is_logged_in === true"></build-saver>
-        </div>
+        <calculation-button></calculation-button>
+        <build-saver v-if="canSaveBuild === true && is_logged_in === true"></build-saver>
       </article>
     </section>
   </main>
@@ -196,58 +192,36 @@ onBeforeMount(()=>{
   >._calculation_container{
     display: grid;
     align-items: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
     >._calc_wrapper{
       display: grid;
       align-items: center;
       grid-template-rows: 1fr;
-      >.feat_viewer_options{
-        display: grid;
-        align-items: center;
-        row-gap: 25px;
-      }
+      padding-top: 20px;
+      padding-bottom: 20px;
     }
   }
 
   >._character_sheet{
     display: grid;
     align-items: center;
-    padding-top: 10px;
-    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
 
     >._sheet_wrapper{
       display: grid;
       align-items: center;
+      row-gap: 20px;
+      padding-top: 20px;
+      padding-bottom: 20px;
 
-      >.skills_cont_wrapper{
-          display: grid;
-          align-items: center;
-          grid-template-rows: 1fr 0.25fr;
-          justify-items: center;
-          >.controls_wrapper{
-              display: grid;
-              align-items: center;
-              width: 80%;
-              row-gap: 20px;
-              grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
-          }
-      }
-
-      >.stats_cont_wrapper{
+      >.view_controls{
         display: grid;
         align-items: center;
-        grid-template-rows: 1fr 0.25fr;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         justify-items: center;
-        >.controls_wrapper{
-            display: grid;
-            align-items: center;
-            width: 80%;
-            row-gap: 20px;
-            grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
-        }
       }
-
     }
   }
 }
@@ -257,33 +231,12 @@ onBeforeMount(()=>{
   grid-template-columns: 1fr 1fr;
   >._calculation_container{
     >._calc_wrapper{
-      >.feat_viewer_options{
-      }
     }
   }
 
   >._character_sheet{
 
     >._sheet_wrapper{
-
-      >.skills_cont_wrapper{
-        grid-template-rows: auto;
-        row-gap: 25px;
-        
-          >.controls_wrapper{
-            width: 80%;
-          }
-      }
-
-      >.stats_cont_wrapper{
-        grid-template-rows: auto;
-        row-gap: 25px;
-        >.controls_wrapper{
-          width: 80%;
-       
-        }
-      }
-
     }
   }
 }

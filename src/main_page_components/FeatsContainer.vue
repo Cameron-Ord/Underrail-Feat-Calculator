@@ -12,7 +12,9 @@ const logged_in = ref(menu_store_instance.state.logged_in)
 const plus = '/images/plus.svg';
 const minus = '/images/minus.svg';
 const feat_counter = ref(0);
-watch(()=> menu_store_instance.state.logged_in, (value)=>{
+
+
+watch(()=> menu_store_instance.state.logged_in, (value)=> {
     logged_in.value = value;
 })
 //Watching for changes in the store instance.
@@ -140,55 +142,41 @@ const handle_click = (feat_ref, index) => {
 
 </script>
 <template>
-    <div class="container">
-        <div class="counter">
-            <h3>
-                Feat slots used: {{ feat_counter }}/15
-            </h3>
-        </div>
-        <div class="_feats_">
-            <div class="width_div">
-                <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
-                    <p ref="featText">{{ item }}</p>
-                    <img v-if="logged_in === true"
-                    :src="svg_list[i]"
-                    alt="plus"
-                    class="plus"
-                    @click="handle_click($refs.featText, i)"
-                    :clicked_plus="i"
-                    ref="input_svg"
-                    />
-                </div>
+    <div class="feat_viewer_container">
+        <h3 class="counter">
+            Feat slots used: {{ feat_counter }}/15
+        </h3>
+        <span class="span_height">
+            <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
+                <p ref="featText">{{ item }}</p>
+                <img v-if="logged_in === true"
+                :src="svg_list[i]"
+                alt="plus"
+                class="plus"
+                @click="handle_click($refs.featText, i)"
+                :clicked_plus="i"
+                ref="input_svg"
+                />
             </div>
-        </div>
+        </span>
     </div>
-    
 </template>
 <style lang="scss" scoped>
 
-.container{
+.feat_viewer_container{
     display: grid;
     align-items: center;
     row-gap: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
     >.counter{
-        display: grid;
-        align-items: center;
-        justify-items: center;
+        justify-self: center;
         text-align: center;
-        >h3{
-            padding-top: 5px;
-            padding-bottom: 5px;
-            border-top: solid var(--orange) 1px;
-            border-bottom: solid var(--orange) 1px;
-        }
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
 
-        >._feats_{
-        border-top: solid var(--orange) 1px;
-        border-bottom: solid var(--orange) 1px;
-        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+    >.span_height{
         display: grid;
         align-items: center;
         height: 350px;
@@ -197,40 +185,28 @@ const handle_click = (feat_ref, index) => {
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
-   
-        >.width_div{
-            padding-top: 25px;
-            padding-bottom: 25px;
-            grid-template-rows: auto;
-            row-gap: 25px;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+        >.feat_container{
             display: grid;
             align-items: center;
+            justify-items: center;
+            row-gap: 15px;
             width: 90%;
 
-            >.feat_container{
-                display: grid;
-                align-items: center;
-                justify-items: center;
-                row-gap: 15px;
+            >img{
+                border: solid var(--orange) 1px;
+                border-radius: 6px;
+            }
 
-                >img{
-                    border: solid var(--orange) 1px;
-                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
-                }
-
-                >p{
-                    
-                    width: 100%;
-                    padding-bottom: 2.5px;
-                    padding-top: 2.5px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
-                    text-align: center;
-                }
+            >p{
+                padding-bottom: 2.5px;
+                padding-top: 2.5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                text-align: center;
             }
         }
+
     }
 
 }

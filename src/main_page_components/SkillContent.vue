@@ -69,14 +69,10 @@ const decreaseValue=(i,event)=>{
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">
-        <div class="limit_counter">
-            <h3>Stat Points used: {{ skill_count_limiter }}/1280</h3>
-        </div>
+        <h3 class="limit_counter">Stat Points used: {{ skill_count_limiter }}/1280</h3>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in skill_items_array" :key="i">
-                <div class="_header">
-                    <p class="_skill_tag">{{ skills[i] }}</p>
-                </div>
+                <p class="_skill_tag">{{ skills[i] }}</p>
                 <div class="_skill_values">
                     <h3 class="_value">{{ value.skillValue }}</h3>
                     <img
@@ -113,16 +109,10 @@ const decreaseValue=(i,event)=>{
 
 
     >.limit_counter{
-        display: grid;
-        align-items: center;
-        justify-items: center;
+        justify-self: center;
         text-align: center;
-        >h3{
-            padding-top: 5px;
-            padding-bottom: 5px;
-            border-bottom:solid var(--orange) 1px;
-            border-top:solid var(--orange) 1px;
-        }
+        padding-top: 5px;
+        padding-bottom: 5px;
     }
     >.element_wrapper{
         display: grid;
@@ -130,34 +120,28 @@ const decreaseValue=(i,event)=>{
         justify-items: center;
         grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
         row-gap: 25px;
-        height: 350px;
+        height: 400px;
         overflow-y: auto;
-        box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
-        border-top: solid var(--orange) 1px;
-        border-bottom: solid var(--orange) 1px;
         padding-top: 10px;
         padding-bottom: 10px;
         >._loop_div{
+            text-align: center;
             display: grid;
             align-items: center;
             grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;
+            width: 90%;
 
-            >._header{
-                display: grid;
-                align-items: center;
-                justify-items: center;
-                text-align: center;
-                >._skill_tag{
-                    padding-top: 2.5px;
-                    padding-bottom: 2.5px;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    font-weight: 600;
-                }
+            >._skill_tag{
+                padding-top: 2.5px;
+                padding-bottom: 2.5px;
+                padding-left: 5px;
+                padding-right: 5px;
+                font-weight: 600;
             }
+            
             >._skill_values{
                 display: grid;
                 align-items: center;
@@ -168,12 +152,12 @@ const decreaseValue=(i,event)=>{
                 padding-bottom: 2.5px;
 
                 >._plus{
-                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
                     border: solid var(--orange) 1px;
+                    border-radius: 6px;
                 }
                 >._minus{
                     border: solid var(--orange) 1px;
-                    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.10);
+                    border-radius: 6px;
                 }
             }
         }
@@ -184,19 +168,16 @@ const decreaseValue=(i,event)=>{
         width: 85%;
  
     >.limit_counter{
-        >h3{
-        }
     }
     >.element_wrapper{
         grid-template-columns: repeat(auto-fit,minmax(275px,1fr));
-        border-right: solid var(--orange) 1px;
-        border-left: solid var(--orange) 1px;
+
         >._loop_div{
  
-            >._header{
+         
                 >._skill_tag{
                 }
-            }
+            
             >._skill_values{
                 
                 >._plus{
@@ -215,17 +196,15 @@ const decreaseValue=(i,event)=>{
         width: 70%;
  
     >.limit_counter{
-        >h3{
-        }
     }
     >.element_wrapper{
         grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
         >._loop_div{
  
-            >._header{
+         
                 >._skill_tag{
                 }
-            }
+            
             >._skill_values{
                 
                 >._plus{

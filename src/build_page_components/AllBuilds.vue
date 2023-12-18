@@ -19,7 +19,7 @@ const build_API = () =>{
 
 const get_all_builds = async () =>{
     const response = await build_API();
-    if(response.status >= 200 && response.status < 300){
+    if(response.statusText === "OK"){
         all_builds.value = response['data'];
         console.log(all_builds.value)
     }
@@ -47,38 +47,24 @@ onBeforeMount(()=>{
 
 <template>
     <div class="all_builds" v-if="all_builds.length > 0">
-        <div class="build_title_div">
-            <h3>{{ all_builds[index]['Build_Title'] }}</h3>
-        </div>
+        <h3 class="build_title">{{ all_builds[index]['Build_Title'] }}</h3>
         <div class="loop_div"> 
             <div class="seperator" v-if="all_builds[index]['Feat_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>FEATS:</h3>
-                </div>
-                <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(feat, f) in all_builds[index]['Feat_Slice']" :key="f">
-                        <p>{{ feat['Name'] }}</p>
-                    </div>
+                <h3 class="loop_header">FEATS:</h3>
+                <div class="loop_container" v-for="(feat, f) in all_builds[index]['Feat_Slice']" :key="f">
+                    <p>{{ feat['Name'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="all_builds[index]['Skill_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>SKILLS:</h3>
-                </div>
-                <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(skill, s) in all_builds[index]['Skill_Slice']" :key="s">
-                        <p>{{ skill['Name'] }} - {{ skill['Value'] }}</p>
-                    </div>
+                <h3 class="loop_header">SKILLS:</h3>
+                <div class="loop_container" v-for="(skill, s) in all_builds[index]['Skill_Slice']" :key="s">
+                    <p>{{ skill['Name'] }} - {{ skill['Value'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="all_builds[index]['Stat_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>STATS:</h3>
-                </div>
-                <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(stat, t) in all_builds[index]['Stat_Slice']" :key="t">
-                        <p>{{ stat['Name'] }} - {{ stat['Value'] }}</p>
-                    </div>
+                <h3 class="loop_header">STATS:</h3>
+                <div class="loop_container" v-for="(stat, t) in all_builds[index]['Stat_Slice']" :key="t">
+                    <p>{{ stat['Name'] }} - {{ stat['Value'] }}</p>
                 </div>
             </div>
         </div>
@@ -98,18 +84,16 @@ onBeforeMount(()=>{
     row-gap: 50px;
     justify-items: center;
 
-    >.build_title_div{
-            padding-top: 10px;
-            padding-bottom: 10px;
-            display: grid;
-            align-items: center;
-            justify-items: center;
-            >h3{
-                padding: 5px;
-                border-top: solid var(--orange) 1px;
-                border-bottom: solid var(--orange) 1px;
-            }
+        >.build_title{
+            justify-self: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-top: 7.5px;
+            padding-top: 7.5px;
+            border: solid var(--orange) 1px;
+            border-radius: 10px;
         }
+        
     >.index_controls{
         justify-items: center;
         display: grid;
