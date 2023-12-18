@@ -17,6 +17,21 @@ const reset_grid=()=>{
     calc_wrapper['style']['grid-template-rows'] = '';
 }
 
+
+const go_to_top=()=>{
+    setTimeout(()=>{
+        const top = document.querySelector('._sheet_wrapper');
+        if(top){
+            const element_rect = top.getBoundingClientRect();
+            const element_y = window.scrollY + element_rect.top;
+            window.scrollTo({
+                top:element_y,
+                behavior:'smooth',
+            });
+        }
+    },100)
+}
+
 const set_default_values = () =>{
     updateFeatsAreLoaded(false);
     const false_bool = false
@@ -37,6 +52,8 @@ const set_default_values = () =>{
     stat_store_instance.state.stat_count_limiter = stat_limiter;
     stat_store_instance.state.stat_items_array = stat_items;
     reset_grid()
+    go_to_top()
+
 }
 </script>
 

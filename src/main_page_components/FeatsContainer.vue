@@ -211,53 +211,48 @@ const handle_click = (feat_ref, index) => {
 
 }
 @media only screen and (min-width: 770px){
-
-    .container{
-        justify-items: center;
-        >._feats_{
-            width: 85%;
-            border-right: solid var(--orange) 1px;
-            border-left: solid var(--orange) 1px;
-            >.width_div{
-                grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-                
-                    >.feat_container{
-                
-                    >img{
-                    
-                    }
-
-                    >p{
-                
-                    }
-                }
-            }
-        }
+    .feat_viewer_container{
+    >.counter{
     }
 
+    >.span_height{
+        grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+        >.feat_container{
+            
+            >img{
+            }
+
+            >p{
+                
+            }
+        }
+
+    }
+
+}
 }
 
 @media only screen and (min-width: 1024px){
-.container{
-    >._feats_{
-        width: 70%;
-    height: 350px;
+    .feat_viewer_container{
+        justify-items: center;
+    >.counter{
+    }
 
-    >.width_div{
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        
-            >.feat_container{
-        
-                >img{
+    >.span_height{
+        width: 60%;
+        grid-template-columns: repeat(auto-fit, minmax(325px,1fr));
+        >.feat_container{
+            
+            >img{
             }
 
-                >p{
-        
-                }
+            >p{
+                
             }
         }
-    }
-}
 
+    }
+
+}
 }
 </style>

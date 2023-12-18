@@ -106,6 +106,20 @@ const status_fade_out = () =>{
 }
 
 
+const move_viewpoint = () =>{
+    setTimeout(()=>{
+        const calc_button = document.querySelector('.generate_button');
+        if(calc_button){
+            const element_rect = calc_button.getBoundingClientRect();
+            const element_y = window.scrollY + element_rect.top;
+            window.scrollTo({
+                top:element_y,
+                behavior:'smooth',
+            });
+        }
+    },100);
+}
+
 const generate_feat_list = async () =>  {
 
     cookies.remove('chosen_feats');
@@ -162,6 +176,7 @@ const generate_feat_list = async () =>  {
         && feat_store_instance.state.feats_list !== undefined){
             make_visible(true);
             set_grid();
+            move_viewpoint()
         }
     }
 }    

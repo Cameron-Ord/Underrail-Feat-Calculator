@@ -226,20 +226,45 @@ onBeforeMount(()=>{
     }
   }
 }
-@media only screen and (min-width: 1024px){
+@media only screen and (min-width: 770px){
   ._page_main{
-  grid-template-rows: 1fr;
-  grid-template-columns: 1fr 1fr;
+ 
   >._calculation_container{
     >._calc_wrapper{
     }
   }
 
   >._character_sheet{
-
+ 
     >._sheet_wrapper{
+      justify-items: center;
+ 
+      >.view_controls{
+        width: 75%;
+      }
     }
   }
+}
+}
+@media only screen and (min-width: 1024px){
+  ._page_main{
+ 
+ >._calculation_container{
+   >._calc_wrapper{
+   }
+ }
+
+ >._character_sheet{
+
+   >._sheet_wrapper{
+    row-gap: 100px;
+     justify-items: center;
+
+     >.view_controls{
+       width: 50%;
+     }
+   }
+ }
 }
 }
 </style>

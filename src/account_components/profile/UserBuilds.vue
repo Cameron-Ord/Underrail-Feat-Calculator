@@ -46,39 +46,25 @@ onBeforeMount(()=>{
 
 </script>
 <template>
-    <div class="user_builds" v-if="user_builds.length > 0">
-        <div class="build_title_div">
-            <h3>{{ user_builds[index]['Build_Title'] }}</h3>
-        </div>
+    <div class="all_builds" v-if="user_builds.length > 0">
+        <h3 class="build_title">{{ user_builds[index]['Build_Title'] }}</h3>
         <div class="loop_div"> 
             <div class="seperator" v-if="user_builds[index]['Feat_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>FEATS:</h3>
-                </div>
+                <h3 class="loop_header">FEATS:</h3>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(feat, f) in user_builds[index]['Feat_Slice']" :key="f">
-                        <p>{{ feat['Name'] }}</p>
-                    </div>
+                    <p v-for="(feat, f) in user_builds[index]['Feat_Slice']" :key="f">{{ feat['Name'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="user_builds[index]['Skill_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>SKILLS:</h3>
-                </div>
+                <h3 class="loop_header">SKILLS:</h3>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(skill, s) in user_builds[index]['Skill_Slice']" :key="s">
-                        <p>{{ skill['Name'] }} - {{ skill['Value'] }}</p>
-                    </div>
+                    <p v-for="(skill, s) in user_builds[index]['Skill_Slice']" :key="s"> {{ skill['Name'] }} - {{ skill['Value'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="user_builds[index]['Stat_Slice'].length > 0">
-                <div class="loop_header">
-                    <h3>STATS:</h3>
-                </div>
+                <h3 class="loop_header">STATS:</h3>
                 <div class="loop_container">
-                    <div class="inner_loop_div" v-for="(stat, t) in user_builds[index]['Stat_Slice']" :key="t">
-                        <p>{{ stat['Name'] }} - {{ stat['Value'] }}</p>
-                    </div>
+                    <p v-for="(stat, t) in user_builds[index]['Stat_Slice']" :key="t">{{ stat['Name'] }} - {{ stat['Value'] }}</p>
                 </div>
             </div>
         </div>
@@ -90,108 +76,102 @@ onBeforeMount(()=>{
 </template>
 
 <style lang="scss" scoped>
-.user_builds{
+.all_builds{
     display: grid;
     align-items: center;
     grid-template-rows: auto;
     width: 100%;
-    row-gap: 50px;
+    row-gap: 25px;
     justify-items: center;
-    >.build_title_div{
-            padding-top: 10px;
-            padding-bottom: 10px;
-            display: grid;
-            align-items: center;
-            justify-items: center;
-            >h3{
-                padding: 5px;
-                border-top: solid var(--orange) 1px;
-                border-bottom: solid var(--orange) 1px;
-            }
-        }
 
+        >.build_title{
+            justify-self: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            border: solid var(--orange) 1px;
+            border-radius: 10px;
+        }
+        
     >.index_controls{
         justify-items: center;
         display: grid;
         align-items: center;
-        grid-template-columns: 1fr 1fr;
+        row-gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
         width: 85%;
         >p{
             cursor: pointer;
-            padding: 5px;
-            border-top: solid var(--orange) 1px;
-            border-bottom: solid var(--orange) 1px;
+            justify-self: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            border: solid var(--orange) 1px;
+            border-radius: 10px;
         }
     }
     >.loop_div{
-        width: 90%;
-        max-width: 600px;
+        width: 100%;
         display: grid;
         align-items: center;
         grid-template-rows: auto;
         row-gap:25px;
         padding-top: 25px;
         padding-bottom: 25px;
+
         >.seperator{
+            width: 100%;
             display: grid;
             align-items: center;
             grid-template-rows: auto;
             row-gap: 25px;
             justify-items: center;
-            
+
             >.loop_header{
-                display: grid;
-                justify-items: center;
+                justify-self: center;
                 text-align: center;
             }
             >.loop_container{
+                text-align: center;
+                width: 90%;
                 display: grid;
                 align-items: center;
-                grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
                 justify-items: center;
                 grid-template-rows: auto;
+                grid-template-columns: repeat(auto-fit, minmax(175px,1fr));
                 row-gap: 10px;
-                width: 85%;
                 padding-top: 25px;
                 padding-bottom: 25px;
-                box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
-                border: solid var(--orange) 1px;
-                >.inner_loop_div{
-                    display: grid;
-                    justify-items: center;
-                    text-align: center;
-                    width: 80%;
+                >p{
+                    width: 100%;
                 }
             }
         }
     }
 }
 @media only screen and (min-width: 770px){
-    .user_builds{
-        row-gap: 75px;
+    .all_builds{
+    
+        >.build_title{
+        }
+        
     >.index_controls{
- 
+        width: 75%;
         >p{
-   
         }
     }
     >.loop_div{
-        max-width: 700px;
-        width: 80%;
-   
-
+    
         >.seperator{
-   
+          
             >.loop_header{
-
             }
             >.loop_container{
-                grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-           
-  
-                
-                >.inner_loop_div{
-       
+                width: 80%;
+                grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+                >p{
                 }
             }
         }
@@ -200,36 +180,29 @@ onBeforeMount(()=>{
 }
 
 @media only screen and (min-width: 1024px){
-    .user_builds{
-
+    .all_builds{
+    
+    >.build_title{
+    }
+    
 >.index_controls{
-    width: 30%;
+    width: 45%;
     >p{
-
     }
 }
 >.loop_div{
-    max-width: none;
-    width: 90%;
-    grid-template-columns:  1fr 1fr 1fr;
-
+    grid-template-columns: 1fr 1fr 1fr;
     >.seperator{
-        
+      
         >.loop_header{
-
         }
         >.loop_container{
-            
             grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-       
-
-            
-            >.inner_loop_div{
-   
+            >p{
             }
         }
     }
 }
-}
+}   
 }
 </style>

@@ -242,21 +242,17 @@ const end_decrease = () =>{
 }
 @media only screen and (min-width: 770px){
     ._skill_content{
-        width: 85%;
- 
+
     >.limit_counter{
     }
     >.element_wrapper{
-        grid-template-columns: repeat(auto-fit,minmax(275px,1fr));
 
+        grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
         >._loop_div{
- 
-         
-                >._skill_tag{
-                }
+            >._skill_tag{
+            }
             
             >._skill_values{
-                
                 >._plus{
                 }
                 >._minus{
@@ -269,28 +265,26 @@ const end_decrease = () =>{
 
 @media only screen and (min-width: 1024px){
     ._skill_content{
-        row-gap: 25px;
-        width: 70%;
- 
-    >.limit_counter{
-    }
-    >.element_wrapper{
-        grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
-        >._loop_div{
- 
-         
-                >._skill_tag{
-                }
-            
-            >._skill_values{
-                
-                >._plus{
-                }
-                >._minus{
-                }
+        row-gap: 50px;
+        justify-items: center;
+>.limit_counter{
+}
+>.element_wrapper{
+    width: 60%;
+    height: 500px;
+    grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
+    >._loop_div{
+        >._skill_tag{
+        }
+        
+        >._skill_values{
+            >._plus{
+            }
+            >._minus{
             }
         }
     }
+}
 }
 }
 </style>

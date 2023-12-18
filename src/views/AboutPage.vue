@@ -59,6 +59,12 @@ onBeforeMount(()=>{
       row-gap: 30px;
     }
 }
+@media only screen and (min-width: 770px){
+  .about_page{
+    >.about_section{
+    }
+}
+}
 @media only screen and (min-width: 1024px){
   .about_page{
     grid-template-rows: 1fr;

@@ -243,58 +243,55 @@ const end_decrease = () =>{
     }
 }
 @media only screen and (min-width: 770px){
-    ._stat_content{    
-        width: 85%;
+    ._stat_content{
 
-        >.limit_counter{
+    >.limit_counter{
+    }
+    >.element_wrapper{
+        grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
 
-        }
-        >.element_wrapper{
-            grid-template-columns: repeat(auto-fit,minmax(275px,1fr));
+        >._loop_div{
+            >._stat_tag{
+            }
 
-            
-            >._loop_div{
-
-                
-                >._stat_tag{
+        
+            >._stat_values{
+                >._plus{
                 }
+                >._minus{
 
-                >._stat_values{
-                
-                    >._plus{
-                    }
-                    >._minus{
-                }
                 }
             }
         }
     }
 }
+}
 
 @media only screen and (min-width: 1024px){
-    ._stat_content{    
-        row-gap: 25px;
-        width: 70%;
+    ._stat_content{
+        justify-items: center;
+        row-gap: 50px;
+>.limit_counter{
+}
+>.element_wrapper{
+    height: 500px;
+    width: 60%;
+    grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
 
-        >.limit_counter{
-
+    >._loop_div{
+        >._stat_tag{
         }
-        >.element_wrapper{
-            grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
 
-            >._loop_div{
-                >._stat_tag{
-                }
+    
+        >._stat_values{
+            >._plus{
+            }
+            >._minus{
 
-                >._stat_values{
-                
-                    >._plus{
-                    }
-                    >._minus{
-                }
-                }
             }
         }
     }
+}
+}
 }
 </style>

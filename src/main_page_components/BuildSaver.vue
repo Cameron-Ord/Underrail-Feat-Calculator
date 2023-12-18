@@ -91,19 +91,22 @@ const submit_build = async (input_tag_content) => {
         max-width: 175px;
     }
     >h3{
-        cursor: pointer;
-        padding-top: 2.5px;
-        padding-bottom: 2.5px;
-        border-bottom: solid var(--orange) 1px;
-        border-top: solid var(--orange) 1px;
         text-align: center;
+        padding-top: 3px;
+        padding-bottom: 3px;
+        padding-left: 5.5px;
+        padding-right: 5.5px;
+        border: solid var(--orange) 1px;
+        border-radius: 10px;
+        cursor: pointer;
+        justify-self: center;
     }
 }
 @media only screen and (min-width: 770px){
     .build_saver{
  
     >input{
-        max-width: 225px;
+        
     }
     >h3{
    
@@ -115,7 +118,7 @@ const submit_build = async (input_tag_content) => {
     .build_saver{
  
  >input{
-    max-width: 225px;
+
 
  }
  >h3{

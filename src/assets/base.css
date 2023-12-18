@@ -41,6 +41,7 @@ p{
   color: var(--orange);
   word-break: normal;
   word-wrap: break-word;
+  letter-spacing: 0.8px;
 }
 
 img{

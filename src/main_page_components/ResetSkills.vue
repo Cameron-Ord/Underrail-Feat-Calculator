@@ -16,6 +16,19 @@ const reset_grid=()=>{
     calc_wrapper['style']['grid-template-rows'] = '';
 }
 
+const go_to_top=()=>{
+    setTimeout(()=>{
+        const top = document.querySelector('._sheet_wrapper');
+        if(top){
+            const element_rect = top.getBoundingClientRect();
+            const element_y = window.scrollY + element_rect.top;
+            window.scrollTo({
+                top:element_y,
+                behavior:'smooth',
+            });
+        }
+    },100)
+}
 
 const set_default_values = () =>{
     updateFeatsAreLoaded(false);
@@ -37,6 +50,7 @@ const set_default_values = () =>{
     skill_store_instance.state.skill_count_limiter = skill_limiter;
     skill_store_instance.state.skill_items_array = skill_items;
     reset_grid()
+    go_to_top()
 }
 </script>
 
