@@ -70,10 +70,11 @@ const add_feat = (feat_ref) => {
         }
     } else {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
-        if(feat_array.length > 0 && feat_array.length < 15){
+        if(feat_array.length > 0 && feat_array.length <= 15){
             cookies.set('chosen_feats', JSON.stringify(feat_array));
+            console.log(feat_array.length)
             return [true, feat_array]
-        } else if(feat_array.length >= 15){
+        } else if(feat_array.length > 15){
             console.log('reached maximum allowed feats')
             return [false, feat_array]
         } else {
@@ -185,12 +186,13 @@ const handle_click = (feat_ref, index) => {
         width: 100%;
         padding-top: 10px;
         padding-bottom: 10px;
-        grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
+        row-gap: 35px;
+        grid-template-columns: repeat(auto-fit, minmax(175px,1fr));
         >.feat_container{
             display: grid;
             align-items: center;
             justify-items: center;
-            row-gap: 15px;
+            row-gap: 10px;
             width: 90%;
 
             >img{

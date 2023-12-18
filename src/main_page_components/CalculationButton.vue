@@ -129,7 +129,7 @@ const generate_feat_list = async () =>  {
     let response;
     if(stat_items.length > 0 && skill_items.length > 0){
         try{
-                response = await invoke_axios(stat_items, skill_items);
+            response = await invoke_axios(stat_items, skill_items);
         } catch (error) {
             console.log("failed to resolve promise");
             feat_store_instance.state.svg_list = undefined;
