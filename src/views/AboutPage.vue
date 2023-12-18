@@ -45,7 +45,8 @@ onBeforeMount(()=>{
 .about_page{
     padding-top: 50px;
     padding-bottom: 50px;
-    grid-template-rows: 0.85fr 1fr 0.85fr;
+    grid-template-rows: auto auto auto;
+    row-gap: 50px;
     display: grid;
     align-items: center;
     min-height: 100vh;

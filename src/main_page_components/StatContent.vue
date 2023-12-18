@@ -7,6 +7,8 @@ const stat_store_instance = useStatStore();
 let stat_items_array = ref(stat_store_instance.state.stat_items_array);
 let stat_count_limiter = ref(stat_store_instance.state.stat_count_limiter);
 const stats = stat_store_instance.state.stats_list;
+const increm_interval = ref(null);
+const decrem_interval = ref(null);
 
 watch(()=> stat_store_instance.state.stat_count_limiter, (newVal) =>{
     stat_count_limiter.value = newVal
@@ -22,6 +24,9 @@ const set_cookies = () =>{
     cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
 }
 const increaseValue=(i, event)=>{
+    if(event.type === "touchstart"){
+        return
+    }
     console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
     const max_points = 46;
     if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
@@ -46,6 +51,9 @@ const increaseValue=(i, event)=>{
     }
 }
 const decreaseValue=(i,event)=>{
+    if(event.type === "touchstart"){
+        return
+    }
     console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
     const minStatValue = 3;
     if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
@@ -70,6 +78,67 @@ const decreaseValue=(i,event)=>{
         }
     }
 }
+const decrease_updater = (i) =>{
+    const minStatValue = 3;
+    if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
+        const currentStatValue = stat_store_instance.state.stat_items_array[i].statValue;
+        if (currentStatValue > minStatValue) {
+            let updatedLimiter = stat_count_limiter.value;
+            const updatedArray = [...stat_items_array.value];
+            let decreaseAmount;
+            decreaseAmount = Math.min(1, currentStatValue - minStatValue);
+            updatedArray[i].statValue -= decreaseAmount;
+            updatedLimiter -= decreaseAmount;
+            stat_store_instance.state.stat_items_array = updatedArray;
+            stat_store_instance.state.stat_count_limiter = updatedLimiter;
+        }
+    }
+}
+
+const increase_updater = (i) =>{
+    const max_points = 46;
+    if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
+        const current_stat_value = stat_store_instance.state.stat_items_array[i].statValue;
+        const maximum_increase = Math.min(max_points - stat_count_limiter.value, 20 - current_stat_value);   
+        if(maximum_increase > 0) {
+            let updated_limiter = stat_count_limiter.value;
+            const updated_array = [...stat_items_array.value];
+            let increase_amount;
+            increase_amount = Math.min(1, maximum_increase);
+            updated_array[i].statValue += increase_amount;
+            updated_limiter += increase_amount;
+            stat_store_instance.state.stat_items_array = updated_array;
+            stat_store_instance.state.stat_count_limiter = updated_limiter;
+        }
+    }
+}
+const increase_mobile = (i, event) =>{
+    if(event.type === "click"){
+        return
+    }
+    increm_interval.value = setInterval(()=>{
+        increase_updater(i)       
+    }, 150);
+}
+
+const decrease_mobile = (i, event) =>{
+    if(event.type === "click"){
+        return
+    }
+    decrem_interval.value = setInterval(()=>{
+        decrease_updater(i)       
+    }, 150);
+}
+
+const end_increase = () =>{
+    clearInterval(increm_interval.value);
+    increm_interval.value = null;
+}
+
+const end_decrease = () =>{
+    clearInterval(decrem_interval.value);
+    decrem_interval.value = null;
+}
 
 </script>
 
@@ -86,6 +155,8 @@ const decreaseValue=(i,event)=>{
                         alt="plus"
                         class="_plus"
                         @click="increaseValue(i,$event)"
+                        @touchstart.prevent="increase_mobile(i, $event)"
+                        @touchend.prevent="end_increase"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -94,6 +165,8 @@ const decreaseValue=(i,event)=>{
                         alt="minus"
                         class="_minus"
                         @click="decreaseValue(i,$event)"
+                        @touchstart.prevent="decrease_mobile(i, $event)"
+                        @touchend.prevent="end_decrease"
                         :clicked_minus="i"
                         ref="_minus_svg"
                     />

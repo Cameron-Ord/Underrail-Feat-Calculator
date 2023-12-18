@@ -9,8 +9,8 @@ const go_to_linkedin=()=>{
 
 <template>
     <div class="hero_about">
-        <img @click="go_to_github" class="img_tag" src="/images/GitHub_Logo_White.png" alt="">
-        <img @click="go_to_linkedin" src="/images/linkedin.svg" alt="">
+        <h2 @click="go_to_github">GitHub</h2>
+        <h2 @click="go_to_linkedin">LinkedIn</h2>
     </div>
 </template>
 <style lang="scss" scoped>
@@ -18,11 +18,19 @@ const go_to_linkedin=()=>{
     display: grid;
     align-items: center;
     justify-items: center;
-    grid-template-columns: 1fr 1fr;
-    
-    >.img_tag{
-        width: 75px;
+    width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+    grid-template-rows: auto auto;
+    row-gap: 10px;
+
+    >h2{
         cursor: pointer;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        padding-left: 7.5px;
+        padding-right: 7.5px;
+        border: solid var(--orange) 1px;
+        border-radius: 10px;
     }
 }
 </style>

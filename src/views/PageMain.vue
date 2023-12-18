@@ -212,7 +212,7 @@ onBeforeMount(()=>{
     >._sheet_wrapper{
       display: grid;
       align-items: center;
-      row-gap: 20px;
+      row-gap: 30px;
       padding-top: 20px;
       padding-bottom: 20px;
 
@@ -221,6 +221,7 @@ onBeforeMount(()=>{
         align-items: center;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
         justify-items: center;
+        row-gap: 10px;
       }
     }
   }

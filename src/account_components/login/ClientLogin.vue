@@ -58,10 +58,13 @@ const submit_login_form = async (username, password) =>{
     justify-items: center;
     grid-template-rows: 50px 50px 75px;
     >h3{
+        cursor: pointer;
         padding-top: 5px;
         padding-bottom: 5px;
-        border-top: solid var(--orange) 1px;
-        border-bottom: solid var(--orange) 1px;
+        padding-left: 7.5px;
+        padding-right: 7.5px;
+        border: solid var(--orange) 1px;
+        border-radius: 10px;
     }
     >input{
         box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.2);

@@ -24,22 +24,16 @@
     justify-items: center;
     text-align: start;
     row-gap: 25px;
-    padding-top: 25px;
-    padding-bottom: 25px;
-    border-top: solid var(--orange) 1px;
-    border-bottom: solid var(--orange) 1px;
-    box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
+    padding-top: 10px;
+    padding-bottom: 10px;
     
     >p{
         width: 90%;
-        text-shadow: 2px 2px 4px rgba(226, 113, 0, 0.20);
     }
 }
 @media only screen and (min-width: 770px){
     .hero_about{
         width: 80%;
-        border-left: solid var(--orange) 1px;
-        border-right: solid var(--orange) 1px;
     >p{
         width: 80%;
     }

@@ -212,11 +212,13 @@ const goto_about = () =>{
             align-items: center;
             justify-items: center;
             >h3{
-                padding-bottom: 5px;
-                padding-top: 5px;
                 cursor: pointer;
-                border-top: solid var(--orange) 1px;
-                border-bottom: solid var(--orange) 1px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                padding-left: 7.5px;
+                padding-right: 7.5px;
+                border: solid var(--orange) 1px;
+                border-radius: 10px;
             }
         }
     }

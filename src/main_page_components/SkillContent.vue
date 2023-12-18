@@ -8,6 +8,8 @@ const {cookies} = useCookies()
 let skill_items_array = ref(skill_store_instance.state.skill_items_array);
 let skill_count_limiter = ref(skill_store_instance.state.skill_count_limiter);
 const skills = skill_store_instance.state.skills_list;
+const increm_interval = ref(null);
+const decrem_interval = ref(null);
 
 watch(()=> skill_store_instance.state.skill_count_limiter, (newVal) =>{
     skill_count_limiter.value = newVal
@@ -22,6 +24,10 @@ const set_cookies = () =>{
     cookies.set('skill_array_values', JSON.stringify(skill_items_array.value));
 }
 const increaseValue=(i, event)=>{
+    if(event.type === "touchstart"){
+        return
+    }
+    console.log("click")
     const max_points = 1280;
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
@@ -45,6 +51,10 @@ const increaseValue=(i, event)=>{
     }
 }
 const decreaseValue=(i,event)=>{
+    if(event.type === "touchstart"){
+        return
+    }
+    console.log("click")
     const minSkillValue = 0
     if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
         const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
@@ -66,6 +76,69 @@ const decreaseValue=(i,event)=>{
         }
     }
 }
+
+
+const increase_updater = (i) =>{
+    const max_points = 1280;
+    if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
+        const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
+        const maximum_increase = Math.min(max_points - skill_count_limiter.value, 160 - current_skill_value);
+        if(maximum_increase > 0){
+            let updated_limiter = skill_count_limiter.value
+            const updated_array = [...skill_items_array.value];
+            let increase_amount;
+            increase_amount = Math.min(5, maximum_increase);
+            updated_array[i].skillValue+=increase_amount;
+            updated_limiter+=increase_amount;
+            skill_store_instance.state.skill_items_array = updated_array;
+            skill_store_instance.state.skill_count_limiter = updated_limiter;
+        }
+    }
+}
+const decrease_updater = (i) =>{
+    const minSkillValue = 0
+    if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
+        const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
+        if(current_skill_value > minSkillValue){
+            let updated_limiter = skill_count_limiter.value;
+            const updated_array = [...skill_items_array.value];
+            let decrease_amount;
+            decrease_amount = Math.min(5, current_skill_value);
+            updated_array[i].skillValue-=decrease_amount;
+            updated_limiter-=decrease_amount;
+            skill_store_instance.state.skill_items_array = updated_array;
+            skill_store_instance.state.skill_count_limiter = updated_limiter;
+        }
+        
+    }
+}
+
+const increase_mobile = (i, event) =>{
+    if(event.type === "click"){
+        return
+    }
+    increm_interval.value = setInterval(()=>{
+        increase_updater(i)       
+    }, 150);
+}
+
+const decrease_mobile = (i, event) =>{
+    if(event.type === "click"){
+        return
+    }
+    decrem_interval.value = setInterval(()=>{
+        decrease_updater(i)       
+    }, 150);
+}
+const end_increase = () =>{
+    clearInterval(increm_interval.value);
+    increm_interval.value = null;
+}
+
+const end_decrease = () =>{
+    clearInterval(decrem_interval.value);
+    decrem_interval.value = null;
+}
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">
@@ -80,6 +153,8 @@ const decreaseValue=(i,event)=>{
                         alt="plus"
                         class="_plus"
                         @click="increaseValue(i,$event)"
+                        @touchstart.prevent="increase_mobile(i, $event)"
+                        @touchend.prevent="end_increase"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -88,6 +163,8 @@ const decreaseValue=(i,event)=>{
                         alt="minus"
                         class="_minus"
                         @click="decreaseValue(i,$event)"
+                        @touchstart.prevent="decrease_mobile(i, $event)"
+                        @touchend.prevent="end_decrease"
                         :clicked_minus="i"
                         ref="_minus_svg"
                     />

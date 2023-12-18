@@ -51,20 +51,20 @@ onBeforeMount(()=>{
         <div class="loop_div"> 
             <div class="seperator" v-if="all_builds[index]['Feat_Slice'].length > 0">
                 <h3 class="loop_header">FEATS:</h3>
-                <div class="loop_container" v-for="(feat, f) in all_builds[index]['Feat_Slice']" :key="f">
-                    <p>{{ feat['Name'] }}</p>
+                <div class="loop_container">
+                    <p v-for="(feat, f) in all_builds[index]['Feat_Slice']" :key="f">{{ feat['Name'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="all_builds[index]['Skill_Slice'].length > 0">
                 <h3 class="loop_header">SKILLS:</h3>
-                <div class="loop_container" v-for="(skill, s) in all_builds[index]['Skill_Slice']" :key="s">
-                    <p>{{ skill['Name'] }} - {{ skill['Value'] }}</p>
+                <div class="loop_container">
+                    <p v-for="(skill, s) in all_builds[index]['Skill_Slice']" :key="s"> {{ skill['Name'] }} - {{ skill['Value'] }}</p>
                 </div>
             </div>
             <div class="seperator" v-if="all_builds[index]['Stat_Slice'].length > 0">
                 <h3 class="loop_header">STATS:</h3>
-                <div class="loop_container" v-for="(stat, t) in all_builds[index]['Stat_Slice']" :key="t">
-                    <p>{{ stat['Name'] }} - {{ stat['Value'] }}</p>
+                <div class="loop_container">
+                    <p v-for="(stat, t) in all_builds[index]['Stat_Slice']" :key="t">{{ stat['Name'] }} - {{ stat['Value'] }}</p>
                 </div>
             </div>
         </div>
@@ -81,15 +81,15 @@ onBeforeMount(()=>{
     align-items: center;
     grid-template-rows: auto;
     width: 100%;
-    row-gap: 50px;
+    row-gap: 25px;
     justify-items: center;
 
         >.build_title{
             justify-self: center;
             padding-top: 5px;
             padding-bottom: 5px;
-            padding-top: 7.5px;
-            padding-top: 7.5px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
             border: solid var(--orange) 1px;
             border-radius: 10px;
         }
@@ -98,18 +98,22 @@ onBeforeMount(()=>{
         justify-items: center;
         display: grid;
         align-items: center;
-        grid-template-columns: 1fr 1fr;
+        row-gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
         width: 85%;
         >p{
             cursor: pointer;
-            padding: 5px;
-            border-top: solid var(--orange) 1px;
-            border-bottom: solid var(--orange) 1px;
+            justify-self: center;
+            padding-top: 5px;
+            padding-bottom: 5px;
+            padding-left: 7.5px;
+            padding-right: 7.5px;
+            border: solid var(--orange) 1px;
+            border-radius: 10px;
         }
     }
     >.loop_div{
-        width: 90%;
-        max-width: 600px;
+        width: 100%;
         display: grid;
         align-items: center;
         grid-template-rows: auto;
@@ -118,6 +122,7 @@ onBeforeMount(()=>{
         padding-bottom: 25px;
 
         >.seperator{
+            width: 100%;
             display: grid;
             align-items: center;
             grid-template-rows: auto;
@@ -125,27 +130,22 @@ onBeforeMount(()=>{
             justify-items: center;
 
             >.loop_header{
-                display: grid;
-                justify-items: center;
+                justify-self: center;
                 text-align: center;
             }
             >.loop_container{
+                text-align: center;
+                width: 90%;
                 display: grid;
                 align-items: center;
-                grid-template-columns: repeat(auto-fit, minmax(125px,1fr));
                 justify-items: center;
                 grid-template-rows: auto;
+                grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
                 row-gap: 10px;
-                width: 85%;
                 padding-top: 25px;
                 padding-bottom: 25px;
-                box-shadow: 0 0 5px 2.5px rgba(226, 113, 0, 0.5);
-                border: solid var(--orange) 1px;
-                >.inner_loop_div{
-                    display: grid;
-                    justify-items: center;
-                    text-align: center;
-                    width: 80%;
+                >p{
+                    width: 100%;
                 }
             }
         }
