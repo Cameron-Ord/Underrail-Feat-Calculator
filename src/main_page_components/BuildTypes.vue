@@ -27,21 +27,107 @@
     </div>
 </template>
 
+<style lang="scss" scoped>
+
+.class_types_div{
+
+    display: grid;
+    align-items: center;
+    justify-self: center;
+    justify-items: center;
+    text-align: center;
+    row-gap: 35px;
+    overflow-y: auto;
+    height: 400px;
+    width: 90%;
+    grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+    >p{
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+        padding-top: 2px;
+        padding-right: 4px;
+        padding-left: 4px;
+        padding-bottom: 2px;
+        border-radius: 7px;
+    }
+
+    >p:hover{
+        text-shadow: 2px 2px 3px var(--orange_rgba);
+        font-size: 1.05em;
+        font-weight: 400;
+    }
+}
+
+@media only screen and (min-width: 770px){
+    .class_types_div{
+        display: grid;
+        align-items: center;
+        justify-self: center;
+        justify-items: center;
+        width: 80%;
+        grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+    }
+}
+
+@media only screen and (min-width: 1024px){
+    .class_types_div{
+        display: grid;
+        align-items: center;
+        justify-self: center;
+        justify-items: center;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        width: 80%;
+        >p{
+        transition: 0.3s ease-in-out;
+        cursor: pointer;
+        padding-top: 2px;
+        padding-right: 4px;
+        padding-left: 4px;
+        padding-bottom: 2px;
+        border-radius: 7px;
+    }
+
+    >p:hover{
+        text-shadow: 2px 2px 4px var(--orange_rgba);
+        font-size: 1.4em;
+        font-weight: 400;
+    }
+    }
+}
+</style>
+
 <script setup>
+import { onBeforeMount } from 'vue';
 import { useCookies } from 'vue3-cookies';
 const {cookies} = useCookies();
 
-const remove_from_array = (array, index) =>{
-    console.log("SENT: ",array)
+onBeforeMount(()=>{
+    cookies.remove('char_types_array');
+})
+
+const remove_from_array = (array, index, event) =>{
     array.splice(index, 1);
     cookies.set('char_types_array', JSON.stringify(array));
-    console.log("RETURNED: ",array)
+    event.target.style['font-size'] = '';
+    event.target.style['font-weight'] = '';
+    event.target.style['text-shadow'] = '';
+
     return array;
 }
 
 const add_to_array = (event, sent_array) =>{
     sent_array.push(event.target.innerText)
     cookies.set('char_types_array', JSON.stringify(sent_array))
+
+    if(window.innerWidth >= 1024){        
+        event.target.style['font-size'] = '1.5em';
+        event.target.style['font-weight'] = '700';
+        event.target.style['text-shadow'] = '2px 2px 4px var(--orange_rgba)';
+    } else {
+        event.target.style['font-size'] = '1.12em';
+        event.target.style['font-weight'] = '700';
+        event.target.style['text-shadow'] = '2px 2px 4px var(--orange_rgba)';
+    }
 }
 
 const toggle_type = (event)=>{
@@ -74,7 +160,7 @@ const toggle_type = (event)=>{
         spliced_arr = [..._parsed_]
         for(let k = items_to_remove.length - 1; k >= 0; k--){
             const index = items_to_remove[k]
-            spliced_arr = remove_from_array(spliced_arr, index);
+            spliced_arr = remove_from_array(spliced_arr, index, event);
         }
     }
 
@@ -87,6 +173,3 @@ const toggle_type = (event)=>{
 
 </script>
 
-<style lang="scss" scoped>
-
-</style>

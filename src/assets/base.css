@@ -2,6 +2,7 @@
   --black: #000;
   --orange: #E27100;
   --text: #AE5700;
+  --orange_rgba: rgba(226, 113, 0, 0.20);
 }
 
 body{

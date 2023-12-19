@@ -145,7 +145,7 @@ onBeforeMount(() => {
                 align-items: center;
                 justify-items: center;
                 grid-template-rows: auto;
-                grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
                 row-gap: 10px;
                 padding-top: 25px;
                 padding-bottom: 25px;
