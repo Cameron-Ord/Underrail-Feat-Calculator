@@ -32,12 +32,15 @@ import { useCookies } from 'vue3-cookies';
 const {cookies} = useCookies();
 
 const remove_from_array = (array, index) =>{
+    console.log("SENT: ",array)
     array.splice(index, 1);
-    cookies.set('char_types_array', JSON.stringify(array))
+    cookies.set('char_types_array', JSON.stringify(array));
+    console.log("RETURNED: ",array)
+    return array;
 }
 
-const add_to_array = (item, sent_array) =>{
-    sent_array.push(item)
+const add_to_array = (event, sent_array) =>{
+    sent_array.push(event.target.innerText)
     cookies.set('char_types_array', JSON.stringify(sent_array))
 }
 
@@ -47,14 +50,14 @@ const toggle_type = (event)=>{
     if(_parsed_ === null){
         console.log('Was null')
         let arr = []
-        add_to_array(event.target.innerText, arr);
+        add_to_array(event, arr);
         return
     }
 
     if(_parsed_.length === 0){
         console.log('Was []')
         let arr = []
-        add_to_array(event.target.innerText, arr);
+        add_to_array(event, arr);
         return
     }
 
@@ -62,19 +65,24 @@ const toggle_type = (event)=>{
     for(let i = 0; i < _parsed_.length; i++){
         const arr_substr = _parsed_[i];
         if(arr_substr === event.target.innerText){
-            const item_to_remove = i;
-            items_to_remove.push(item_to_remove)
+            items_to_remove.push(i)
         }
     }
 
+    let spliced_arr = undefined;
     if(items_to_remove.length > 0) {
-        for(let k = 0; k < items_to_remove.length; k++){
+        spliced_arr = [..._parsed_]
+        for(let k = items_to_remove.length - 1; k >= 0; k--){
             const index = items_to_remove[k]
-            remove_from_array(_parsed_, index);
+            spliced_arr = remove_from_array(spliced_arr, index);
         }
     }
 
-    add_to_array(event.target.innerText, _parsed_);
+    if(spliced_arr !== undefined){
+        return
+    }
+
+    add_to_array(event, _parsed_);
 }
 
 </script>
