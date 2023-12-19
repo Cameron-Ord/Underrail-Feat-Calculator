@@ -274,8 +274,8 @@ const end_decrease = () =>{
 >.limit_counter{
 }
 >.element_wrapper{
-    height: 500px;
-    width: 60%;
+    height: 450px;
+    width: 50%;
     grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
 
     >._loop_div{

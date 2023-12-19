@@ -8,6 +8,8 @@ import SkillContent from '../main_page_components/SkillContent.vue';
 import ResetSkills from '../main_page_components/ResetSkills.vue';
 import ViewStats from '../main_page_components/ViewStats.vue';
 import BuildSaver from '../main_page_components/BuildSaver.vue';
+import BuildTypes from '../main_page_components/BuildTypes.vue';
+
 import { useCookies } from 'vue3-cookies';
 import { onBeforeMount,ref,provide, watch} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
@@ -163,6 +165,11 @@ onBeforeMount(()=>{
           </div>
       </article>
     </section>
+    <section class="type_selection">
+      <article class="selection_article">
+        <build-types></build-types>
+      </article>
+    </section>
     <section class="_calculation_container">
       <article class="_calc_wrapper">
         <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
@@ -187,7 +194,8 @@ onBeforeMount(()=>{
   display: grid;
   align-items: center;
   min-height: 100vh;
-  grid-template-rows: 1fr 0.25fr;
+  row-gap: 75px;
+  grid-template-rows: auto auto auto;
 
   >._calculation_container{
     display: grid;
@@ -225,6 +233,19 @@ onBeforeMount(()=>{
       }
     }
   }
+  >.type_selection{
+    display: grid;
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    >.selection_article{
+      display: grid;
+      align-items: center;
+      row-gap: 30px;
+      padding-top: 20px;
+      padding-bottom: 20px;
+    }
+  }
 }
 @media only screen and (min-width: 770px){
   ._page_main{
@@ -242,6 +263,11 @@ onBeforeMount(()=>{
       >.view_controls{
         width: 75%;
       }
+    }
+  }
+  >.type_selection{
+    >.selection_article{
+
     }
   }
 }
@@ -265,6 +291,11 @@ onBeforeMount(()=>{
      }
    }
  }
+ >.type_selection{
+    >.selection_article{
+
+    }
+  }
 }
 }
 </style>

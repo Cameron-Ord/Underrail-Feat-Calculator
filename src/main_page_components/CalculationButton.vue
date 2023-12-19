@@ -38,14 +38,15 @@ const make_visible = (sent_bool) => {
     updateSvgsAreLoaded(sent_bool)
 }
 
-const invoke_axios = (stat_items, skill_items) =>{
+const invoke_axios = (stat_items, skill_items, char_type) =>{
     return new Promise((resolve, reject) => {
         axios({
         url:`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`,
         method: "POST",
         data:{
             stats:stat_items,
-            skills:skill_items
+            skills:skill_items,
+            type:char_type
         }
         }).then((response)=>{
             resolve(response);
@@ -58,13 +59,20 @@ const invoke_axios = (stat_items, skill_items) =>{
 const retrieve_cookies = () => {
     const stat_items = cookies.get('stat_array_values');
     const skill_items = cookies.get('skill_array_values');
+    const char_type = cookies.get('char_types_array');
     try {
         const parsed_stat_items = JSON.parse(stat_items);
         const parsed_skill_items = JSON.parse(skill_items);
+        let parsed_char_type = JSON.parse(char_type);
+
+        if(parsed_char_type === null) {
+            parsed_char_type = ""
+        }
+
         if(parsed_skill_items === null || parsed_stat_items === null){
-            return [[],[]]
+            return [[],[],[]]
         } else {
-            return [parsed_stat_items, parsed_skill_items]
+            return [parsed_stat_items, parsed_skill_items, parsed_char_type]
         }
     } catch (error) {
         console.log('Error parsing JSON')
@@ -120,16 +128,27 @@ const move_viewpoint = () =>{
     },100);
 }
 
+
+const concatenate_array = (char_types) =>{
+    let created_str = "";
+    for(let i = 0; i < char_types.length; i++){
+        const sub_str = char_types[i];
+        created_str += sub_str + " ";
+    }
+    return created_str;
+}
+
 const generate_feat_list = async () =>  {
 
     cookies.remove('chosen_feats');
     const bool = feat_store_instance.mutators.update_can_save_build(false);
     feat_store_instance.state.can_save_build = bool;
-    const [stat_items, skill_items] = retrieve_cookies();
+    const [stat_items, skill_items, char_types] = retrieve_cookies();
+    const concat_char_types = concatenate_array(char_types);
     let response;
     if(stat_items.length > 0 && skill_items.length > 0){
         try{
-            response = await invoke_axios(stat_items, skill_items);
+            response = await invoke_axios(stat_items, skill_items, concat_char_types);
         } catch (error) {
             console.log("failed to resolve promise");
             feat_store_instance.state.svg_list = undefined;

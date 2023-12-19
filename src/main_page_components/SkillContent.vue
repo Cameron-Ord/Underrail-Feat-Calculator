@@ -142,7 +142,7 @@ const end_decrease = () =>{
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">
-        <h3 class="limit_counter">Stat Points used: {{ skill_count_limiter }}/1280</h3>
+        <h3 class="limit_counter">Skill Points used: {{ skill_count_limiter }}/1280</h3>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in skill_items_array" :key="i">
                 <p class="_skill_tag">{{ skills[i] }}</p>
@@ -270,8 +270,8 @@ const end_decrease = () =>{
 >.limit_counter{
 }
 >.element_wrapper{
-    width: 60%;
-    height: 500px;
+    width: 50%;
+    height: 450px;
     grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
     >._loop_div{
         >._skill_tag{
