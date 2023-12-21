@@ -77,7 +77,6 @@ onMounted(()=>{
     }
 
     let images = document.querySelectorAll('.bt_tag_svg');
-    console.log(images)
     let loadedImages = 0;
 
     function checkAllImagesLoaded() {
