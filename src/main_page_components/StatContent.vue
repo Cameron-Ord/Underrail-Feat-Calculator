@@ -1,6 +1,6 @@
 <script setup>
 import { useCookies } from 'vue3-cookies';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 const {cookies} = useCookies()
 const stat_store_instance = useStatStore();
@@ -24,10 +24,11 @@ const set_cookies = () =>{
     cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
 }
 const increaseValue=(i, event)=>{
-    if(event.type === "touchstart"){
+    if(event.type !== "click"){
         return
     }
-    console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
+    event.target.style.width = '34px';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
     const max_points = 46;
     if (stat_count_limiter.value >= 21 && stat_count_limiter.value < 46) {
         const current_stat_value = stat_store_instance.state.stat_items_array[i].statValue;
@@ -49,12 +50,17 @@ const increaseValue=(i, event)=>{
             stat_store_instance.state.stat_count_limiter = updated_limiter;
         }
     }
+    setTimeout(()=>{
+        event.target.style.width = '';
+        event['target']['style']['background-color'] = '';
+    }, 175);
 }
 const decreaseValue=(i,event)=>{
-    if(event.type === "touchstart"){
+    if(event.type !== "click"){
         return
     }
-    console.log("BUTTON: ", i, "CRTL KEY: ", event.ctrlKey, "SHIFT KEY: ",event.shiftKey)
+    event.target.style.width = '34px';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
     const minStatValue = 3;
     if (stat_count_limiter.value > 21 && stat_count_limiter.value <= 46) {
         const currentStatValue = stat_store_instance.state.stat_items_array[i].statValue;
@@ -77,6 +83,10 @@ const decreaseValue=(i,event)=>{
             stat_store_instance.state.stat_count_limiter = updatedLimiter;
         }
     }
+    setTimeout(()=>{
+        event.target.style.width = '';
+        event['target']['style']['background-color'] = '';
+    }, 175);
 }
 const decrease_updater = (i) =>{
     const minStatValue = 3;
@@ -113,38 +123,57 @@ const increase_updater = (i) =>{
     }
 }
 const increase_mobile = (i, event) =>{
-    if(event.type === "click"){
+    if(event.type !== "touchstart"){
         return
     }
+    event.target.style.width = '34px'
     increm_interval.value = setInterval(()=>{
         increase_updater(i)       
     }, 150);
 }
 
 const decrease_mobile = (i, event) =>{
-    if(event.type === "click"){
+    if(event.type !== "touchstart"){
         return
     }
+    event.target.style.width = '34px'
     decrem_interval.value = setInterval(()=>{
         decrease_updater(i)       
     }, 150);
 }
 
-const end_increase = () =>{
+const end_increase = (event) =>{
+    if(event.type !== "touchend"){
+        return
+    }
     clearInterval(increm_interval.value);
     increm_interval.value = null;
+    event.target.style.width = ''
 }
 
-const end_decrease = () =>{
+const end_decrease = (event) =>{
+    if(event.type !== "touchend"){
+        return
+    }
     clearInterval(decrem_interval.value);
     decrem_interval.value = null;
+    event.target.style.width = ''
 }
+
+
+
+onMounted(()=>{
+    setTimeout(()=>{
+        let page = document.querySelector('._stat_content');
+        page['style']['opacity'] = '1';
+    },125)
+})
 
 </script>
 
 <template>
     <div class="_stat_content" v-if="stat_items_array !== null || stat_items_array !== undefined">
-        <h3 class="limit_counter">Stat Points used: {{ stat_count_limiter -21  }}/25</h3>
+        <h2 class="limit_counter">Stat Points used: {{ stat_count_limiter -21  }}/25</h2>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in stat_items_array" :key="i">
                 <p class="_stat_tag">{{ stats[i] }}</p>
@@ -156,7 +185,7 @@ const end_decrease = () =>{
                         class="_plus"
                         @click="increaseValue(i,$event)"
                         @touchstart.prevent="increase_mobile(i, $event)"
-                        @touchend.prevent="end_increase"
+                        @touchend.prevent="end_increase($event)"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -166,7 +195,7 @@ const end_decrease = () =>{
                         class="_minus"
                         @click="decreaseValue(i,$event)"
                         @touchstart.prevent="decrease_mobile(i, $event)"
-                        @touchend.prevent="end_decrease"
+                        @touchend.prevent="end_decrease($event)"
                         :clicked_minus="i"
                         ref="_minus_svg"
                     />
@@ -177,6 +206,8 @@ const end_decrease = () =>{
 </template>
 <style lang="scss" scoped>
 ._stat_content{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     display: grid;
     align-items: center;
     grid-template-rows: auto;
@@ -195,8 +226,8 @@ const end_decrease = () =>{
         display: grid;
         align-items: center;
         justify-items: center;
-        grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
-        height: 400px;
+        grid-template-columns: 1fr;
+        height: 500px;
         row-gap: 25px;
         overflow-y: auto;
         padding-top: 10px;
@@ -206,7 +237,7 @@ const end_decrease = () =>{
             text-align: center;
             display: grid;
             align-items: center;
-            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+            grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;
@@ -227,14 +258,19 @@ const end_decrease = () =>{
                 justify-items: center;
                 grid-template-columns: 1fr 1fr 1fr;
                 width: 90%;
+                max-width: 190px;
                 padding-top: 2.5px;
                 padding-bottom: 2.5px;
 
                 >._plus{
+                    padding: 2.5px;
+                    transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
                 >._minus{
+                    padding: 2.5px;
+                    transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
@@ -248,6 +284,8 @@ const end_decrease = () =>{
     >.limit_counter{
     }
     >.element_wrapper{
+        width: 90%;
+        justify-self: center;
         grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
 
         >._loop_div{
@@ -274,9 +312,9 @@ const end_decrease = () =>{
 >.limit_counter{
 }
 >.element_wrapper{
-    height: 450px;
-    width: 50%;
-    grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
+    height: 525px;
+    width: 75%;
+    grid-template-columns: repeat(auto-fit,minmax(600px,1fr));
 
     >._loop_div{
         >._stat_tag{

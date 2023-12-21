@@ -18,19 +18,19 @@ const reset_grid=()=>{
 
 const go_to_top=()=>{
     setTimeout(()=>{
-        const top = document.querySelector('._sheet_wrapper');
+        const top = document.querySelector('body');
         if(top){
-            const element_rect = top.getBoundingClientRect();
-            const element_y = window.scrollY + element_rect.top;
             window.scrollTo({
-                top:element_y,
+                top:0,
                 behavior:'smooth',
             });
         }
-    },100)
+    },175)
 }
 
-const set_default_values = () =>{
+const set_default_values = (event) =>{
+    event.target.style['font-size'] = '1.50rem';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
     updateFeatsAreLoaded(false);
     const false_bool = false
     feat_store_instance.state.can_save_build = false_bool;
@@ -51,15 +51,20 @@ const set_default_values = () =>{
     skill_store_instance.state.skill_items_array = skill_items;
     reset_grid()
     go_to_top()
+    setTimeout(()=>{
+        event.target.style['font-size'] = '';
+        event['target']['style']['background-color'] = '';
+    }, 175);
 }
 </script>
 
 <template>
-    <h3 @click="set_default_values">Reset Skills</h3>
+    <h3 @click="set_default_values($event)">Reset Skills</h3>
 </template>
 
 <style lang="scss" scoped>
 h3{
+    transition: 0.3s ease-in-out;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 7.5px;

@@ -1,6 +1,6 @@
 <script setup>
 import { useCookies } from 'vue3-cookies';
-import { ref, watch } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useSkillStore } from '../stores/skill_state_store';
 const skill_store_instance = useSkillStore();
 const {cookies} = useCookies()
@@ -24,10 +24,11 @@ const set_cookies = () =>{
     cookies.set('skill_array_values', JSON.stringify(skill_items_array.value));
 }
 const increaseValue=(i, event)=>{
-    if(event.type === "touchstart"){
+    if(event.type !== "click"){
         return
     }
-    console.log("click")
+    event.target.style.width = '34px';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
     const max_points = 1280;
     if (skill_count_limiter.value >= 0 && skill_count_limiter.value < 1280) {
         const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
@@ -49,12 +50,18 @@ const increaseValue=(i, event)=>{
             skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
     }
+    setTimeout(()=>{
+        event.target.style.width = '';
+        event['target']['style']['background-color'] = '';
+    }, 175);
 }
 const decreaseValue=(i,event)=>{
-    if(event.type === "touchstart"){
+    if(event.type !== "click"){
         return
     }
-    console.log("click")
+    event.target.style.width = '34px';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
+
     const minSkillValue = 0
     if (skill_count_limiter.value > 0 && skill_count_limiter.value <= 1280) {
         const current_skill_value = skill_store_instance.state.skill_items_array[i].skillValue;
@@ -75,6 +82,10 @@ const decreaseValue=(i,event)=>{
             skill_store_instance.state.skill_count_limiter = updated_limiter;
         }
     }
+    setTimeout(()=>{
+        event.target.style.width = '';
+        event['target']['style']['background-color'] = '';
+    }, 175);
 }
 
 
@@ -114,35 +125,55 @@ const decrease_updater = (i) =>{
 }
 
 const increase_mobile = (i, event) =>{
-    if(event.type === "click"){
+    if(event.type !== "touchstart"){
         return
     }
+    event.target.style.width = '34px'
     increm_interval.value = setInterval(()=>{
         increase_updater(i)       
     }, 150);
 }
 
 const decrease_mobile = (i, event) =>{
-    if(event.type === "click"){
+    if(event.type !== "touchstart"){
         return
     }
+    event.target.style.width = '34px'
     decrem_interval.value = setInterval(()=>{
         decrease_updater(i)       
     }, 150);
 }
-const end_increase = () =>{
+const end_increase = (event) =>{
+    if(event.type !== "touchend"){
+        return
+    }
     clearInterval(increm_interval.value);
     increm_interval.value = null;
+    event.target.style.width = ''
 }
 
-const end_decrease = () =>{
+const end_decrease = (event) =>{
+    if(event.type !== "touchend"){
+        return
+    }
     clearInterval(decrem_interval.value);
     decrem_interval.value = null;
+    event.target.style.width = ''
 }
+
+
+
+onMounted(()=>{
+    setTimeout(()=>{
+        let page = document.querySelector('._skill_content');
+        page['style']['opacity'] = '1';
+    },125)
+})
+
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">
-        <h3 class="limit_counter">Skill Points used: {{ skill_count_limiter }}/1280</h3>
+        <h2 class="limit_counter">Skill Points used: {{ skill_count_limiter }}/1280</h2>
         <span class="element_wrapper">
             <div class="_loop_div" v-for="(value, i) in skill_items_array" :key="i">
                 <p class="_skill_tag">{{ skills[i] }}</p>
@@ -154,7 +185,7 @@ const end_decrease = () =>{
                         class="_plus"
                         @click="increaseValue(i,$event)"
                         @touchstart.prevent="increase_mobile(i, $event)"
-                        @touchend.prevent="end_increase"
+                        @touchend.prevent="end_increase($event)"
                         :clicked_plus="i"
                         ref="_plus_svg"
                     />
@@ -176,6 +207,8 @@ const end_decrease = () =>{
 
 <style lang="scss" scoped>
 ._skill_content{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     display: grid;
     align-items: center;
     grid-template-rows: auto;
@@ -195,9 +228,9 @@ const end_decrease = () =>{
         display: grid;
         align-items: center;
         justify-items: center;
-        grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+        grid-template-columns: 1fr;
         row-gap: 25px;
-        height: 400px;
+        height: 500px;
         overflow-y: auto;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -205,11 +238,12 @@ const end_decrease = () =>{
             text-align: center;
             display: grid;
             align-items: center;
-            grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+            grid-template-columns: repeat(auto-fit,minmax(140px,1fr));
             justify-items: center;
             grid-template-rows: auto;
             row-gap: 15px;
             width: 90%;
+
 
             >._skill_tag{
                 padding-top: 2.5px;
@@ -225,14 +259,19 @@ const end_decrease = () =>{
                 justify-items: center;
                 grid-template-columns: 1fr 1fr 1fr;
                 width: 90%;
+                max-width: 190px;
                 padding-top: 2.5px;
                 padding-bottom: 2.5px;
 
                 >._plus{
+                    padding: 2.5px;
+                    transition: 0.3s ease;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
                 >._minus{
+                    padding: 2.5px;
+                    transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
@@ -246,7 +285,8 @@ const end_decrease = () =>{
     >.limit_counter{
     }
     >.element_wrapper{
-
+        width: 90%;
+        justify-self: center;
         grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
         >._loop_div{
             >._skill_tag{
@@ -270,9 +310,9 @@ const end_decrease = () =>{
 >.limit_counter{
 }
 >.element_wrapper{
-    width: 50%;
-    height: 450px;
-    grid-template-columns: repeat(auto-fit,minmax(325px,1fr));
+    width: 75%;
+    height: 525px;
+    grid-template-columns: repeat(auto-fit,minmax(600px,1fr));
     >._loop_div{
         >._skill_tag{
         }

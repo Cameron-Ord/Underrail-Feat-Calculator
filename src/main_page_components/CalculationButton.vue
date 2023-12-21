@@ -15,9 +15,9 @@ const set_grid = () => {
     if(window.innerWidth < 1024){
         page_main['style']['row-gap'] = "50px"
         page_main['style']['grid-template-rows'] = 'auto auto';
-        calc_wrapper['style']['row-gap'] = '25px';
+        calc_wrapper['style']['row-gap'] = '50px';
     } else if(window.innerWidth >= 1024){
-        calc_wrapper['style']['row-gap'] = '25px';
+        calc_wrapper['style']['row-gap'] = '50px';
     }
 }
 
@@ -66,7 +66,7 @@ const retrieve_cookies = () => {
         let parsed_char_type = JSON.parse(char_type);
 
         if(parsed_char_type === null) {
-            parsed_char_type = ""
+            parsed_char_type = []
         }
 
         if(parsed_skill_items === null || parsed_stat_items === null){
@@ -114,43 +114,23 @@ const status_fade_out = () =>{
 }
 
 
-const move_viewpoint = () =>{
-    setTimeout(()=>{
-        const calc_button = document.querySelector('.generate_button');
-        if(calc_button){
-            const element_rect = calc_button.getBoundingClientRect();
-            const element_y = window.scrollY + element_rect.top;
-            window.scrollTo({
-                top:element_y,
-                behavior:'smooth',
-            });
-        }
-    },100);
-}
 
+const generate_feat_list = async (event) =>  {
 
-const concatenate_array = (char_types) =>{
-    let created_str = "";
-    for(let i = 0; i < char_types.length; i++){
-        const sub_str = char_types[i];
-        created_str += sub_str + " ";
-    }
-    return created_str;
-}
-
-const generate_feat_list = async () =>  {
-
+    event.target.style['font-size'] = '1.5rem';
+    event.target.style['background-color'] = 'var(--orange_rgba)'
     cookies.remove('chosen_feats');
     const bool = feat_store_instance.mutators.update_can_save_build(false);
     feat_store_instance.state.can_save_build = bool;
     const [stat_items, skill_items, char_types] = retrieve_cookies();
-    const concat_char_types = concatenate_array(char_types);
     let response;
     if(stat_items.length > 0 && skill_items.length > 0){
         try{
-            response = await invoke_axios(stat_items, skill_items, concat_char_types);
+            response = await invoke_axios(stat_items, skill_items, char_types);
         } catch (error) {
-            console.log("failed to resolve promise");
+            status.value = {"Status":"Failed to reach server"};
+            status_fade_in()
+            status_fade_out()
             feat_store_instance.state.svg_list = undefined;
             feat_store_instance.state.feats_list = undefined;
             make_visible(false);
@@ -193,19 +173,25 @@ const generate_feat_list = async () =>  {
         feat_store_instance.state.feats_list = response_data;
         if(feat_store_instance.state.svg_list !== undefined
         && feat_store_instance.state.feats_list !== undefined){
-            make_visible(true);
+            make_visible(false);
+            setTimeout(()=>{
+                make_visible(true);
+            }, 300)
             set_grid();
-            move_viewpoint()
         }
     }
-}    
 
+    setTimeout(()=>{
+        event.target.style['font-size'] = '';
+        event.target.style['background-color'] = ''
+    }, 300)
+}    
 
 </script>
 
 <template>
     <h4 class="status_text" v-if="status !== undefined">{{ status["Status"] }}</h4>
-    <h3 @click="generate_feat_list" class="generate_button" ref="generate">Generate Feats</h3>
+    <h3 @click="generate_feat_list($event)" class="generate_button" ref="generate">Generate Feats</h3>
 </template>
 
 <style lang="scss" scoped>
@@ -218,6 +204,7 @@ const generate_feat_list = async () =>  {
     padding-bottom: 10px;
 }
 h3{
+    transition: 0.5s ease-in-out;
     text-align: center;
     padding-top: 5px;
     padding-bottom: 5px;

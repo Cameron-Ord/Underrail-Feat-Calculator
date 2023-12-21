@@ -9,9 +9,9 @@ import ResetSkills from '../main_page_components/ResetSkills.vue';
 import ViewStats from '../main_page_components/ViewStats.vue';
 import BuildSaver from '../main_page_components/BuildSaver.vue';
 import BuildTypes from '../main_page_components/BuildTypes.vue';
-
+import TypeFiltering from '../main_page_components/TypeFiltering.vue';
 import { useCookies } from 'vue3-cookies';
-import { onBeforeMount,ref,provide, watch} from 'vue';
+import { onBeforeMount,ref,provide, watch, onMounted, onBeforeUnmount} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
 import { useFeatStore } from '../stores/feat_store';
@@ -119,6 +119,14 @@ const check_if_logged = () => {
   }
 }
 
+onMounted(()=>{
+
+})
+
+onBeforeUnmount(()=>{
+
+})
+
 onBeforeMount(()=>{
   const false_bool = false
   feat_store_instance.state.can_save_build = false_bool;
@@ -166,14 +174,17 @@ onBeforeMount(()=>{
       </article>
     </section>
     <section class="type_selection">
+      <span class="span_text">
+        <type-filtering></type-filtering>
+      </span>
       <article class="selection_article">
         <build-types></build-types>
       </article>
     </section>
     <section class="_calculation_container">
       <article class="_calc_wrapper">
-        <feats-container v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
         <calculation-button></calculation-button>
+        <feats-container class="opacity_setter" v-if="svgsAreLoaded === true && featsAreLoaded === true"></feats-container>
         <build-saver v-if="canSaveBuild === true && is_logged_in === true"></build-saver>
       </article>
     </section>
@@ -238,12 +249,26 @@ onBeforeMount(()=>{
     align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
+    row-gap: 35px;
+    >.span_text{
+      display: grid;
+      align-items: center;
+      padding-top: 10px;
+      padding-bottom: 10px;
+      justify-self: center;
+      
+    }
     >.selection_article{
       display: grid;
       align-items: center;
+      justify-self: center;
       row-gap: 30px;
       padding-top: 20px;
       padding-bottom: 20px;
+      width: 80%;
+      overflow-y: auto;
+      height: 200px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     }
   }
 }
@@ -266,8 +291,15 @@ onBeforeMount(()=>{
     }
   }
   >.type_selection{
-    >.selection_article{
 
+
+    >.span_text{
+      
+    }
+    >.selection_article{
+      height: 300px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      width: 80%;
     }
   }
 }
@@ -291,9 +323,16 @@ onBeforeMount(()=>{
      }
    }
  }
- >.type_selection{
-    >.selection_article{
+  >.type_selection{
 
+
+    >.span_text{
+      
+    }
+    >.selection_article{
+      height: 350px;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      width: 60%;
     }
   }
 }

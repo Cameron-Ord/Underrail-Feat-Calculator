@@ -1,5 +1,5 @@
 <script setup>
-import {ref, watch} from 'vue'
+import {onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
 import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
@@ -141,12 +141,48 @@ const handle_click = (feat_ref, index) => {
     }
 }
 
+
+
+const move_viewpoint = () =>{
+    setTimeout(()=>{
+        const calc_button = document.querySelector('.feat_viewer_container');
+        let element_rect_calc;
+        let element_y_calc;
+        if(calc_button){
+            element_rect_calc = calc_button.getBoundingClientRect();
+            element_y_calc = window.scrollY += element_rect_calc.top;
+        }
+        if(element_y_calc){
+            window.scrollTo({
+                top:element_y_calc,
+                behavior:'smooth',
+            });
+        }
+    },275);
+}
+
+
+onBeforeUnmount(()=>{
+    let fv = document.querySelector('.feat_viewer_container');
+    fv['style']['opacity'] = '0';
+})
+
+
+
+onMounted(()=>{
+    move_viewpoint()
+    setTimeout(()=>{
+        let fv = document.querySelector('.feat_viewer_container');
+        fv['style']['opacity'] = '1';
+    }, 100)
+})
+
 </script>
 <template>
     <div class="feat_viewer_container">
-        <h3 class="counter">
+        <h2 class="counter">
             Feat slots used: {{ feat_counter }}/15
-        </h3>
+        </h2>
         <span class="span_height">
             <div class="feat_container" v-for="(item, i) in generated_feat_list" :key="i">
                 <p ref="featText">{{ item }}</p>
@@ -165,9 +201,11 @@ const handle_click = (feat_ref, index) => {
 <style lang="scss" scoped>
 
 .feat_viewer_container{
+    opacity: 0;
+    transition: 1.2s ease-in-out;
     display: grid;
     align-items: center;
-    row-gap: 25px;
+    row-gap: 45px;
     padding-top: 10px;
     padding-bottom: 10px;
     >.counter{
@@ -218,6 +256,8 @@ const handle_click = (feat_ref, index) => {
     }
 
     >.span_height{
+        width: 80%;
+        justify-self: center;
         grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
         >.feat_container{
             
@@ -242,6 +282,7 @@ const handle_click = (feat_ref, index) => {
 
     >.span_height{
         width: 60%;
+        justify-self: center;
         grid-template-columns: repeat(auto-fit, minmax(325px,1fr));
         >.feat_container{
             
