@@ -19,6 +19,17 @@ const set_grid = () => {
     } else if(window.innerWidth >= 1024){
         calc_wrapper['style']['row-gap'] = '50px';
     }
+
+    let feat_page = document.querySelector('.span_height');
+    console.log(feat_page)
+    if(feat_page !== null){
+        feat_page['style']['transition'] = '0.6s ease-in-out';
+        feat_page['style']['opacity'] = '0';
+
+        setTimeout(()=>{
+            feat_page['style']['opacity'] = '1';
+        },600)
+    }
 }
 
 const reset_grid = () => {
@@ -173,10 +184,7 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = response_data;
         if(feat_store_instance.state.svg_list !== undefined
         && feat_store_instance.state.feats_list !== undefined){
-            make_visible(false);
-            setTimeout(()=>{
-                make_visible(true);
-            }, 300)
+            make_visible(true);
             set_grid();
         }
     }

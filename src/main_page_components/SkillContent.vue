@@ -230,7 +230,7 @@ onMounted(()=>{
         justify-items: center;
         grid-template-columns: 1fr;
         row-gap: 25px;
-        height: 500px;
+        height: 300px;
         overflow-y: auto;
         padding-top: 10px;
         padding-bottom: 10px;
@@ -286,6 +286,7 @@ onMounted(()=>{
     }
     >.element_wrapper{
         width: 90%;
+        height: 400px;
         justify-self: center;
         grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
         >._loop_div{
@@ -311,7 +312,7 @@ onMounted(()=>{
 }
 >.element_wrapper{
     width: 75%;
-    height: 525px;
+    height: 450px;
     grid-template-columns: repeat(auto-fit,minmax(600px,1fr));
     >._loop_div{
         >._skill_tag{

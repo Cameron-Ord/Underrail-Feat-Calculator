@@ -158,7 +158,7 @@ const move_viewpoint = () =>{
                 behavior:'smooth',
             });
         }
-    },275);
+    },300);
 }
 
 
@@ -174,7 +174,7 @@ onMounted(()=>{
     setTimeout(()=>{
         let fv = document.querySelector('.feat_viewer_container');
         fv['style']['opacity'] = '1';
-    }, 100)
+    }, 400)
 })
 
 </script>
@@ -202,7 +202,7 @@ onMounted(()=>{
 
 .feat_viewer_container{
     opacity: 0;
-    transition: 1.2s ease-in-out;
+    transition: 0.6s ease-in-out;
     display: grid;
     align-items: center;
     row-gap: 45px;

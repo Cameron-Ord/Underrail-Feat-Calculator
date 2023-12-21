@@ -25,10 +25,10 @@
         transition: 0.3s ease-in-out;
         border: solid var(--orange) 1px;
         border-radius: 6px;
+        cursor: pointer;
     }
     >p{
         transition: 0.3s ease-in-out;
-        cursor: pointer;
         padding-top: 2px;
         padding-right: 4px;
         padding-left: 4px;

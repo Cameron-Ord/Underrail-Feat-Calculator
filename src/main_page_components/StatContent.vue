@@ -227,7 +227,7 @@ onMounted(()=>{
         align-items: center;
         justify-items: center;
         grid-template-columns: 1fr;
-        height: 500px;
+        height: 300px;
         row-gap: 25px;
         overflow-y: auto;
         padding-top: 10px;
@@ -285,6 +285,7 @@ onMounted(()=>{
     }
     >.element_wrapper{
         width: 90%;
+        height: 400px;
         justify-self: center;
         grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
 
@@ -312,7 +313,7 @@ onMounted(()=>{
 >.limit_counter{
 }
 >.element_wrapper{
-    height: 525px;
+    height: 450px;
     width: 75%;
     grid-template-columns: repeat(auto-fit,minmax(600px,1fr));
 
