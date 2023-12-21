@@ -19,3 +19,11 @@ The Underrail Feat Generator is a web application designed to help players of th
 ## Backend Repo 
 The backend code for this website is here:
 https://github.com/Cameron-Ord/UnderrailFeatBackend
+
+
+## TODO
+add session authentication
+flesh out some animations on other pages
+provide a more indepth about page
+add a header at the top of the page directing to the about page if not loggedin/hasnt visited
+
