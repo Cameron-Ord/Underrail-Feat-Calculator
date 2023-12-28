@@ -2,7 +2,7 @@
 <script setup>
 import { useStatStore } from '../stores/stat_state_store';
 import { useCookies } from 'vue3-cookies';
-import { inject } from 'vue';
+import { inject, onMounted } from 'vue';
 import { useFeatStore } from '../stores/feat_store';
 const feat_store_instance = useFeatStore();
 
@@ -59,10 +59,19 @@ const set_default_values = (event) =>{
     },175)
 
 }
+
+onMounted(()=>{
+    let reset_tag = document.querySelector('.stat_reset_tag');
+    setTimeout(()=>{
+    if(reset_tag !== null){
+        reset_tag.style.opacity = '1';
+    }
+    }, 100);
+})
 </script>
 
 <template>
-    <h3 @click="set_default_values($event)">Reset Stats</h3>
+    <h3 @click="set_default_values($event)" class="stat_reset_tag">Reset Stats</h3>
 </template>
 
 <script>
@@ -73,6 +82,7 @@ const set_default_values = (event) =>{
 
 <style lang="scss" scoped>
 h3{
+    opacity: 0;
     transition: 0.3s ease-in-out;
     padding-top: 5px;
     padding-bottom: 5px;

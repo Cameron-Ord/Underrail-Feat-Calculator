@@ -1,7 +1,7 @@
 
 <script setup>
 import axios from 'axios';
-import { onBeforeMount, ref } from 'vue';
+import { onBeforeMount, onMounted, onUpdated, ref } from 'vue';
 const all_builds = ref([])
 let index = ref(0)
 const build_API = () => {
@@ -21,27 +21,46 @@ const get_all_builds = async () => {
     const response = await build_API();
     if (response.statusText === "OK") {
         all_builds.value = response['data'];
-        console.log(all_builds.value)
     }
 }
 const decrement = () => {
+        
+    let all_b_div = document.querySelector('.all_builds');
+    all_b_div.style.opacity = '0';
+    setTimeout(()=>{
     if (index.value < all_builds.value.length) {
         let index_copy = index.value;
         index_copy = (index.value - 1 + all_builds.value.length) % all_builds.value.length;
         index.value = index_copy;
     }
+    }, 300)
 }
 
 const increment = () => {
+
+    let all_b_div = document.querySelector('.all_builds');
+    all_b_div.style.opacity = '0';
+    setTimeout(()=>{
     if (index.value < all_builds.value.length) {
         let index_copy = index.value;
         index_copy = (index.value + 1) % all_builds.value.length;
         index.value = index_copy;
     }
+    }, 300)
+
 }
 onBeforeMount(() => {
     get_all_builds()
 
+})
+
+onUpdated(()=>{
+    let all_b_div = document.querySelector('.all_builds');
+    setTimeout(()=>{
+        if(all_b_div !== null){
+            all_b_div.style.opacity = '1';
+        }
+    }, 100)
 })
 </script>
 
@@ -79,6 +98,8 @@ onBeforeMount(() => {
 
 <style lang="scss" scoped>
 .all_builds {
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     display: grid;
     align-items: center;
     grid-template-rows: auto;

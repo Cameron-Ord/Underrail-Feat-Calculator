@@ -53,11 +53,11 @@ const remember_last_viewed = () =>{
   }
 }
 const handle_view = (sent_ref_text) =>{
-  if(sent_ref_text === "View_Stats"){
+  if(sent_ref_text === "View Stats"){
     const bool = true
     switch_based_bool.value = bool;
     cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
-  } else if(sent_ref_text === "View_Skills"){
+  } else if(sent_ref_text === "View Skills"){
     const bool = false
     switch_based_bool.value = bool;
     cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
@@ -161,14 +161,14 @@ onBeforeMount(()=>{
       <article class="_sheet_wrapper" v-if="switch_based_bool === true">
           <stat-content></stat-content>
           <div class="view_controls">
-            <view-skills @send_input="handle_view"></view-skills>
+            <view-skills :handle_view="handle_view"></view-skills>
             <reset-stats></reset-stats>
           </div>
       </article>
       <article class="_sheet_wrapper" v-if="switch_based_bool !== true">
           <skill-content></skill-content>
           <div class="view_controls">
-            <view-stats @send_input="handle_view"></view-stats>
+            <view-stats :handle_view="handle_view"></view-stats>
             <reset-skills></reset-skills>
           </div>
       </article>

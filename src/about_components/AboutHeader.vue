@@ -1,5 +1,12 @@
 <script setup>
 
+
+
+
+
+
+
+
 </script>
 
 <template>
@@ -11,7 +18,8 @@
             you provide.
         </p>
         <p>
-            Getting started is pretty simple, just go to the home page and choose your stats and skills and hit generate feats!
+            On desktop the controls for the buttons to add skill and stat points
+            are click, shift-click, and crtl-click. On mobile, simply press and hold.
         </p>
     </div>
 </template>
@@ -26,7 +34,8 @@
     row-gap: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
-    
+    transition: 0.3s ease-in-out;
+    opacity: 0;
     >p{
         width: 90%;
     }

@@ -1,7 +1,7 @@
 <script setup>
 import { useSkillStore } from '../stores/skill_state_store';
 import { useCookies } from 'vue3-cookies';
-import { inject } from 'vue';
+import { inject, onMounted } from 'vue';
 import { useFeatStore } from '../stores/feat_store';
 const feat_store_instance = useFeatStore();
 const skill_store_instance = useSkillStore();
@@ -56,14 +56,25 @@ const set_default_values = (event) =>{
         event['target']['style']['background-color'] = '';
     }, 175);
 }
+
+
+onMounted(()=>{
+    let reset_tag = document.querySelector('.skill_reset_tag');
+    setTimeout(()=>{
+    if(reset_tag !== null){
+        reset_tag.style.opacity = '1';
+    }
+    }, 100);
+})
 </script>
 
 <template>
-    <h3 @click="set_default_values($event)">Reset Skills</h3>
+    <h3 @click="set_default_values($event)" class="skill_reset_tag">Reset Skills</h3>
 </template>
 
 <style lang="scss" scoped>
 h3{
+    opacity: 0;
     transition: 0.3s ease-in-out;
     padding-top: 5px;
     padding-bottom: 5px;

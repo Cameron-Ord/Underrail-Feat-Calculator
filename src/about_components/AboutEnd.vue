@@ -24,7 +24,8 @@
     row-gap: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
-    
+    transition: 0.3s ease-in-out;
+    opacity: 0;
     >p{
         width: 90%;
     }

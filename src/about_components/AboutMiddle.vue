@@ -28,6 +28,8 @@
     row-gap: 25px;
     padding-top: 10px;
     padding-bottom: 10px;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     >p{
         width: 90%;
     }

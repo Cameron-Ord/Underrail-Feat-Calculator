@@ -1,20 +1,29 @@
 <template>
-    <h3 @click="send_input(this.$refs.skills)" ref="skills">View Skills</h3>
+    <h3 class="view_skills_tag" @click="send_input($event)" ref="skills">View Skills</h3>
 </template>
 
-<script>
-    export default {
-        methods:{
-            send_input(skills_ref){
-                const skills_ref_text = skills_ref.textContent.replace(/ /g, "_");
-                this.$emit('send_input', skills_ref_text);
-            }
-        }
-    }
-</script>
+<script setup>
+import { onMounted } from 'vue';
 
+const { handle_view } = defineProps(['handle_view']);
+const send_input = (event) =>{
+    const event_text = event.target.innerText;
+    handle_view(event_text);
+}
+
+onMounted(()=>{
+    let tag_element = document.querySelector('.view_skills_tag');
+    setTimeout(()=>{
+        if(tag_element !== null){
+            tag_element.style.opacity = '1';
+        }
+    }, 100)
+})
+</script>
 <style lang="scss" scoped>
 h3{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 7.5px;

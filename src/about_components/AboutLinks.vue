@@ -22,7 +22,8 @@ const go_to_linkedin=()=>{
     grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
     grid-template-rows: auto auto;
     row-gap: 10px;
-
+    transition: 0.3s ease-in-out;
+    opacity: 0;
     >h2{
         cursor: pointer;
         padding-top: 5px;

@@ -3,6 +3,7 @@
 import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 const router = useRouter();
 const {cookies} = useCookies();
 const log_user_in = (username, password) => {
@@ -61,7 +62,14 @@ const submit_signup_form = async (username, password) =>{
         console.log("Error signing in.")
     }
 }
-
+onMounted(()=>{
+    let signup_form = document.querySelector('.signup_form');
+    setTimeout(()=>{
+        if(signup_form !== null){
+            signup_form.style.opacity = '1';
+        }
+    }, 100)
+})
 </script>
 
 <template>
@@ -74,6 +82,8 @@ const submit_signup_form = async (username, password) =>{
 
 <style lang="scss" scoped>
 .signup_form{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     display: grid;
     align-items: center;
     justify-items: center;

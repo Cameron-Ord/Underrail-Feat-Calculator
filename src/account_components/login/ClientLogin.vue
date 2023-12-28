@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'vue3-cookies';
 import { useMenuStore } from '../../stores/menu_store';
 import { useRouter } from 'vue-router';
+import { onMounted } from 'vue';
 const router = useRouter()
 const menu_store_instance = useMenuStore();
 
@@ -41,6 +42,14 @@ const submit_login_form = async (username, password) =>{
         }
     }
 }
+onMounted(()=>{
+    let login_form = document.querySelector('.login_form');
+    setTimeout(()=>{
+        if(login_form !== null){
+            login_form.style.opacity = '1';
+        }
+    })
+})
 </script>
 
 <template>
@@ -53,6 +62,8 @@ const submit_login_form = async (username, password) =>{
 
 <style lang="scss" scoped>
 .login_form{
+    opacity: 0;
+    transition:0.3s ease-in-out;
     display: grid;
     align-items: center;
     justify-items: center;

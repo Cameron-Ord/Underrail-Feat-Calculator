@@ -1,22 +1,33 @@
 <template>
     <div class="view_div">
-        <h3 @click="send_input(this.$refs.stats)" ref="stats">View Stats</h3>
+        <h3 @click="send_input($event)" ref="stats" class="view_stats_tag">View Stats</h3>
     </div>
 </template>
 
-<script>
-    export default {
-        methods:{
-            send_input(stats_ref){
-                const stats_ref_text = stats_ref.textContent.replace(/ /g, "_");
-                this.$emit('send_input',stats_ref_text);
-            }
+
+
+<script setup>
+import { onMounted } from 'vue';
+const { handle_view } = defineProps(['handle_view']);
+const send_input = (event) =>{
+    const event_text = event.target.innerText;
+    handle_view(event_text);
+}
+
+onMounted(()=>{
+    let tag_element = document.querySelector('.view_stats_tag');
+    setTimeout(()=>{
+        if(tag_element !== null){
+            tag_element.style.opacity = '1';
         }
-    }
+    }, 100)
+})
 </script>
 
 <style lang="scss" scoped>
 h3{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
     padding-top: 5px;
     padding-bottom: 5px;
     padding-left: 7.5px;
