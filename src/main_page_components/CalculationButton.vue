@@ -120,7 +120,12 @@ const status_fade_out = () =>{
     }, 1500)
 }
 
-
+const reset_button = (event) => {
+    setTimeout(()=>{
+        event.target.style['font-size'] = '';
+        event.target.style['background-color'] = ''
+    }, 300)
+}
 
 const generate_feat_list = async (event) =>  {
 
@@ -151,14 +156,24 @@ const generate_feat_list = async (event) =>  {
             return
         }
     } else {
+        status.value = {"Status":"Either stat or skill selection doesn't exist"};
+        status_fade_in();
+        status_fade_out();
+        reset_grid();
+        reset_button();
+        make_visible(false);
         return
     }
 
     if(response.statusText !== "OK"){
+        status.value = {"Status":"Server response failed"};
+        status_fade_in();
+        status_fade_out();
         feat_store_instance.state.svg_list = undefined;
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
+        reset_button();
         return
     }
 
@@ -170,12 +185,17 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
+        reset_button();
         return
     } else if (response.status > 300) {
+        status.value = {"Status":"Server response failed"};
+        status_fade_in();
+        status_fade_out();
         feat_store_instance.state.svg_list = undefined;
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
+        reset_button();
         return
     }
     
@@ -186,16 +206,11 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = response_data;
         if(feat_store_instance.state.svg_list !== undefined
         && feat_store_instance.state.feats_list !== undefined){
-
             make_visible(true);
             set_grid();
+            reset_button(event);
         }
     }
-
-    setTimeout(()=>{
-        event.target.style['font-size'] = '';
-        event.target.style['background-color'] = ''
-    }, 300)
 }    
 
 </script>
