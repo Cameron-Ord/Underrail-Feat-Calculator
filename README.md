@@ -22,8 +22,11 @@ https://github.com/Cameron-Ord/UnderrailFeatBackend
 
 
 ## TODO
-add session authentication
-flesh out some animations on other pages
-provide a more indepth about page
-add a header at the top of the page directing to the about page if not loggedin/hasnt visited
+**add session authentication**
+
+**flesh out some animations on other pages**
+
+**provide a more indepth about page**
+
+**wrap with electron once i'm happy with the state of the app**
 
