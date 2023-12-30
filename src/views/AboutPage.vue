@@ -81,13 +81,13 @@ onMounted(()=>{
 }
 @media only screen and (min-width: 1024px){
   .about_page{
-    grid-template-rows: 1fr;
-    grid-template-columns: 1fr 1fr 1fr;
+  
+   
     >.about_section{
       display: grid;
       align-items: center;
       justify-items: center;
-      row-gap: 30px;
+      row-gap: 50px;
     }
 }
 }

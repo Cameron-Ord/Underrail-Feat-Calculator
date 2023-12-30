@@ -160,17 +160,17 @@ onBeforeMount(()=>{
     <section class="_character_sheet">
       <article class="_sheet_wrapper" v-if="switch_based_bool === true">
           <stat-content></stat-content>
-          <div class="view_controls">
-            <view-skills :handle_view="handle_view"></view-skills>
-            <reset-stats></reset-stats>
-          </div>
+      </article>
+      <article v-if="switch_based_bool === true" class="view_controls">
+          <view-skills :handle_view="handle_view"></view-skills>
+          <reset-stats></reset-stats>
       </article>
       <article class="_sheet_wrapper" v-if="switch_based_bool !== true">
           <skill-content></skill-content>
-          <div class="view_controls">
-            <view-stats :handle_view="handle_view"></view-stats>
-            <reset-skills></reset-skills>
-          </div>
+      </article>
+      <article v-if="switch_based_bool !== true" class="view_controls">
+        <view-stats :handle_view="handle_view"></view-stats>
+        <reset-skills></reset-skills>
       </article>
     </section>
     <section class="type_selection">
@@ -227,21 +227,22 @@ onBeforeMount(()=>{
     align-items: center;
     padding-top: 20px;
     padding-bottom: 20px;
-
+    row-gap: 20px;
+    
+      >.view_controls{
+        width: 90%;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        justify-self: center;
+        row-gap: 10px;
+      }
     >._sheet_wrapper{
       display: grid;
       align-items: center;
-      row-gap: 30px;
       padding-top: 20px;
       padding-bottom: 20px;
 
-      >.view_controls{
-        display: grid;
-        align-items: center;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        justify-items: center;
-        row-gap: 10px;
-      }
     }
   }
   >.type_selection{
@@ -282,12 +283,12 @@ onBeforeMount(()=>{
 
   >._character_sheet{
  
-    >._sheet_wrapper{
-      justify-items: center;
  
       >.view_controls{
-        width: 75%;
+        width: 60%;
       }
+    >._sheet_wrapper{
+      justify-items: center;
     }
   }
   >.type_selection{
@@ -314,14 +315,14 @@ onBeforeMount(()=>{
 
  >._character_sheet{
 
+     >.view_controls{
+       width: 40%;
+     }
+   }
    >._sheet_wrapper{
     row-gap: 100px;
      justify-items: center;
 
-     >.view_controls{
-       width: 50%;
-     }
-   }
  }
   >.type_selection{
 

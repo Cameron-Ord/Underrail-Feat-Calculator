@@ -15,12 +15,10 @@ const go_to_linkedin=()=>{
 </template>
 <style lang="scss" scoped>
 .hero_about{
-    display: grid;
-    align-items: center;
-    justify-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
     width: 90%;
-    grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-    grid-template-rows: auto auto;
     row-gap: 10px;
     transition: 0.3s ease-in-out;
     opacity: 0;

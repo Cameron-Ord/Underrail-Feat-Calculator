@@ -15,38 +15,28 @@
 </template>
 
 <style lang="scss" scoped>
+
 .hero_about{
-    width: 100%;
-    display: grid;
-    align-items: center;
-    justify-items: center;
-    text-align: start;
-    row-gap: 25px;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    transition: 0.3s ease-in-out;
+    width: 80%;
+    display: flex;
+    flex-wrap: wrap;
     opacity: 0;
-    >p{
-        width: 90%;
-    }
+    text-align: start;
+    justify-content: flex-start;
+    align-items: flex-start;
+    row-gap: 25px;
+    transition: 0.3s ease-in-out;
 }
 @media only screen and (min-width: 770px){
     .hero_about{
-        width: 80%;
-   
-    >p{
-        width: 80%;
+        width: 70%;
     }
-}
 }
 
 @media only screen and (min-width: 1024px){
     .hero_about{
-        width: 70%;
+        width: 60%;
+    }
+}
 
->p{
-    width: 80%;
-}
-}
-}
 </style>
