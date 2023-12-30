@@ -29,8 +29,13 @@ const go_to_top=()=>{
 }
 
 const set_default_values = (event) =>{
-    event.target.style['font-size'] = '1.50rem';
-    event['target']['style']['background-color'] = 'var(--orange_rgba)';
+    if(window.innerWidth < 1024){
+        event.target.style['font-size'] = '1.10rem';
+        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+    } else if(window.innerWidth >= 1024){
+        event.target.style['font-size'] = '1.25rem';
+        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+    }
     updateFeatsAreLoaded(false);
     const false_bool = false
     feat_store_instance.state.can_save_build = false_bool;
@@ -54,7 +59,7 @@ const set_default_values = (event) =>{
     setTimeout(()=>{
         event.target.style['font-size'] = '';
         event['target']['style']['background-color'] = '';
-    }, 175);
+    }, 300);
 }
 
 

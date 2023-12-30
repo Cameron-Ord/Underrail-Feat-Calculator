@@ -235,6 +235,7 @@ onBeforeMount(()=>{
         flex-wrap: wrap;
         justify-content: space-between;
         justify-self: center;
+        align-items: center;
         row-gap: 10px;
       }
     >._sheet_wrapper{

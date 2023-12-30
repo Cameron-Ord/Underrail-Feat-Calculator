@@ -134,9 +134,14 @@ const generate_feat_list = async (event) =>  {
             feat_page['style']['opacity'] = '0';
             feat_page['style']['transition'] = 'none';
     }
+    if(window.innerWidth < 1024) {
+        event.target.style['font-size'] = '1.05rem';
+        event.target.style['background-color'] = 'var(--orange_rgba)'
+    } else if(window.innerWidth >= 1024){
+        event.target.style['font-size'] = '1.15rem';
+        event.target.style['background-color'] = 'var(--orange_rgba)'
+    }
 
-    event.target.style['font-size'] = '1.5rem';
-    event.target.style['background-color'] = 'var(--orange_rgba)'
     cookies.remove('chosen_feats');
     const bool = feat_store_instance.mutators.update_can_save_build(false);
     feat_store_instance.state.can_save_build = bool;
