@@ -1,7 +1,9 @@
 <script setup>
 import axios from 'axios';
+import { onUpdated, ref } from 'vue';
 import {useCookies} from 'vue3-cookies';
 const {cookies} = useCookies();
+const status = ref(undefined)
 const use_api = (data_array, input_tag_content) =>{
     return new Promise((resolve, reject) => {
         axios({
@@ -54,23 +56,62 @@ const submit_build = async (input_tag_content) => {
             }
         }
         if(no_missing_data){
-            const response = await use_api(item_array,input_tag_content);
-            console.log(response.status)
+            try{
+                const response = await use_api(item_array,input_tag_content);
+                console.log(response.status);
+                if(response.statusText === "OK"){
+                    status.value = "Build saved!";
+                } else {
+                    status.value = "Error saving build";
+                }
+            } catch (err) {
+                status.value = "Build name already exists."
+                console.log("Failed to resolve promise: ", response['data']. response['statusText']);
+            }
         } else {
+            status.value = "Required data is missing";
             console.error('Missing Data');
         }
+    } else {
+        status.value = "Enter a build name!";
     }
 }
+
+onUpdated(()=>{
+    let status_tag = document.querySelector('.status_tag_saver');
+    if(status_tag !== null){
+
+        setTimeout(()=>{
+            status_tag.style.opacity = '1';
+        }, 100)
+    
+        setTimeout(()=>{
+            status_tag.style.opacity = '0';
+        
+            setTimeout(()=>{
+                status.value = undefined
+            },500)
+        }, 1500)
+    }
+})
 </script>
 
 <template>
     <div class="build_saver">
+        <p v-if="status !== undefined" class="status_tag_saver">{{status}}</p>
         <input type="text" placeholder="Enter build name.." ref="build_input">
         <h3 @click="submit_build($refs.build_input.value)">Submit</h3>
+        
     </div>
 </template>
 
 <style lang="scss" scoped>
+
+.status_tag_saver{
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+}
+
 .build_saver{
     display: grid;
     align-items: center;
