@@ -166,7 +166,9 @@ const end_decrease = (event) =>{
 onMounted(()=>{
     setTimeout(()=>{
         let page = document.querySelector('._skill_content');
-        page['style']['opacity'] = '1';
+        if(page !== null){
+            page['style']['opacity'] = '1';
+        }
     },125)
 })
 
