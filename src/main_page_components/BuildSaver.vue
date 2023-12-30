@@ -45,7 +45,24 @@ const retrieve_cookies = () => {
     return parsed_array
 }
 
-const submit_build = async (input_tag_content) => {
+
+const button_clicked = (tag) => {
+    const win_size = window.innerWidth;
+    if(win_size < 1024){
+        tag.style.fontSize = '1.10rem';
+    } else if (win_size >= 1024){
+        tag.style.fontSize = '1.25rem';
+    }
+}
+
+const reset_button = (tag) => {
+    setTimeout(()=>{
+     tag.style.fontSize = '';
+    },300)
+}
+const submit_build = async (input_tag_content, event) => {
+
+    button_clicked(event.target);
     if(input_tag_content !== ""){
         const item_array = retrieve_cookies();
         let no_missing_data = true;
@@ -58,22 +75,27 @@ const submit_build = async (input_tag_content) => {
         if(no_missing_data){
             try{
                 const response = await use_api(item_array,input_tag_content);
-                console.log(response.status);
+                
                 if(response.statusText === "OK"){
                     status.value = "Build saved!";
+                    reset_button(event.target);
                 } else {
+                    reset_button(event.target);
                     status.value = "Error saving build";
                 }
             } catch (err) {
                 status.value = "Build name already exists."
-                console.log("Failed to resolve promise: ", response['data']. response['statusText']);
+                console.log("Failed to resolve promise: ", err.response);   
+                reset_button(event.target);
             }
         } else {
             status.value = "Required data is missing";
             console.error('Missing Data');
+            reset_button(event.target);
         }
     } else {
         status.value = "Enter a build name!";
+        reset_button(event.target);
     }
 }
 
@@ -100,8 +122,7 @@ onUpdated(()=>{
     <div class="build_saver">
         <p v-if="status !== undefined" class="status_tag_saver">{{status}}</p>
         <input type="text" placeholder="Enter build name.." ref="build_input">
-        <h3 @click="submit_build($refs.build_input.value)">Submit</h3>
-        
+        <h3 class="submit_tag" @click="submit_build($refs.build_input.value, $event)">Submit</h3>
     </div>
 </template>
 
@@ -132,6 +153,7 @@ onUpdated(()=>{
         max-width: 175px;
     }
     >h3{
+        transition: 0.3s ease-in-out;
         text-align: center;
         padding-top: 3px;
         padding-bottom: 3px;
