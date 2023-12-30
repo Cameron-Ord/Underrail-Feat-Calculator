@@ -1,7 +1,5 @@
 <template>
-    <div class="type_header">
-        <h2 class="build_type_header_text">Build type filtering</h2>
-    </div>
+    <h2 class="build_type_header_text">Build type filtering</h2>
 </template>
 
 <script setup>
@@ -18,13 +16,10 @@ onMounted(()=>{
 </script>
 
 <style lang="scss" scoped>
-.type_header{
-    display: grid;
-    align-items: center;
     >.build_type_header_text{
         opacity: 0;
         transition: 0.3s ease-in-out;
-        justify-self: center;
+        text-align: center;
     }
-}
+
 </style>

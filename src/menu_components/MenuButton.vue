@@ -55,6 +55,9 @@ const toggleMenu = () => {
     opacity: 0;
 }
 .icon_container{
+    padding: 6px;
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.60);
     display: grid;
     align-items: center;
     text-align: start;

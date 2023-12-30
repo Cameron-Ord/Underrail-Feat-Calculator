@@ -233,10 +233,11 @@ onBeforeMount(()=>{
         width: 90%;
         display: flex;
         flex-wrap: wrap;
-        justify-content: space-between;
+        justify-content: space-evenly;
         justify-self: center;
         align-items: center;
         row-gap: 10px;
+        column-gap: 10px;
       }
     >._sheet_wrapper{
       display: grid;
@@ -253,12 +254,13 @@ onBeforeMount(()=>{
     padding-bottom: 20px;
     row-gap: 35px;
     >.span_text{
-      display: grid;
+      display: flex;
+      flex-wrap: wrap;
       align-items: center;
+      justify-content: center;
       padding-top: 10px;
       padding-bottom: 10px;
-      justify-self: center;
-      
+      text-align: center;
     }
     >.selection_article{
       display: grid;
@@ -286,7 +288,7 @@ onBeforeMount(()=>{
  
  
       >.view_controls{
-        width: 60%;
+        width: 80%;
       }
     >._sheet_wrapper{
       justify-items: center;
@@ -317,7 +319,7 @@ onBeforeMount(()=>{
  >._character_sheet{
 
      >.view_controls{
-       width: 40%;
+       width: 70%;
      }
    }
    >._sheet_wrapper{
