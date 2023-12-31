@@ -16,7 +16,7 @@ onMounted(()=>{
 </script>
 
 <style lang="scss" scoped>
-    >.build_type_header_text{
+    .build_type_header_text{
         opacity: 0;
         transition: 0.3s ease-in-out;
         text-align: center;
