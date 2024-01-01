@@ -1,208 +1,433 @@
 <script setup>
-import axios from 'axios';
-import { onBeforeMount,ref } from 'vue';
+
 import { useCookies } from 'vue3-cookies';
-const user_builds = ref([])
-let index = ref(0);
-const get_user_builds = () =>{
+import axios from 'axios';
+import { nextTick, onBeforeMount, onBeforeUpdate, onUpdated, ref } from 'vue';
+const all_builds = ref([])
+const all_builds_map = new Map;
+const current_build = ref(undefined)
+const viewing = ref("")
+
+const build_API = () =>{
     const {cookies} = useCookies();
     const client_id = cookies.get('Client_ID');
     const client_session = cookies.get('Client_Session_Token');
     const parsed_id = JSON.parse(client_id);
     const parsed_session = JSON.parse(client_session) 
-    axios({
-        url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-user-builds`,
-        method:"GET",
-        params:{
-            session_token:parsed_session,
-            client_id:parsed_id
-        }
-    }).then((response)=>{
-        user_builds.value = response['data'];
-    }).catch((error)=>{
-        error;
+    return new Promise((resolve, reject) => {
+        axios({
+            url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-user-builds`,
+            method:"GET",
+            params:{
+                session_token:parsed_session,
+                client_id:parsed_id
+            }
+        }).then((response)=>{
+            resolve(response)
+        }).catch((error)=>{
+            reject(error)
+        })
     })
 }
 
-const decrement = () =>{
-    if(index.value < user_builds.value.length){
-        let index_copy = index.value;
-        index_copy = (index.value - 1 + user_builds.value.length) % user_builds.value.length;
-        index.value = index_copy;
+const create_map = (resp_data) => {
+    let builds_map = new Map();
+    for(let i = 0; i < resp_data.length; i++){
+        const build_title = resp_data[i]['Build_Title'];
+        
+        if(!builds_map.has(build_title)){
+            builds_map.set(build_title, []);
+        }
+        builds_map.get(build_title).push(resp_data[i]);
+    }
+   
+    if(builds_map.size > 0) {
+        all_builds_map.value = new Map(builds_map);
     }
 }
 
-const increment = () =>{
-    if(index.value < user_builds.value.length){
-        let index_copy = index.value;
-        index_copy = (index.value + 1) % user_builds.value.length;
-        index.value = index_copy;
+const click_effect = (event) => {
+    event.target.style.backgroundColor = 'var(--orange_rgba)';
+
+    if(window.innerWidth < 1024){
+        event.target.style.fontSize = '1.10rem';
+    } else if (window.innerWidth >= 1024){
+        event.target.style.fontSize = '1.25rem';
+    }
+    setTimeout(()=>{
+            event.target.style.backgroundColor = '';
+            event.target.style.fontSize = '';
+    }, 300)
+}
+
+const get_item_from_map = (event) => {
+    click_effect(event);
+    const item_name = event.target.innerText;
+    current_build.value = undefined
+    let build_item;
+    if(item_name !== ''){
+        build_item = all_builds_map.value;
+    }
+
+    let current_build_object;
+    if(build_item !== undefined || build_item !== null){
+        current_build_object = build_item.get(item_name);
+    }
+
+
+    nextTick(()=>{
+        if(current_build_object !== undefined || current_build_object !== null){
+            current_build.value = current_build_object[0];
+        }
+    })
+} 
+
+const get_user_builds = async () => {
+    const response = await build_API();
+    if (response.statusText === "OK") {
+        const resp_data = response['data'];
+        all_builds.value = resp_data;
+        create_map(resp_data);
     }
 }
 
-onBeforeMount(()=>{
+const handle_toggle_bitems = (event) => {
+    click_effect(event);
+    const text = event.target.innerText;
+    if(text !== "" || undefined){
+        viewing.value = text;
+    }
+}
+
+onBeforeMount(() => {
     get_user_builds()
+});
+
+const make_item_visible = (wrapper_div) =>{
+    const div_children = wrapper_div.childNodes;
+    if(div_children.length !== null){
+        for(let n = 0; n < div_children.length; n ++){
+            const child = div_children[n]
+            let exists;
+            let contains;
+            if(child !== null && child['data'] !== "v-if"){
+                exists = true;
+                if(child.classList.contains('b_item')){
+                    contains = true;
+                }
+            }
+            if(exists && contains){
+                nextTick(()=>{
+                    setTimeout(()=>{
+                        child.style.opacity = '1';
+                    }, 100)
+                })
+            }
+        }
+    }
+}
+
+onUpdated(()=>{
+
+    let ctrls_div = document.querySelector('.allb_controls_div');
+    let all_b_div = document.querySelector('.all_builds');
+
+    if(all_b_div !== null){
+        nextTick(()=>{
+            setTimeout(()=>{
+                all_b_div.style.opacity = '1';
+            }, 100)
+        })
+    }
+    if(ctrls_div !== null && !ctrls_div.classList.contains('is_present')) {
+        nextTick(()=>{
+            setTimeout(()=>{
+                ctrls_div.classList.add('is_present');
+            }, 100)
+        })
+    }
+    let wrapper_div = document.querySelector('.build_selection_wrapper')
+    make_item_visible(wrapper_div);
 })
 
+onBeforeUpdate(()=>{
+
+})
+
+
 </script>
+
 <template>
-    <div class="all_builds" v-if="user_builds.length > 0">
-        <h3 class="build_title">{{ user_builds[index]['Build_Title'] }}</h3>
-        <div class="loop_div"> 
-            <div class="seperator" v-if="user_builds[index]['Feat_Slice'].length > 0">
-                <h3 class="loop_header">FEATS:</h3>
-                <div class="loop_container">
-                    <p v-for="(feat, f) in user_builds[index]['Feat_Slice']" :key="f">{{ feat['Name'] }}</p>
-                </div>
-            </div>
-            <div class="seperator" v-if="user_builds[index]['Skill_Slice'].length > 0">
-                <h3 class="loop_header">SKILLS:</h3>
-                <div class="loop_container">
-                    <p v-for="(skill, s) in user_builds[index]['Skill_Slice']" :key="s"> {{ skill['Name'] }} - {{ skill['Value'] }}</p>
-                </div>
-            </div>
-            <div class="seperator" v-if="user_builds[index]['Stat_Slice'].length > 0">
-                <h3 class="loop_header">STATS:</h3>
-                <div class="loop_container">
-                    <p v-for="(stat, t) in user_builds[index]['Stat_Slice']" :key="t">{{ stat['Name'] }} - {{ stat['Value'] }}</p>
-                </div>
-            </div>
+    <div class="all_builds">
+        <div class="build_title" v-if="all_builds.length > 0">
+            <h3 
+            @click="get_item_from_map($event)"
+            v-for="(item, i) in all_builds" :key="i"
+            >{{all_builds[i]['Build_Title']}}</h3>
         </div>
-        <div class="index_controls">
-            <p @click="decrement">Previous</p>
-            <p @click="increment">Next</p>
+
+        <div class="build_selection_wrapper">
+            <div class="build_name b_item" v-if="current_build !== undefined && current_build.Build_Title !== undefined">
+                <p>
+                    Selected: 
+                </p>
+                <h4>{{ current_build.Build_Title }}</h4>
+            </div>
+
+            <div class="build_feats b_item" v-if="current_build !== undefined && current_build.Feat_Slice.length > 0 && viewing === 'Feats'">
+                <div class="allb_loop_div" v-for="(feat, nm) in current_build.Feat_Slice" :key="nm">
+                    <p>
+                        {{ feat['Name'] }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="build_skills b_item" v-if="current_build !== undefined && current_build.Skill_Slice.length > 0 && viewing === 'Skills'">
+                <div class="allb_loop_div" v-for="(feat, sk) in current_build.Skill_Slice" :key="sk">
+                    <p>
+                        {{ feat['Name'] }}
+                    </p>
+                    <p>
+                        {{ feat['Value'] }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="build_stats b_item" v-if="current_build !== undefined && current_build.Stat_Slice.length > 0 && viewing === 'Stats'">
+                <div class="allb_loop_div" v-for="(feat, sk) in current_build.Stat_Slice" :key="sk">
+                    <p>
+                        {{ feat['Name'] }}
+                    </p>
+                    <p>
+                        {{ feat['Value'] }}
+                    </p>
+                </div>
+            </div>
+
+            <div class="allb_controls_div" v-if="current_build !== undefined">
+                <h3 class="ctrls_tag" @click="handle_toggle_bitems($event)">Feats</h3>
+                <h3 class="ctrls_tag" @click="handle_toggle_bitems($event)">Skills</h3>
+                <h3 class="ctrls_tag" @click="handle_toggle_bitems($event)">Stats</h3>
+            </div>
         </div>
     </div>
 </template>
 
 <style lang="scss" scoped>
-.all_builds{
+.all_builds {
     display: grid;
     align-items: center;
-    grid-template-rows: auto;
-    width: 100%;
     row-gap: 25px;
-    justify-items: center;
-
-        >.build_title{
-            justify-self: center;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 7.5px;
-            padding-right: 7.5px;
-            border: solid var(--orange) 1px;
-            border-radius: 10px;
-        }
-        
-    >.index_controls{
-        justify-items: center;
-        display: grid;
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    >.build_title{
+        justify-self: center;
+        display: flex;
+        flex-wrap: wrap;
+        column-gap: 25px;
+        row-gap: 25px;
+        width: 80%;
+        height: 300px;
+        overflow-y: auto;
         align-items: center;
-        row-gap: 10px;
-        grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-        width: 85%;
-        >p{
-            cursor: pointer;
-            justify-self: center;
-            padding-top: 5px;
-            padding-bottom: 5px;
-            padding-left: 7.5px;
-            padding-right: 7.5px;
+        justify-content: space-evenly;
+        >h3{
+            transition: 0.3s ease-in-out;
             border: solid var(--orange) 1px;
-            border-radius: 10px;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
         }
     }
-    >.loop_div{
-        width: 100%;
+
+    >.build_selection_wrapper{
         display: grid;
         align-items: center;
-        grid-template-rows: auto;
-        row-gap:25px;
-        padding-top: 25px;
-        padding-bottom: 25px;
+        justify-items: center;
+        row-gap: 50px;
 
-        >.seperator{
-            width: 100%;
+        >.build_name{
+            opacity: 0;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+            column-gap: 10px;
+        }
+
+        >.allb_controls_div.is_present {
+            opacity: 1;
+        }
+        >.allb_controls_div{
+            opacity: 0;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            column-gap: 25px;
+            row-gap: 15px;
+
+            >h3{
+                transition: 0.3s ease-in-out;
+                border: solid var(--orange) 1px;
+                padding: 5px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        }
+
+        >.build_stats{
+            padding: 10px;
+            border-radius: 5px;
+            border: solid var(--orange) 1px;
+            opacity: 0;
+            transition: 0.3s ease-in-out;
             display: grid;
             align-items: center;
-            grid-template-rows: auto;
-            row-gap: 25px;
             justify-items: center;
-
-            >.loop_header{
-                justify-self: center;
-                text-align: center;
+            width: 80%;
+            row-gap: 10px;
+            >.allb_loop_div{
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                width: 95%;
+                column-gap: 15px
             }
-            >.loop_container{
-                text-align: center;
-                width: 90%;
-                display: grid;
-                align-items: center;
-                justify-items: center;
-                grid-template-rows: auto;
-                grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
-                row-gap: 10px;
-                padding-top: 25px;
-                padding-bottom: 25px;
+        }
+
+        >.build_skills{
+            padding: 10px;
+            border-radius: 5px;
+            border: solid var(--orange) 1px;
+            opacity: 0;
+            transition: 0.3s ease-in-out;
+            display: grid;
+            align-items: center;
+            justify-items: center;
+            width: 80%;
+            row-gap: 10px;
+            >.allb_loop_div{
+                display: flex;
+                justify-content: space-between;
+                flex-wrap: wrap;
+                width: 95%;
+                column-gap: 15px
+            }
+        }
+        >.build_feats{
+            padding: 10px;
+            border-radius: 5px;
+            border: solid var(--orange) 1px;
+            opacity: 0;
+            transition: 0.3s ease-in-out;
+            display: flex;
+            flex-wrap: wrap;
+            max-width: 80%;
+            align-items: center;
+            justify-content: center;
+            row-gap: 10px;
+            column-gap: 15px;
+            >.allb_loop_div{
+                display: flex;
+                flex-wrap: wrap;
                 >p{
-                    width: 100%;
+
                 }
             }
         }
     }
 }
-@media only screen and (min-width: 770px){
-    .all_builds{
-    
-        >.build_title{
-        }
-        
-    >.index_controls{
-        width: 75%;
-        >p{
-        }
-    }
-    >.loop_div{
-    
-        >.seperator{
-          
-            >.loop_header{
-            }
-            >.loop_container{
-                width: 80%;
-                grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
-                >p{
-                }
-            }
-        }
-    }
-}
-}
+@media only screen and (min-width: 770px) {
+    .all_builds {
 
-@media only screen and (min-width: 1024px){
-    .all_builds{
-    
     >.build_title{
+        width: 60%;
+        height: 250px;
     }
-    
->.index_controls{
-    width: 45%;
-    >p{
-    }
-}
->.loop_div{
-    grid-template-columns: 1fr 1fr 1fr;
-    >.seperator{
-      
-        >.loop_header{
+
+    >.build_selection_wrapper{
+
+        >.build_name{
         }
-        >.loop_container{
-            grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-            >p{
+
+        >.allb_controls_div.is_present {
+        }
+        >.allb_controls_div{
+
+            >h4{
+            }
+        }
+
+        >.build_stats{
+            width: 60%;
+
+            >.allb_loop_div{
+            }
+        }
+
+        >.build_skills{
+            width: 60%;
+
+            >.allb_loop_div{
+            }
+        }
+        >.build_feats{
+            max-width: 60%;
+            >.allb_loop_div{
+   
+                >p{
+
+                }
             }
         }
     }
 }
-}   
+}
+@media only screen and (min-width: 1024px) {
+
+    .all_builds {
+        grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+
+>.build_title{
+    width: 70%;
+}
+
+>.build_selection_wrapper{
+
+    >.build_name{
+    }
+
+    >.allb_controls_div.is_present {
+    }
+    >.allb_controls_div{
+
+        >h4{
+        }
+    }
+
+    >.build_stats{
+        width: 70%;
+        >.allb_loop_div{
+        }
+    }
+
+    >.build_skills{
+        width: 70%;
+        >.allb_loop_div{
+        }
+    }
+    >.build_feats{
+        max-width: 70%;
+        >.allb_loop_div{
+
+            >p{
+
+            }
+        }
+    }
+}
+}
 }
 </style>

@@ -5,7 +5,7 @@ import AboutEnd from '../about_components/AboutEnd.vue';
 import AboutLinks from '../about_components/AboutLinks.vue';
 import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
-import { onBeforeMount, onMounted } from 'vue';
+import { nextTick, onBeforeMount, onMounted } from 'vue';
 const {cookies} = useCookies();
 const menu_store_instance = useMenuStore();
 const check_if_logged = () => {
@@ -22,16 +22,17 @@ onBeforeMount(()=>{
 
 onMounted(()=>{
   let about_pg_tags = document.querySelectorAll('.hero_about');
+  nextTick(()=>{
+    setTimeout(() => {
+      for(let i = 0; i < about_pg_tags.length; i++){
+          let tag = about_pg_tags[i];
 
-  setTimeout(() => {
-  for(let i = 0; i < about_pg_tags.length; i++){
-      let tag = about_pg_tags[i];
-
-      if(tag !== null){
-        tag.style.opacity = '1';
+          if(tag !== null){
+            tag.style.opacity = '1';
+          }
       }
-  }
-  }, 100)
+    }, 100)
+  })
 })
 </script>
 

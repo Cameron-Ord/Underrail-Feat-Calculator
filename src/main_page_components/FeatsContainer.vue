@@ -1,5 +1,5 @@
 <script setup>
-import {onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import {nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
 import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
@@ -185,10 +185,12 @@ onBeforeUnmount(()=>{
 
 onMounted(()=>{
     move_viewpoint()
-    setTimeout(()=>{
-        let fv = document.querySelector('.feat_viewer_container');
-        fv['style']['opacity'] = '1';
-    }, 400)
+    nextTick(()=>{
+        setTimeout(()=>{
+            let fv = document.querySelector('.feat_viewer_container');
+            fv['style']['opacity'] = '1';
+        }, 400)
+    })
 })
 
 </script>

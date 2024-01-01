@@ -1,19 +1,34 @@
 <script setup>
-const go_to_github = () => {
-    window.open('https://github.com/Cameron-Ord/Underrail-Feat-Calculator')
-}
-const go_to_linkedin=()=>{
-    window.open('https://ca.linkedin.com/in/camord34')
+const handle_click = (target_text) => {
+    switch (target_text) {
+        case "GitHub":
+            window.open('https://github.com/Cameron-Ord')
+            break;
+        case "Portfolio":
+            window.open('https://portfolio.cameron-ord.online/')
+            break;
+        case "Front end code":
+            window.open('https://github.com/Cameron-Ord/Underrail-Feat-Calculator');
+            break;
+        case "Back end code":
+            window.open('https://github.com/Cameron-Ord/UnderrailFeatBackend')
+            break;
+        case "LinkedIn":
+            window.open('https://ca.linkedin.com/in/camord34');
+            break;
+    default:
+            break;
+    }
 }
 </script>
 
 <template>
     <div class="hero_about">
-        <h3 @click="go_to_github">GitHub</h3>
-        <h3 @click="go_to_github">Portfolio</h3>
-        <h3 @click="go_to_github">Front end code</h3>
-        <h3 @click="go_to_github">Back end code</h3>
-        <h3 @click="go_to_linkedin">LinkedIn</h3>
+        <h3 @click="handle_click($event.target.innerText)">GitHub</h3>
+        <h3 @click="handle_click($event.target.innerText)">Portfolio</h3>
+        <h3 @click="handle_click($event.target.innerText)">Front end code</h3>
+        <h3 @click="handle_click($event.target.innerText)">Back end code</h3>
+        <h3 @click="handle_click($event.target.innerText)">LinkedIn</h3>
     </div>
 </template>
 <style lang="scss" scoped>

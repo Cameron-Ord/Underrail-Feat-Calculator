@@ -67,7 +67,7 @@
 </style>
 
 <script setup>
-import { onBeforeMount, onMounted, ref } from 'vue';
+import { nextTick, onBeforeMount, onMounted, ref } from 'vue';
 import { useCookies } from 'vue3-cookies';
 
 onMounted(()=>{
@@ -82,9 +82,11 @@ onMounted(()=>{
     function checkAllImagesLoaded() {
         loadedImages++;
         if (loadedImages === images.length) {
-            for(let j = 0; j < images.length; j++){
-                images[j]['style']['opacity'] = '1';
-            }
+            nextTick(()=>{
+                for(let j = 0; j < images.length; j++){
+                    images[j]['style']['opacity'] = '1';
+                }
+            })
         }
     }
 

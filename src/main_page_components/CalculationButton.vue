@@ -1,5 +1,5 @@
 <script setup>
-import {inject, ref} from 'vue'
+import {inject, nextTick, ref} from 'vue'
 import { useCookies } from 'vue3-cookies';
 import { useFeatStore } from '../stores/feat_store';
 import axios from 'axios';
@@ -22,9 +22,12 @@ const set_grid = () => {
     let feat_page = document.querySelector('.span_height');
         if(feat_page !== null){
             feat_page['style']['transition'] = '0.6s ease-in-out';
-            setTimeout(()=>{
-                feat_page['style']['opacity'] = '1';
-            },600)
+
+            nextTick(()=>{
+                setTimeout(()=>{
+                    feat_page['style']['opacity'] = '1';
+                },600)
+            })
         }
 }
 
