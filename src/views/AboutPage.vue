@@ -37,16 +37,14 @@ onMounted(()=>{
 
 <template>
     <main class="about_page">
-        <section class="about_section">
-            <about-header></about-header>
-        </section>
-        <section class="about_section">
-            <about-middle></about-middle>
-        </section>
-        <section class="about_section">
-            <about-end></about-end>
-            <about-links></about-links>
-        </section>
+      <div class="about_section">
+        <about-header></about-header>
+        <about-middle></about-middle>
+        <about-end></about-end>
+      </div>
+      <div class="about_section">
+        <about-links></about-links>
+      </div>
     </main>
 </template>
 
@@ -59,9 +57,10 @@ onMounted(()=>{
 .about_page{
     padding-top: 50px;
     padding-bottom: 50px;
-    grid-template-rows: auto auto auto;
-    row-gap: 50px;
+    grid-template-rows: auto auto;
     display: grid;
+    justify-items: center;
+    row-gap: 35px;
     align-items: center;
     min-height: 100vh;
     opacity: 1;
@@ -70,7 +69,7 @@ onMounted(()=>{
       display: grid;
       align-items: center;
       justify-items: center;
-      row-gap: 30px;
+      row-gap: 50px;
     }
 }
 @media only screen and (min-width: 770px){
@@ -81,7 +80,9 @@ onMounted(()=>{
 }
 @media only screen and (min-width: 1024px){
   .about_page{
-  
+    row-gap: 50px;
+    grid-template-rows: auto;
+    grid-template-columns: repeat(auto-fit, minmax(800px, 1fr));
    
     >.about_section{
       display: grid;

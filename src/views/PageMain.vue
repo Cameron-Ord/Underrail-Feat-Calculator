@@ -174,9 +174,9 @@ onBeforeMount(()=>{
       </article>
     </section>
     <section class="type_selection">
-      <span class="span_text">
+      <article class="span_text">
         <type-filtering></type-filtering>
-      </span>
+      </article>
       <article class="selection_article">
         <build-types></build-types>
       </article>
@@ -266,6 +266,7 @@ onBeforeMount(()=>{
       display: grid;
       align-items: center;
       justify-self: center;
+      justify-items: center;
       row-gap: 30px;
       padding-top: 20px;
       padding-bottom: 20px;

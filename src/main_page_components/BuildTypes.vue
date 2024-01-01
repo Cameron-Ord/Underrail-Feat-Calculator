@@ -10,14 +10,14 @@
 
 .class_types_div{
     opacity: 0;
-    display: grid;
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-self: center;
-    justify-items: center;
+    justify-content: space-evenly;
     text-align: center;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
     row-gap: 15px;
-    width: 90%;
+
     padding: 2px;
     >img{
         opacity: 0;

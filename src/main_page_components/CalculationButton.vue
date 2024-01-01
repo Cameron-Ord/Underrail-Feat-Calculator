@@ -143,7 +143,7 @@ const generate_feat_list = async (event) =>  {
     }
 
     cookies.remove('chosen_feats');
-    const bool = feat_store_instance.mutators.update_can_save_build(false);
+    const bool = false
     feat_store_instance.state.can_save_build = bool;
     const [stat_items, skill_items, char_types] = retrieve_cookies();
     let response;

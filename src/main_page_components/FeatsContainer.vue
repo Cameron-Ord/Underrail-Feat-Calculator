@@ -72,7 +72,6 @@ const add_feat = (feat_ref) => {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
         if(feat_array.length > 0 && feat_array.length <= 15){
             cookies.set('chosen_feats', JSON.stringify(feat_array));
-            console.log(feat_array.length)
             return [true, feat_array]
         } else if(feat_array.length > 15){
             console.log('reached maximum allowed feats')
@@ -108,35 +107,50 @@ const remove_feat = (feat_ref) => {
     }
 }
 
-const handle_click = (feat_ref, index) => {
+const set_values = (bool, array_len) =>{
+    feat_store_instance.state.can_save_build = bool;
+    feat_counter.value = array_len;
+
+}
+
+const handle_click = (feat_ref, index, event) => {
     if(svg_list.value[index] === plus){
+        
+        event['target']['style']['width'] = '34px';
+        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+        setTimeout(()=>{
+            event['target']['style']['width'] = '';
+            event['target']['style']['background-color'] = '';            
+        }, 300)
+
         feat_store_instance.state.svg_list[index] = minus
         const [successful, modified_array] = add_feat(feat_ref[index]);
+
         if(successful === true && modified_array.length > 0){
-            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
-            feat_store_instance.state.can_save_build = bool_to_assign
-            feat_counter.value = modified_array.length;
+            set_values(true, modified_array.length);
         } else if(successful === false && modified_array.length >= 15){
             feat_store_instance.state.svg_list[index] = plus
-            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
-            feat_store_instance.state.can_save_build = bool_to_assign
-            feat_counter.value = modified_array.length;
+            set_values(false, modified_array.length);
         } else {
-            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
-            feat_store_instance.state.can_save_build = bool_to_assign
-            feat_counter.value = modified_array.length;
+            set_values(false, modified_array.length);
         }
+
     } else if (svg_list.value[index] === minus){
+        
+        event['target']['style']['width'] = '34px';
+        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+        setTimeout(()=>{
+            event['target']['style']['width'] = '';
+            event['target']['style']['background-color'] = '';            
+        }, 300)
+
         feat_store_instance.state.svg_list[index] = plus
         const [successful, modified_array] = remove_feat(feat_ref[index]);
+        
         if(successful === true && modified_array.length > 0){
-            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(true)
-            feat_store_instance.state.can_save_build = bool_to_assign
-            feat_counter.value = modified_array.length;
+            set_values(true, modified_array.length);
         } else {
-            const bool_to_assign = feat_store_instance.mutators.update_can_save_build(false)
-            feat_store_instance.state.can_save_build = bool_to_assign
-            feat_counter.value = modified_array.length;
+            set_values(false, modified_array.length);
         }
     }
 }
@@ -190,7 +204,7 @@ onMounted(()=>{
                 :src="svg_list[i]"
                 alt="plus"
                 class="plus"
-                @click="handle_click($refs.featText, i)"
+                @click="handle_click($refs.featText, i, $event)"
                 :clicked_plus="i"
                 ref="input_svg"
                 />
@@ -205,6 +219,7 @@ onMounted(()=>{
     transition: 0.6s ease-in-out;
     display: grid;
     align-items: center;
+    justify-items: center;
     row-gap: 45px;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -216,26 +231,30 @@ onMounted(()=>{
     }
 
     >.span_height{
+        grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
         display: grid;
         align-items: center;
         height: 350px;
         justify-items: center;
         overflow-y: auto;
-        width: 100%;
+        width: 80%;
         padding-top: 10px;
         padding-bottom: 10px;
         row-gap: 35px;
-        grid-template-columns: repeat(auto-fit, minmax(175px,1fr));
+        column-gap: 10px;
         >.feat_container{
-            display: grid;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
             align-items: center;
-            justify-items: center;
             row-gap: 10px;
-            width: 90%;
 
             >img{
+                padding:2.5px ;
+                transition: 0.3s ease-in-out;
                 border: solid var(--orange) 1px;
                 border-radius: 6px;
+                cursor: pointer;
             }
 
             >p{

@@ -9,16 +9,16 @@ export const useFeatStore = defineStore('feat', () => {
         can_save_build: false,
     };
 
-    const mutators = {
-        update_can_save_build(bool){
-            let canSaveBuild = bool;
-            return canSaveBuild
+    const getters = {
+
+        return_can_save(){
+            return state.can_save_build;
         }
     }
 
     return{
         state,
-        mutators
+        getters
     }
 })
   

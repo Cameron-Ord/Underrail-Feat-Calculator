@@ -35,7 +35,7 @@
 
 @media only screen and (min-width: 1024px){
     .hero_about{
-        width: 60%;
+        width: 80%;
     }
 }
 
