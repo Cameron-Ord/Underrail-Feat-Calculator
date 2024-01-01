@@ -24,9 +24,5 @@ https://github.com/Cameron-Ord/UnderrailFeatBackend
 ## TODO
 **add session authentication**
 
-**flesh out some animations on other pages**
-
-**provide a more indepth about page**
-
-**wrap with electron once i'm happy with the state of the app**
+**wrap with electron once 100% done**
 
