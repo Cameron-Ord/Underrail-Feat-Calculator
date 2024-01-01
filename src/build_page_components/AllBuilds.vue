@@ -99,10 +99,14 @@ const make_item_visible = (wrapper_div) =>{
             const child = div_children[n]
             let exists;
             let contains;
-            if(child !== null && child['data'] !== "v-if"){
+            if(child.nodeType === 1 && child['data'] !== "v-if"){
                 exists = true;
-                if(child.classList.contains('b_item')){
-                    contains = true;
+                try{
+                    if(child.classList.contains('b_item')){
+                        contains = true;
+                    }
+                } catch (error) {
+                    console.log('error: ', error)
                 }
             }
             if(exists && contains){
@@ -129,6 +133,7 @@ onUpdated(()=>{
         })
     }
     if(ctrls_div !== null && !ctrls_div.classList.contains('is_present')) {
+        
         nextTick(()=>{
             setTimeout(()=>{
                 ctrls_div.classList.add('is_present');
