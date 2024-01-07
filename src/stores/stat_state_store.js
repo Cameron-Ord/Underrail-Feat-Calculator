@@ -16,6 +16,16 @@ export const useStatStore = defineStore('stat', () => {
     };
 
     const actions = {
+
+
+        get_limiter(){
+            return state.stat_count_limiter;
+        },
+
+        get_items(){
+            return state.stat_items_array;
+        },
+
         
         set_default_values(){
             const stat_limiter = 35;

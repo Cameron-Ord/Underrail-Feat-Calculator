@@ -11,7 +11,6 @@ const pinia = createPinia()
 app.use(pinia)
 app.use(router)
 app.use(useCookies, {
-    expireTimes: '1d',
     path: '/',
     domain: import.meta.env.VITE_APP_BASE_DOMAIN,
     secure: true,

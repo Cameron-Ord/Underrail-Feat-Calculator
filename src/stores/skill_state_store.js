@@ -32,6 +32,15 @@ export const useSkillStore = defineStore('skill', () => {
     };
 
     const actions = {
+
+        get_limiter(){
+            return state.skill_count_limiter;
+        },
+
+        get_items(){
+            return state.skill_items_array;
+        },
+
         set_default_values(){
             const skill_limiter = 0;
             const skill_items = [];

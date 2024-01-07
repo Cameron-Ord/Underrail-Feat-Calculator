@@ -75,8 +75,8 @@ const retrieve_cookies = () => {
         const parsed_skill_items = JSON.parse(skill_items);
         let parsed_char_type = JSON.parse(char_type);
 
-        if(parsed_char_type === null) {
-            parsed_char_type = []
+        if(parsed_char_type === null || parsed_char_type === undefined) {
+            parsed_char_type = new Array
         }
 
         if(parsed_skill_items === null || parsed_stat_items === null){
@@ -161,14 +161,15 @@ const generate_feat_list = async (event) =>  {
             feat_store_instance.state.feats_list = undefined;
             make_visible(false);
             reset_grid();
+            reset_button(event);
             return
         }
     } else {
-        status.value = {"Status":"Either stat or skill selection doesn't exist"};
+        status.value = {"Status":"Either stat or skill selection doesn't exist, selections have been reset."};
         status_fade_in();
         status_fade_out();
         reset_grid();
-        reset_button();
+        reset_button(event);
         make_visible(false);
         return
     }
@@ -181,7 +182,7 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
-        reset_button();
+        reset_button(event);
         return
     }
 
@@ -193,7 +194,7 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
-        reset_button();
+        reset_button(event);
         return
     } else if (response.status > 300) {
         status.value = {"Status":"Server response failed"};
@@ -203,7 +204,7 @@ const generate_feat_list = async (event) =>  {
         feat_store_instance.state.feats_list = undefined;
         make_visible(false);
         reset_grid();
-        reset_button();
+        reset_button(event);
         return
     }
     

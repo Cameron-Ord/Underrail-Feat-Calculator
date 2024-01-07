@@ -16,6 +16,7 @@ import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
 import { useFeatStore } from '../stores/feat_store';
 import { useMenuStore } from '../stores/menu_store';
+
 const {cookies} = useCookies();
 const stat_store_instance = useStatStore();
 const skill_store_instance = useSkillStore();
@@ -78,25 +79,41 @@ const retrieve_cookies = () => {
   const StatAV = cookies.get('stat_array_values');
   const SkillCL = cookies.get('skill_count_limiter');
   const SkillAV = cookies.get('skill_array_values');
-
+  const cookie_arr = [{"TYPE": "STAT_LIMITER" ,"VALUE": StatCL}, {"TYPE": "STAT_VALUES", "VALUE": StatAV}, {"TYPE": "SKILL_LIMITER","VALUE": SkillCL}, {"TYPE": "SKILL_VALUES", "VALUE": SkillAV}]
   try{
-    return [
-      JSON.parse(SkillCL),
-      JSON.parse(SkillAV),
-      JSON.parse(StatCL),
-      JSON.parse(StatAV)
-    ]
-  } catch (error) {
-    console.error("Error parsing JSON: ", error)
+    for (let c_index = 0; c_index < cookie_arr.length; c_index++){
+      const array_item = cookie_arr[c_index];
+      const parsed_item = JSON.parse(array_item["VALUE"])
+      array_item["VALUE"] = parsed_item;
+    }
+    return cookie_arr;
+  } catch {
+    console.log("ERROR PARSING JSON..");
+    return [null, null, null, null];
   }
 }
 
-const assign_predefined_values = (skill_lmtr,skill_vals,stat_lmtr,stat_vals) => {
-  stat_store_instance.state.stat_count_limiter = stat_lmtr
-  stat_store_instance.state.stat_items_array = stat_vals;
-  skill_store_instance.state.skill_count_limiter = skill_lmtr;
-  skill_store_instance.state.skill_items_array = skill_vals
+const assign_predefined_values = (item_map, item_type) => {
+  const item = item_map.get(item_type)
+  switch (item_type) {
+    case "STAT_LIMITER":
+      stat_store_instance.state.stat_count_limiter = item;
+      break;
+    case "STAT_VALUES":
+      stat_store_instance.state.stat_items_array = item;
+      break;
+    case "SKILL_LIMITER":
+      skill_store_instance.state.skill_count_limiter = item;
+      break;
+    case "SKILL_VALUES":
+      skill_store_instance.state.skill_items_array = item;
+      break;
+    default:
+      break;
+  }
+
 }
+
 
 const assign_default_values = () =>{
   const [default_stat_limiter, default_stat_items] = stat_store_instance.actions.set_default_values();
@@ -113,9 +130,13 @@ const assign_default_values = () =>{
 
 const check_if_logged = () => {
   const is_logged = cookies.get('is_logged');
-  const parsed = JSON.parse(is_logged);
-  if(parsed !== null){
-    menu_store_instance.state.logged_in = parsed;
+  try {
+    const parsed = JSON.parse(is_logged);
+    if(parsed !== null){
+      menu_store_instance.state.logged_in = parsed;
+    }
+  } catch (error) {
+    console.log("Error parsing JSON: ", error);
   }
 }
 
@@ -131,26 +152,30 @@ onBeforeMount(()=>{
   const false_bool = false
   feat_store_instance.state.can_save_build = false_bool;
   remember_last_viewed();
-  const [
-    skill_lmtr,
-    skill_vals,
-    stat_lmtr,
-    stat_vals
-  ] = retrieve_cookies();
 
+  const cookie_arr = retrieve_cookies();
   let missing_cookies = false;
-
-  for (const value of [skill_lmtr, skill_vals,stat_lmtr,stat_vals]){
-    if(value === null){
+  for (let i = 0; i < cookie_arr.length; i++){
+    const value = cookie_arr[i]['VALUE'];
+    if(value === null || value === undefined){
       missing_cookies = true;
+      break;
     }
   }
+  
   if(missing_cookies === true){
     assign_default_values();
-  } else {
-    assign_predefined_values(skill_lmtr, skill_vals, stat_lmtr, stat_vals);
-  }
+  } else if(missing_cookies === false) {
+    let cookies_map = new Map();
 
+    for(let c_map_i = 0; c_map_i < cookie_arr.length; c_map_i++){
+      const item_type = cookie_arr[c_map_i]["TYPE"];
+      if(!cookies_map.has(item_type)){
+        cookies_map.set(item_type, cookie_arr[c_map_i]["VALUE"]);
+      }
+      assign_predefined_values(cookies_map, item_type);
+    }
+  } 
   check_if_logged()
 })
 

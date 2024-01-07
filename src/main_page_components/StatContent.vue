@@ -11,12 +11,12 @@ const increm_interval = ref(null);
 const decrem_interval = ref(null);
 
 watch(()=> stat_store_instance.state.stat_count_limiter, (newVal) =>{
-    stat_count_limiter.value = newVal
+    stat_count_limiter.value = newVal;
     set_cookies()
 })
 
 watch(()=> stat_store_instance.state.stat_items_array, (newVal) =>{
-    stat_items_array.value = newVal
+    stat_items_array.value = newVal;
     set_cookies()
 })
 const set_cookies = () =>{
@@ -160,9 +160,8 @@ const end_decrease = (event) =>{
     event.target.style.width = ''
 }
 
-
-
 onMounted(()=>{
+    console.log(stat_items_array.value, "SET VALUE")
     setTimeout(()=>{
         
         let page = document.querySelector('._stat_content');
