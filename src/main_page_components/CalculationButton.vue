@@ -51,20 +51,18 @@ const make_visible = (sent_bool) => {
 }
 
 const invoke_axios = (stat_items, skill_items, char_type) =>{
-    const method = 'POST';
     return new Promise((resolve, reject) => {
-        axios({
-        url:`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`,
-        method: method,
-        data:{
-            stats:stat_items,
-            skills:skill_items,
-            type:char_type
-        }
-        }).then((response)=>{
-            resolve(response);
-        }).catch((error)=>{
-            reject(error);
+        axios
+            .post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`, {
+                stats:stat_items,
+                skills:skill_items,
+                type:char_type
+            })
+                .then((response)=>{
+                    resolve(response);
+            })
+                .catch((error)=>{
+                    reject(error);
         })
     })
 }
