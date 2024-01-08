@@ -129,8 +129,22 @@ const remove_from_array = (array, index) =>{
 
 const add_to_array = (ref, sent_array) =>{
     sent_array.push(ref.textContent)
-    console.log(ref.textContent);
     cookies.set('char_types_array', JSON.stringify(sent_array))
+}
+
+const style_on_click = (event) => {
+    event['target']['style']['width'] = '34px';
+    event['target']['style']['background-color'] = 'var(--orange_rgba)';
+}
+
+const style_remove = (event) => {
+    //Once the dom is updated, the timeout function gets called.
+    nextTick(()=>{
+        setTimeout(()=>{
+            event['target']['style']['width'] = '';
+            event['target']['style']['background-color'] = '';
+        },300)
+    })
 }
 
 const toggle_type = (ref, index, event)=>{
@@ -140,13 +154,9 @@ const toggle_type = (ref, index, event)=>{
         console.log('Was null')
         let arr = []
         add_to_array(ref[index], arr);
-        event['target']['style']['width'] = '34px';
-        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+        style_on_click(event);
         svg_list.value[index] = minus
-        setTimeout(()=>{
-            event['target']['style']['width'] = '';
-            event['target']['style']['background-color'] = '';
-        },175)
+        style_remove(event)
         return
     }
 
@@ -154,13 +164,9 @@ const toggle_type = (ref, index, event)=>{
         console.log('Was []')
         let arr = []
         add_to_array(ref[index], arr);
-        event['target']['style']['width'] = '34px';
-        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+        style_on_click(event)
         svg_list.value[index] = minus;
-        setTimeout(()=>{
-            event['target']['style']['width'] = '';
-            event['target']['style']['background-color'] = '';
-        },175)
+        style_remove(event);
         return
     }
 
@@ -182,24 +188,15 @@ const toggle_type = (ref, index, event)=>{
     }
 
     if(spliced_arr !== undefined){
-        event['target']['style']['width'] = '34px';
-        event['target']['style']['background-color'] = 'var(--orange_rgba)';
+        style_on_click(event)
         svg_list.value[index] = plus;
-        setTimeout(()=>{
-            event['target']['style']['width'] = '';
-            event['target']['style']['background-color'] = '';
-        },175)
+        style_remove(event)
         return
     }
-
     add_to_array(ref[index], _parsed_);
-    event['target']['style']['width'] = '34px';
-    event['target']['style']['background-color'] = 'var(--orange_rgba)';
+    style_on_click(event)
     svg_list.value[index] = minus;
-    setTimeout(()=>{
-        event['target']['style']['width'] = '';
-        event['target']['style']['background-color'] = '';
-    },175)
+    style_remove(event)
 }
 
 </script>

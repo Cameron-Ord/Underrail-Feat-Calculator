@@ -161,7 +161,6 @@ const end_decrease = (event) =>{
 }
 
 onMounted(()=>{
-    console.log(stat_items_array.value, "SET VALUE")
     setTimeout(()=>{
         
         let page = document.querySelector('._stat_content');

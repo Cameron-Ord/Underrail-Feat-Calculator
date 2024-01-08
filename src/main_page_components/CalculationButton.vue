@@ -2,6 +2,8 @@
 import {inject, nextTick, ref} from 'vue'
 import { useCookies } from 'vue3-cookies';
 import { useFeatStore } from '../stores/feat_store';
+import { useSkillStore } from '../stores/skill_state_store';
+import { useStatStore } from '../stores/stat_state_store';
 import axios from 'axios';
 const {cookies} = useCookies()
 const feat_store_instance = useFeatStore();
@@ -108,19 +110,23 @@ const create_buttons = (response_data) => {
 const status_fade_in = () =>{
     setTimeout(()=>{
         let status_tag = document.querySelector('.status_text');
-        status_tag.style.opacity = "1";
+        if(status_tag !== null) {
+            status_tag.style.opacity = "1";
+        }
     }, 100);
 }
 
 const status_fade_out = () =>{
     setTimeout(()=>{
         let status_tag = document.querySelector('.status_text');
-        status_tag.style.opacity = "0";
-
-        setTimeout(()=>{
-            status.value = undefined
-        }, 500)
-    }, 1500)
+        if(status_tag !== null) {
+            status_tag.style.opacity = "0";
+        
+            setTimeout(()=>{
+                status.value = undefined
+            }, 500)
+        }
+    }, 5000)
 }
 
 const reset_button = (event) => {
@@ -130,13 +136,50 @@ const reset_button = (event) => {
     }, 300)
 }
 
+const handle_fail = (event) => {
+    status_fade_in()
+    status_fade_out()
+    feat_store_instance.state.svg_list = undefined;
+    feat_store_instance.state.feats_list = undefined;
+    make_visible(false);
+    reset_grid();
+    reset_button(event);
+}
+
+const reset_selection_items = () => {
+    const skill_st = useSkillStore();
+    const stat_st = useStatStore();
+    
+    const skill_actions = skill_st.actions
+    const stat_actions = stat_st.actions
+    
+    const [stat_lmtr, stat_itms] = stat_actions.set_default_values();
+    const [skill_lmtr, skill_itms] = skill_actions.set_default_values();
+    
+    stat_st.state.stat_count_limiter = stat_lmtr;
+    stat_st.state.stat_items_array = stat_itms;
+    skill_st.state.skill_count_limiter = skill_lmtr;
+    skill_st.state.skill_items_array = skill_itms;
+}
+
 const generate_feat_list = async (event) =>  {
+
+    let status_tag = document.querySelector('.status_text');
+    if(status_tag !== null) {
+        status_tag.style.opacity = '0';
+        nextTick(()=>{
+            setTimeout(()=>{
+                status.value = undefined
+            }, 300)
+        })
+    }
 
     let feat_page = document.querySelector('.span_height');
         if(feat_page !== null){
             feat_page['style']['opacity'] = '0';
             feat_page['style']['transition'] = 'none';
     }
+
     if(window.innerWidth < 1024) {
         event.target.style['font-size'] = '1.05rem';
         event.target.style['background-color'] = 'var(--orange_rgba)'
@@ -149,63 +192,37 @@ const generate_feat_list = async (event) =>  {
     const bool = false
     feat_store_instance.state.can_save_build = bool;
     const [stat_items, skill_items, char_types] = retrieve_cookies();
+    
     let response;
     if(stat_items.length > 0 && skill_items.length > 0){
         try{
             response = await invoke_axios(stat_items, skill_items, char_types);
         } catch (error) {
             status.value = {"Status":"Failed to reach server"};
-            status_fade_in()
-            status_fade_out()
-            feat_store_instance.state.svg_list = undefined;
-            feat_store_instance.state.feats_list = undefined;
-            make_visible(false);
-            reset_grid();
-            reset_button(event);
-            return
+            handle_fail(event);
+            return;
         }
     } else {
-        status.value = {"Status":"Either stat or skill selection doesn't exist, selections have been reset."};
-        status_fade_in();
-        status_fade_out();
-        reset_grid();
-        reset_button(event);
-        make_visible(false);
-        return
+        status.value = {"Status":"Either stat or skill selection doesn't exist, selections have been reset. Enter your stats/skills and try again."};
+        reset_selection_items();
+        handle_fail(event);
+        return;
     }
 
     if(response.statusText !== "OK"){
-        status.value = {"Status":"Server response failed"};
-        status_fade_in();
-        status_fade_out();
-        feat_store_instance.state.svg_list = undefined;
-        feat_store_instance.state.feats_list = undefined;
-        make_visible(false);
-        reset_grid();
-        reset_button(event);
-        return
+        status.value = {"Status":"Server response failed"};      
+        handle_fail(event);
+        return;
     }
 
     if(response['data'] === null){
         status.value = {"Status":"Calculation returned 0 results"};
-        status_fade_in()
-        status_fade_out()
-        feat_store_instance.state.svg_list = undefined;
-        feat_store_instance.state.feats_list = undefined;
-        make_visible(false);
-        reset_grid();
-        reset_button(event);
-        return
+        handle_fail(event);
+        return;
     } else if (response.status > 300) {
         status.value = {"Status":"Server response failed"};
-        status_fade_in();
-        status_fade_out();
-        feat_store_instance.state.svg_list = undefined;
-        feat_store_instance.state.feats_list = undefined;
-        make_visible(false);
-        reset_grid();
-        reset_button(event);
-        return
+        handle_fail(event);
+        return;
     }
     
     const response_data = response['data'];
@@ -237,6 +254,7 @@ const generate_feat_list = async (event) =>  {
     transition: 0.3s ease-in-out;
     padding-top: 10px;
     padding-bottom: 10px;
+    width: 90%;
 }
 h3{
     transition: 0.5s ease-in-out;

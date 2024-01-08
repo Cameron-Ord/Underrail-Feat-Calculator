@@ -37,7 +37,7 @@
             <h3>MOBILE BUTTON CONTROLS:</h3>
             <div class="controls_tut">
                 <h4>Touchscreen:</h4>
-                <p>Intervalically increase the stat or skill points by 1 every 0.15s while button is held down</p>
+                <p>Intervalically increase stat points by 1 or skill points by 5 every 0.15s while button is held down</p>
             </div>
         </div>
     </div>

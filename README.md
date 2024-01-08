@@ -23,6 +23,6 @@ https://github.com/Cameron-Ord/UnderrailFeatBackend
 
 ## TODO
 **add session authentication**
-
+**Add the ability to modify and delete builds**
 **wrap with electron once 100% done**
 

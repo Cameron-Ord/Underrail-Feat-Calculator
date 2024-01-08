@@ -115,13 +115,21 @@ const assign_predefined_values = (item_map, item_type) => {
 }
 
 
-const assign_default_values = () =>{
-  const [default_stat_limiter, default_stat_items] = stat_store_instance.actions.set_default_values();
-  stat_store_instance.state.stat_count_limiter = default_stat_limiter;
-  stat_store_instance.state.stat_items_array = default_stat_items;
-  const [default_skill_limiter, default_skill_items] = skill_store_instance.actions.set_default_values();
-  skill_store_instance.state.skill_count_limiter = default_skill_limiter;
-  skill_store_instance.state.skill_items_array = default_skill_items
+const assign_default_values = () =>{  
+  let st_state = stat_store_instance.state;
+  let st_actions = stat_store_instance.actions;
+
+  let sk_state = skill_store_instance.state;
+  let sk_actions = skill_store_instance.actions;
+
+  const [default_stat_limiter, default_stat_items] = st_actions.set_default_values();
+  st_state.stat_count_limiter = default_stat_limiter;
+  st_state.stat_items_array = default_stat_items;
+  
+  const [default_skill_limiter, default_skill_items] = sk_actions.set_default_values();
+  sk_state.skill_count_limiter = default_skill_limiter;
+  sk_state.skill_items_array = default_skill_items
+  
   save_cookies(
     default_stat_limiter,default_stat_items,
     default_skill_limiter,default_skill_items
@@ -159,15 +167,14 @@ onBeforeMount(()=>{
     const value = cookie_arr[i]['VALUE'];
     if(value === null || value === undefined){
       missing_cookies = true;
-      break;
-    }
+      assign_default_values();
+      console.log("ASSIGNED DEFAULTS");
+      return 
+     }
   }
   
-  if(missing_cookies === true){
-    assign_default_values();
-  } else if(missing_cookies === false) {
+  if(missing_cookies === false) {
     let cookies_map = new Map();
-
     for(let c_map_i = 0; c_map_i < cookie_arr.length; c_map_i++){
       const item_type = cookie_arr[c_map_i]["TYPE"];
       if(!cookies_map.has(item_type)){
@@ -175,6 +182,8 @@ onBeforeMount(()=>{
       }
       assign_predefined_values(cookies_map, item_type);
     }
+
+    console.log("ASSIGNED PRE-EXISTING");
   } 
   check_if_logged()
 })

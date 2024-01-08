@@ -1,6 +1,6 @@
 
 <script setup>
-import axios from 'axios';
+import axios, { all } from 'axios';
 import { nextTick, onBeforeMount, onBeforeUpdate, onUpdated, ref } from 'vue';
 const all_builds = ref([])
 const all_builds_map = new Map;
@@ -72,11 +72,16 @@ const get_item_from_map = (event) => {
 } 
 
 const get_all_builds = async () => {
-    const response = await build_API();
-    if (response.statusText === "OK") {
-        const resp_data = response['data'];
-        all_builds.value = resp_data;
-        create_map(resp_data);
+    try {
+        const response = await build_API();
+        if (response.statusText === "OK") {
+            const resp_data = response['data'];
+            all_builds.value = resp_data;
+            create_map(resp_data);
+        }
+    } catch (err) {
+        console.log("Promise was rejected: ", err);
+        all_builds.value = new Array;
     }
 }
 
@@ -153,7 +158,7 @@ onBeforeUpdate(()=>{
 
 <template>
     <div class="all_builds">
-        <div class="build_title" v-if="all_builds.length > 0">
+        <div class="build_title" v-if="all_builds.length > 0 && all_builds !== undefined">
             <h3 
             @click="get_item_from_map($event)"
             v-for="(item, i) in all_builds" :key="i"
@@ -177,23 +182,23 @@ onBeforeUpdate(()=>{
             </div>
 
             <div class="build_skills b_item" v-if="current_build !== undefined && current_build.Skill_Slice.length > 0 && viewing === 'Skills'">
-                <div class="allb_loop_div" v-for="(feat, sk) in current_build.Skill_Slice" :key="sk">
+                <div class="allb_loop_div" v-for="(skill, sk) in current_build.Skill_Slice" :key="sk">
                     <p>
-                        {{ feat['Name'] }}
+                        {{ skill['Name'] }}
                     </p>
                     <p>
-                        {{ feat['Value'] }}
+                        {{ skill['Value'] }}
                     </p>
                 </div>
             </div>
 
             <div class="build_stats b_item" v-if="current_build !== undefined && current_build.Stat_Slice.length > 0 && viewing === 'Stats'">
-                <div class="allb_loop_div" v-for="(feat, sk) in current_build.Stat_Slice" :key="sk">
+                <div class="allb_loop_div" v-for="(stat, sk) in current_build.Stat_Slice" :key="sk">
                     <p>
-                        {{ feat['Name'] }}
+                        {{ stat['Name'] }}
                     </p>
                     <p>
-                        {{ feat['Value'] }}
+                        {{ stat['Value'] }}
                     </p>
                 </div>
             </div>
@@ -219,7 +224,7 @@ onBeforeUpdate(()=>{
         justify-self: center;
         display: flex;
         flex-wrap: wrap;
-        column-gap: 25px;
+        column-gap: 15px;
         row-gap: 25px;
         width: 80%;
         height: 300px;
@@ -322,9 +327,10 @@ onBeforeUpdate(()=>{
             max-width: 80%;
             align-items: center;
             justify-content: center;
-            row-gap: 10px;
-            column-gap: 15px;
+            row-gap: 25px;
+            column-gap: 25px;
             >.allb_loop_div{
+                text-align: center;
                 display: flex;
                 flex-wrap: wrap;
                 >p{

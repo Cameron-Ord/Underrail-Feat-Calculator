@@ -83,12 +83,19 @@ const get_item_from_map = (event) => {
 } 
 
 const get_user_builds = async () => {
-    const response = await build_API();
-    if (response.statusText === "OK") {
-        const resp_data = response['data'];
-        all_builds.value = resp_data;
-        create_map(resp_data);
+    try {
+        const response = await build_API();
+        if (response.statusText === "OK") {
+            const resp_data = response['data'];
+            all_builds.value = resp_data;
+            create_map(resp_data);
+        }
+    } catch (error) {
+        console.log("Promise was rejected: ", error);
+        all_builds.value = new Array;
     }
+
+
 }
 
 const handle_toggle_bitems = (event) => {
@@ -163,7 +170,7 @@ onBeforeUpdate(()=>{
 
 <template>
     <div class="all_builds">
-        <div class="build_title" v-if="all_builds.length > 0">
+        <div class="build_title" v-if="all_builds.length > 0 && all_builds !== undefined">
             <h3 
             @click="get_item_from_map($event)"
             v-for="(item, i) in all_builds" :key="i"
@@ -228,7 +235,7 @@ onBeforeUpdate(()=>{
         justify-self: center;
         display: flex;
         flex-wrap: wrap;
-        column-gap: 25px;
+        column-gap: 15px;
         row-gap: 25px;
         width: 80%;
         height: 300px;
