@@ -1,6 +1,6 @@
 <script setup>
 import { useCookies } from 'vue3-cookies';
-import { onMounted, ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import { useSkillStore } from '../stores/skill_state_store';
 const skill_store_instance = useSkillStore();
 const {cookies} = useCookies()
@@ -173,14 +173,70 @@ const end_decrease = (event) =>{
 
 
 onMounted(()=>{
-    setTimeout(()=>{
-        let page = document.querySelector('._skill_content');
-        if(page !== null){
-            page['style']['opacity'] = '1';
-        }
-    },125)
+    nextTick(()=>{
+        setTimeout(()=>{
+            let page = document.querySelector('._skill_content');
+            if(page !== null){
+                page['style']['opacity'] = '1';
+            }
+        },100)
+    })
+    load_plus();
+    load_minus();
 })
 
+
+const load_plus = async () => {
+    let images = document.querySelectorAll('._plus');
+    let loadedImages = 0;
+    function checkAllImagesLoaded() {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            nextTick(()=>{
+                for(let j = 0; j < images.length; j++){
+                    images[j]['style']['opacity'] = '1';
+                }
+            })
+        }
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        if(images[i] === null){
+            return;
+        }
+        if (images[i].complete) {
+            checkAllImagesLoaded();
+        } else {
+            images[i].addEventListener('load', checkAllImagesLoaded);
+        }
+    }
+}
+
+const load_minus = async () => {
+    let images = document.querySelectorAll('._minus');
+    let loadedImages = 0;
+    function checkAllImagesLoaded() {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            nextTick(()=>{
+                for(let j = 0; j < images.length; j++){
+                    images[j]['style']['opacity'] = '1';
+                }
+            })
+        }
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        if(images[i] === null){
+            return;
+        }
+        if (images[i].complete) {
+            checkAllImagesLoaded();
+        } else {
+            images[i].addEventListener('load', checkAllImagesLoaded);
+        }
+    }
+}
 </script>
 <template>
     <div class="_skill_content" v-if="skill_items_array !== null">

@@ -1,6 +1,6 @@
 <script setup>
 import { useCookies } from 'vue3-cookies';
-import { onMounted, ref, watch } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 const {cookies} = useCookies()
 const stat_store_instance = useStatStore();
@@ -170,14 +170,71 @@ const end_decrease = (event) =>{
 }
 
 onMounted(()=>{
-    setTimeout(()=>{
-        
-        let page = document.querySelector('._stat_content');
-        if(page !== null){
-            page['style']['opacity'] = '1';
-        }
-    },125)
+ 
+    nextTick(()=>{
+        setTimeout(()=>{
+            let page = document.querySelector('._stat_content');
+            if(page !== null){
+                page['style']['opacity'] = '1';
+            }
+        },100)
+    })
+
+    load_plus()
+    load_minus()
 })
+
+const load_plus = async () => {
+    let images = document.querySelectorAll('._plus');
+    let loadedImages = 0;
+    function checkAllImagesLoaded() {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            nextTick(()=>{
+                for(let j = 0; j < images.length; j++){
+                    images[j]['style']['opacity'] = '1';
+                }
+            })
+        }
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        if(images[i] === null){
+            return;
+        }
+        if (images[i].complete) {
+            checkAllImagesLoaded();
+        } else {
+            images[i].addEventListener('load', checkAllImagesLoaded);
+        }
+    }
+}
+
+const load_minus = async () => {
+    let images = document.querySelectorAll('._minus');
+    let loadedImages = 0;
+    function checkAllImagesLoaded() {
+        loadedImages++;
+        if (loadedImages === images.length) {
+            nextTick(()=>{
+                for(let j = 0; j < images.length; j++){
+                    images[j]['style']['opacity'] = '1';
+                }
+            })
+        }
+    }
+
+    for (let i = 0; i < images.length; i++) {
+        if(images[i] === null){
+            return;
+        }
+        if (images[i].complete) {
+            checkAllImagesLoaded();
+        } else {
+            images[i].addEventListener('load', checkAllImagesLoaded);
+        }
+    }
+}
 
 </script>
 
@@ -273,12 +330,14 @@ onMounted(()=>{
                 padding-bottom: 2.5px;
 
                 >._plus{
+                    opacity: 0;
                     padding: 2.5px;
                     transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
                 >._minus{
+                    opacity: 0;
                     padding: 2.5px;
                     transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
