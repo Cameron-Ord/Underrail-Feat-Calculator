@@ -126,25 +126,21 @@ const make_item_visible = (wrapper_div) =>{
 }
 
 onUpdated(()=>{
-
-    let ctrls_div = document.querySelector('.allb_controls_div');
-    let all_b_div = document.querySelector('.all_builds');
-
-    if(all_b_div !== null){
-        nextTick(()=>{
+    
+    nextTick(()=>{
+        let ctrls_div = document.querySelector('.allb_controls_div');
+        let all_b_div = document.querySelector('.all_builds');
+        if(all_b_div !== null){
             setTimeout(()=>{
                 all_b_div.style.opacity = '1';
             }, 100)
-        })
-    }
-    if(ctrls_div !== null && !ctrls_div.classList.contains('is_present')) {
-        
-        nextTick(()=>{
+        }
+        if(ctrls_div !== null && !ctrls_div.classList.contains('is_present')) {
             setTimeout(()=>{
                 ctrls_div.classList.add('is_present');
             }, 100)
-        })
-    }
+        }
+    });
     let wrapper_div = document.querySelector('.build_selection_wrapper')
     make_item_visible(wrapper_div);
 })
@@ -226,7 +222,7 @@ onBeforeUpdate(()=>{
         justify-self: center;
         display: flex;
         flex-wrap: wrap;
-        column-gap: 25px;
+        column-gap: 15px;
         row-gap: 25px;
         width: 80%;
         height: 300px;
@@ -337,7 +333,8 @@ onBeforeUpdate(()=>{
                 display: flex;
                 flex-wrap: wrap;
                 >p{
-
+                    word-break: break-word;
+                    padding: 7.5px;
                 }
             }
         }

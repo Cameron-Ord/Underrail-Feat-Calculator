@@ -22,7 +22,8 @@ https://github.com/Cameron-Ord/UnderrailFeatBackend
 
 
 ## TODO
+**add a search bar for searching builds**
 **add session authentication**
-**Add the ability to modify and delete builds**
-**wrap with electron once 100% done**
+**Other crud interactions**
+
 
