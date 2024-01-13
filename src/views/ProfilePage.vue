@@ -52,10 +52,14 @@ onBeforeMount(()=>{
     padding-bottom: 50px;
 
     >.info_section{
+        padding-top: 10px;
+        padding-bottom: 10px;
         display: grid;
         align-items: center;
     }
     >.builds_section{
+        padding-top: 20px;
+        padding-bottom: 20px;
         display: grid;
         align-items: center;
     }

@@ -1,6 +1,6 @@
 <script setup>
 import axios from 'axios';
-import { onUpdated, ref } from 'vue';
+import { nextTick, onUpdated, ref } from 'vue';
 import {useCookies} from 'vue3-cookies';
 const {cookies} = useCookies();
 const status = ref(undefined)
@@ -102,18 +102,19 @@ const submit_build = async (input_tag_content, event) => {
 onUpdated(()=>{
     let status_tag = document.querySelector('.status_tag_saver');
     if(status_tag !== null){
-
-        setTimeout(()=>{
-            status_tag.style.opacity = '1';
-        }, 100)
-    
-        setTimeout(()=>{
-            status_tag.style.opacity = '0';
-        
+        nextTick(()=>{
             setTimeout(()=>{
-                status.value = undefined
-            },500)
-        }, 1500)
+                status_tag.style.opacity = '1';
+            }, 100)
+    
+            setTimeout(()=>{
+                status_tag.style.opacity = '0';
+        
+                setTimeout(()=>{
+                    status.value = undefined
+                },500)
+            }, 1500)
+        })
     }
 })
 </script>

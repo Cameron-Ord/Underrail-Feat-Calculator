@@ -221,10 +221,12 @@ onBeforeUpdate(()=>{
     transition: 0.3s ease-in-out;
 
     >.build_title{
+        padding-top: 10px;
+        padding-bottom: 10px;
         justify-self: center;
         display: flex;
         flex-wrap: wrap;
-        column-gap: 15px;
+        column-gap: 25px;
         row-gap: 25px;
         width: 80%;
         height: 300px;
@@ -232,9 +234,10 @@ onBeforeUpdate(()=>{
         align-items: center;
         justify-content: space-evenly;
         >h3{
+            word-break: break-word;
             transition: 0.3s ease-in-out;
             border: solid var(--orange) 1px;
-            padding: 5px;
+            padding: 10px;
             border-radius: 5px;
             cursor: pointer;
         }
@@ -264,7 +267,7 @@ onBeforeUpdate(()=>{
             display: flex;
             align-items: center;
             flex-wrap: wrap;
-            justify-content: space-between;
+            justify-content: space-evenly;
             column-gap: 25px;
             row-gap: 15px;
 
@@ -326,8 +329,8 @@ onBeforeUpdate(()=>{
             flex-wrap: wrap;
             max-width: 80%;
             align-items: center;
-            justify-content: center;
-            row-gap: 25px;
+            justify-content: space-evenly;
+            row-gap: 15px;
             column-gap: 25px;
             >.allb_loop_div{
                 text-align: center;
@@ -392,6 +395,8 @@ onBeforeUpdate(()=>{
         grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
 
 >.build_title{
+ 
+    height: 400px;
     width: 70%;
 }
 

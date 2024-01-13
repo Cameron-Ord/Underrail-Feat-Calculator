@@ -40,6 +40,13 @@ const signup_api = (username, password) => {
     })
 }
 
+const get_expiry = () => {
+    const current_date = new Date();
+    const expiry = new Date(current_date);
+    expiry.setFullYear(current_date.getFullYear() + 50);
+    return expiry
+}
+
 const submit_signup_form = async (username, password) =>{
     const signup_response = await signup_api(username, password);
     if(signup_response.status >= 200 && signup_response.status < 300){
@@ -48,10 +55,10 @@ const submit_signup_form = async (username, password) =>{
             const Client_ID = login_response['data']['Client_ID_Value'];
             const Client_Session_Token = login_response['data']['Client_Session_Token']
             try{
-                cookies.set('Client_ID', JSON.stringify(Client_ID));
-                cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token));
+                cookies.set('Client_ID', JSON.stringify(Client_ID), get_expiry());
+                cookies.set('Client_Session_Token', JSON.stringify(Client_Session_Token), get_expiry());
                 router.push('/');
-                cookies.set('is_logged', JSON.stringify(true));
+                cookies.set('is_logged', JSON.stringify(true), get_expiry());
             } catch (error) {
                 console.log('Error parsing JSON..')
             }

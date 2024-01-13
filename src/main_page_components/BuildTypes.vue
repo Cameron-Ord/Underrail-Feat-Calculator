@@ -67,7 +67,7 @@
 </style>
 
 <script setup>
-import { nextTick, onBeforeMount, onMounted, ref } from 'vue';
+import { nextTick, onBeforeMount, onMounted, onUnmounted, ref } from 'vue';
 import { useCookies } from 'vue3-cookies';
 
 onMounted(()=>{
@@ -121,15 +121,22 @@ onBeforeMount(()=>{
     }
 })
 
+onUnmounted(()=>{
+    const arr = cookies.get('char_types_array');
+    if(arr !== null){
+        cookies.remove('char_types_array');
+    }
+})
+
 const remove_from_array = (array, index) =>{
     array.splice(index, 1);
-    cookies.set('char_types_array', JSON.stringify(array));
+    cookies.set('char_types_array', JSON.stringify(array), null);
     return array;
 }
 
 const add_to_array = (ref, sent_array) =>{
     sent_array.push(ref.textContent)
-    cookies.set('char_types_array', JSON.stringify(sent_array))
+    cookies.set('char_types_array', JSON.stringify(sent_array), null)
 }
 
 const style_on_click = (event) => {

@@ -1,5 +1,5 @@
 <script setup>
-import {nextTick, onBeforeUnmount, onMounted, ref, watch} from 'vue'
+import {nextTick, onBeforeUnmount, onMounted, onUnmounted, ref, watch} from 'vue'
 import { useFeatStore } from '../stores/feat_store';
 import { useMenuStore } from '../stores/menu_store';
 import { useCookies } from 'vue3-cookies';
@@ -13,6 +13,12 @@ const plus = '/images/plus.svg';
 const minus = '/images/minus.svg';
 const feat_counter = ref(0);
 
+onUnmounted(()=>{
+    const chosen_feats = cookies.get('chosen_feats');
+    if(chosen_feats !== null){
+        cookies.remove('chosen_feats');
+    }
+})
 
 watch(()=> menu_store_instance.state.logged_in, (value)=> {
     logged_in.value = value;
@@ -30,8 +36,13 @@ watch(() => feat_store_instance.state.svg_list, (value) => {
 const retrieve_cookies = () =>{
     const retrieved_feats = cookies.get('chosen_feats');
     if(retrieved_feats !== null){
-        const copied_feats = [...JSON.parse(retrieved_feats)];
-        return copied_feats;
+        try{
+            const copied_feats = [...JSON.parse(retrieved_feats)];
+            return copied_feats;
+        } catch (err) {
+            console.log("Error creating array from JSON");
+            return false;
+        }
     } else {
         return [];
     }
@@ -59,10 +70,13 @@ const add_to_feats = (feat_ref, retrieved_array) => {
 
 const add_feat = (feat_ref) => {
     const retrieved_cookies = retrieve_cookies();
+    if(retrieved_cookies === false){
+        return [false, []];
+    }
     if(retrieved_cookies.length === 0){
         const added_feat = add_init_feat(feat_ref);
         if(added_feat.length > 0){
-            cookies.set('chosen_feats', JSON.stringify(added_feat));
+            cookies.set('chosen_feats', JSON.stringify(added_feat), null);
             return [true, added_feat]
         } else {
             console.error("add_init_feat returned an empty array: ", added_feat);
@@ -71,7 +85,7 @@ const add_feat = (feat_ref) => {
     } else {
         const feat_array = add_to_feats(feat_ref, retrieved_cookies);
         if(feat_array.length > 0 && feat_array.length <= 15){
-            cookies.set('chosen_feats', JSON.stringify(feat_array));
+            cookies.set('chosen_feats', JSON.stringify(feat_array), null);
             return [true, feat_array]
         } else if(feat_array.length > 15){
             console.log('reached maximum allowed feats')
@@ -99,7 +113,7 @@ const remove_feat = (feat_ref) => {
         const returned_index = retrieve_item_index(feat_ref,retrieved_cookies);
         const mutant_cookies = [...retrieved_cookies];
         mutant_cookies.splice(returned_index, 1);
-        cookies.set('chosen_feats', JSON.stringify(mutant_cookies));
+        cookies.set('chosen_feats', JSON.stringify(mutant_cookies), null);
         return [true, mutant_cookies];
     } else {
         console.error("Empty cookie array: ", retrieved_cookies);

@@ -40,9 +40,9 @@ onBeforeMount(()=>{
     min-height: 100vh;
     padding-top: 50px;
     padding-bottom: 50px;
-    margin-top: 25px;
-    margin-bottom: 25px;
     >.every_build_ever{
+        padding-top: 20px;
+        padding-bottom: 20px;
         display: grid;
         align-items: center;
     }

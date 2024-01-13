@@ -19,9 +19,18 @@ watch(()=> skill_store_instance.state.skill_items_array, (newVal) =>{
     skill_items_array.value = newVal
     set_cookies();
 })
+
+const get_expiry = () =>{
+    const current_date = new Date();
+    const expiry = new Date(current_date);
+    expiry.setFullYear(current_date.getFullYear() + 50);
+    return expiry
+}
+
 const set_cookies = () =>{
-    cookies.set('skill_count_limiter', JSON.stringify(skill_count_limiter.value));
-    cookies.set('skill_array_values', JSON.stringify(skill_items_array.value));
+    const expires = get_expiry();
+    cookies.set('skill_count_limiter', JSON.stringify(skill_count_limiter.value), expires);
+    cookies.set('skill_array_values', JSON.stringify(skill_items_array.value), expires);
 }
 const increaseValue=(i, event)=>{
     if(event.type !== "click"){

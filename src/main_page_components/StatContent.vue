@@ -19,9 +19,18 @@ watch(()=> stat_store_instance.state.stat_items_array, (newVal) =>{
     stat_items_array.value = newVal;
     set_cookies()
 })
+
+const get_expiry=()=>{
+    const current_date = new Date();
+    const expiry = new Date(current_date);
+    expiry.setFullYear(current_date.getFullYear() + 50);
+    return expiry;
+}
+
 const set_cookies = () =>{
-    cookies.set('stat_count_limiter', JSON.stringify(stat_count_limiter.value));
-    cookies.set('stat_array_values', JSON.stringify(stat_items_array.value));
+    const expiry_date = get_expiry()
+    cookies.set('stat_count_limiter', JSON.stringify(stat_count_limiter.value), expiry_date);
+    cookies.set('stat_array_values', JSON.stringify(stat_items_array.value), expiry_date);
 }
 const increaseValue=(i, event)=>{
     if(event.type !== "click"){

@@ -11,7 +11,7 @@ import BuildSaver from '../main_page_components/BuildSaver.vue';
 import BuildTypes from '../main_page_components/BuildTypes.vue';
 import TypeFiltering from '../main_page_components/TypeFiltering.vue';
 import { useCookies } from 'vue3-cookies';
-import { onBeforeMount,ref,provide, watch, onMounted, onBeforeUnmount} from 'vue';
+import { onBeforeMount,ref,provide, watch, onMounted, onBeforeUnmount, onUnmounted} from 'vue';
 import { useStatStore } from '../stores/stat_state_store';
 import { useSkillStore } from '../stores/skill_state_store';
 import { useFeatStore } from '../stores/feat_store';
@@ -36,6 +36,13 @@ watch(()=>feat_store_instance.state.can_save_build, (boolean) => {
   canSaveBuild.value = boolean;
 })
 
+const get_expiry = () =>{
+  const current_date = new Date();
+  const expiry = new Date(current_date);
+  expiry.setFullYear(current_date.getFullYear() + 50);
+  return expiry;
+}
+
 const updateFeatsAreLoaded = (newValue) => {
   featsAreLoaded.value = newValue;
 }
@@ -57,21 +64,21 @@ const handle_view = (sent_ref_text) =>{
   if(sent_ref_text === "View Stats"){
     const bool = true
     switch_based_bool.value = bool;
-    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
+    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value), null);
   } else if(sent_ref_text === "View Skills"){
     const bool = false
     switch_based_bool.value = bool;
-    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value));
+    cookies.set('last_viewed', JSON.stringify(switch_based_bool.value), null);
   }
 }
 
 const save_cookies = (
   default_stat_limiter,default_stat_items,
   default_skill_limiter,default_skill_items) => {
-  cookies.set('stat_count_limiter',JSON.stringify(default_stat_limiter))
-  cookies.set('stat_array_values',JSON.stringify(default_stat_items))
-  cookies.set('skill_count_limiter',JSON.stringify(default_skill_limiter))
-  cookies.set('skill_array_values',JSON.stringify(default_skill_items))
+  cookies.set('stat_count_limiter',JSON.stringify(default_stat_limiter), get_expiry())
+  cookies.set('stat_array_values',JSON.stringify(default_stat_items), get_expiry())
+  cookies.set('skill_count_limiter',JSON.stringify(default_skill_limiter), get_expiry())
+  cookies.set('skill_array_values',JSON.stringify(default_skill_items), get_expiry())
 }
 
 const retrieve_cookies = () => {
@@ -150,6 +157,9 @@ const check_if_logged = () => {
 
 onMounted(()=>{
 
+})
+
+onUnmounted(()=>{
 })
 
 onBeforeUnmount(()=>{
