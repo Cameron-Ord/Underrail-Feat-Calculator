@@ -331,12 +331,14 @@ const load_minus = async () => {
                 padding-bottom: 2.5px;
 
                 >._plus{
+                    opacity: 0;
                     padding: 2.5px;
                     transition: 0.3s ease;
                     border: solid var(--orange) 1px;
                     border-radius: 6px;
                 }
                 >._minus{
+                    opacity: 0;
                     padding: 2.5px;
                     transition: 0.3s ease-in-out;
                     border: solid var(--orange) 1px;
