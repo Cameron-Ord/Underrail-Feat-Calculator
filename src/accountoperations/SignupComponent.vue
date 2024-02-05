@@ -3,8 +3,8 @@
 </script>
 
 <template>
-    <article class="generator_article">
-        
+    <article>
+
     </article>
 </template>
 

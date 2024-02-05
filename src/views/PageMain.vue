@@ -1,8 +1,11 @@
 
 <script setup lang="ts">
-import StatContainer from '@/components/StatContainer.vue';
-import SkillContainer from '@/components/SkillContainer.vue';
-import BuildTypes from '@/components/BuildTypes.vue';
+import StatContainer from '../components/StatContainer.vue';
+import SkillContainer from '../components/SkillContainer.vue';
+import BuildTypes from '../components/BuildTypes.vue';
+import GenerateBuild from '../components/GenerateBuild.vue';
+import FeatContainer from '../components/FeatContainer.vue';
+import AboutSection from '../about/AboutSection.vue'
 </script>
 
 
@@ -16,7 +19,10 @@ import BuildTypes from '@/components/BuildTypes.vue';
             <build-types></build-types>
         </section>
         <section class="generate_section">
-
+            <generate-build></generate-build>
+        </section>
+        <section class="feat_container">
+            <feat-container></feat-container>
         </section>
         <section class="user_builds">
 
@@ -25,7 +31,7 @@ import BuildTypes from '@/components/BuildTypes.vue';
 
         </section>
         <section class="about_section">
-
+            <about-section></about-section>
         </section>
     </main>
 </template>

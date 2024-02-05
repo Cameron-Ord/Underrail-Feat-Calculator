@@ -14,9 +14,12 @@ onBeforeMount(()=>{
 
 <template>
     <article class="build_types">
+        <div class="header_types">
+            <h2>Build Type Filtering</h2>
+        </div>
         <div class="type_item" v-for="(type, i) in types_array" :key="i">
             <p>{{ type }}</p>
-            <img :src="plus" alt="" class="svg">
+            <img :src="plus" alt="button_tag" class="svg">
         </div>
     </article>
 </template>
