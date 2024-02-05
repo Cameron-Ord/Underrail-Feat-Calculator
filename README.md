@@ -1,29 +1,46 @@
-# Underrail Feat Generator - Frontend
-https://featgenerator.cameron-ord.online/
+# new_f
 
+This template should help get you started developing with Vue 3 in Vite.
 
-Welcome to the frontend repository of the Underrail Feat Generator!
+## Recommended IDE Setup
 
-## Overview
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-The Underrail Feat Generator is a web application designed to help players of the game Underrail create and optimize character builds by selecting stats and skills. The frontend, built with Vue.js, allows users to generate curated feat suggestions based on their chosen stat and skill values. Additionally, the application supports user authentication, allowing users to sign up, log in, and save their character builds for future reference.
+## Type Support for `.vue` Imports in TS
 
-## Features
+TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
 
-- **Stat and Skill Selection:** Choose your character's stats and skills to receive personalized feat suggestions.
-- **Feat Generation:** Generate a list of curated feats based on the selected stat and skill values.
-- **User Authentication:** Sign up and log in to save and manage your character builds.
-- **Build Saving:** Save your character builds to access them later.
+If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
 
+1. Disable the built-in TypeScript Extension
+    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
+    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
+2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
 
-## Backend Repo 
-The backend code for this website is here:
-https://github.com/Cameron-Ord/UnderrailFeatBackend
+## Customize configuration
 
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-## TODO
-**add a search bar for searching builds**
-**add session authentication**
-**Other crud interactions**
+## Project Setup
 
+```sh
+npm install
+```
 
+### Compile and Hot-Reload for Development
+
+```sh
+npm run dev
+```
+
+### Type-Check, Compile and Minify for Production
+
+```sh
+npm run build
+```
+
+### Lint with [ESLint](https://eslint.org/)
+
+```sh
+npm run lint
+```
