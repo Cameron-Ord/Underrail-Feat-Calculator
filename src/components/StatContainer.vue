@@ -2,7 +2,7 @@
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { stat_state } from '../stores/stat_state'
 const stat_inst = stat_state();
-const stat_list: Ref<Array<{Name: string; Value: number}>> = ref(new Array())
+const stat_list: Ref<Array<{statName: string; statValue: number}>> = ref(new Array())
 
 const plus = '/svgs/plus.svg';
 const minus = '/svgs/minus.svg';
@@ -16,9 +16,9 @@ onBeforeMount(()=>{
 <template>
     <article class="stats_article">
         <div v-for="(stat, i) in stat_list" :key="i">
-            <p>{{ stat.Name }}</p>
+            <p>{{ stat.statName }}</p>
             <div>
-                <p>{{ stat.Value }}</p>
+                <p>{{ stat.statValue }}</p>
                 <img :src="plus" alt="" class="svg">
                 <img :src="minus" alt="" class="svg">
             </div>

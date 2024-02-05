@@ -5,7 +5,8 @@ import SkillContainer from '../components/SkillContainer.vue';
 import BuildTypes from '../components/BuildTypes.vue';
 import GenerateBuild from '../components/GenerateBuild.vue';
 import FeatContainer from '../components/FeatContainer.vue';
-import AboutSection from '../about/AboutSection.vue'
+import AboutSection from '../about/AboutSection.vue';
+import AllBuilds from '@/userbuilds/AllBuilds.vue';
 </script>
 
 
@@ -25,10 +26,7 @@ import AboutSection from '../about/AboutSection.vue'
             <feat-container></feat-container>
         </section>
         <section class="user_builds">
-
-        </section>
-        <section class="saved_builds">
-
+            <all-builds></all-builds>
         </section>
         <section class="about_section">
             <about-section></about-section>
