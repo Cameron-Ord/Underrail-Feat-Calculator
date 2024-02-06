@@ -1,14 +1,72 @@
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { types_state } from '../stores/types_state'
-const types_inst: any = types_state();
+const types_inst = types_state();
 const types_array: Ref<Array<string>> = ref(new Array());
 const plus = '/svgs/plus.svg';
 const minus = '/svgs/minus.svg';
+const img_tag_src: Ref<Array<string>> = ref(new Array());
 
+const select_filter_item = (i: number) => {
+    const types_list: Array<string> = types_inst.get_list();
+    const selection: string = types_list[i];
+    const added: boolean = types_inst.add_to_chosen(selection);
+    if(!added){
+        console.error("Failed to add item");
+        return
+    }
+    img_tag_src.value[i] = minus;
+
+}
+
+const handle_selection = (i: number) => {
+    const current_tag = img_tag_src.value[i]
+    switch (current_tag) {
+        case minus:
+            remove_filter_item(i)
+            break;
+        case plus:
+            select_filter_item(i)
+            break;
+        default:
+            break;
+    }
+}
+
+const define_index=(stl: string): number =>{
+    const chosen_arr: Array<string> = types_inst.get_chosen();
+    for(let i = 0; i < chosen_arr.length; i++){
+        const item_str: string = chosen_arr[i];
+        if(item_str === stl){
+            return i;
+        }
+    } 
+    return -1;
+}
+
+const remove_filter_item = (i: number) => {
+    const types_list: Array<string> = types_inst.get_list();
+    const string_to_lookup: string = types_list[i];
+    const arr_index: number = define_index(string_to_lookup);
+    if(arr_index < 0){
+        console.log("Str not found");
+        return
+    }
+    const removed: boolean = types_inst.remove_from_chosen(arr_index);
+    if(!removed){
+        console.error("Failed to remove item");
+        return
+    }
+    img_tag_src.value[i] = plus;
+}
 
 onBeforeMount(()=>{
-    types_array.value = types_inst.get_list();
+    const init_list = types_inst.get_list();
+    types_array.value = init_list;
+    const len = init_list.length;
+    for(let i = 0; i < len; i++){
+        img_tag_src.value.push(plus);
+    }
 })
 </script>
 
@@ -20,7 +78,7 @@ onBeforeMount(()=>{
         <div class="loop_wrapper">
             <div class="type_item" v-for="(type, i) in types_array" :key="i">
                 <p>{{ type }}</p>
-                <img :src="plus" alt="button_tag" class="svg">
+                <img @click="handle_selection(i)" :src="img_tag_src[i]" alt="button_tag" class="svg">
             </div>
         </div>
     </article>

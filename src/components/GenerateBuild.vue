@@ -15,6 +15,7 @@ const feats_inst = feats_state();
 
 const send_data = () =>{
     return new Promise<AxiosResponse>((resolve, reject) => {
+        console.log(type_inst.get_chosen())
         axios.post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`, {
             stats:stat_inst.get_stat_list(),
             skills:skill_inst.get_skill_list(),
