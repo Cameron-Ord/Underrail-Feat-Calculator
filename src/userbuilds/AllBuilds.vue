@@ -1,33 +1,21 @@
 <script setup lang="ts">
-import axios from 'axios'
-import { onBeforeMount } from 'vue';
-const fetch_db_builds = () => {
-    return new Promise((resolve, reject) => {
-        axios({
-            url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-all-builds`,
-            method: "GET",
-        }).then((response) => {
-            resolve(response)
-        }).catch((error) => {
-            reject(error)
-        })
-    })
-}
-
-const get_builds = async () =>{
-    const response = await fetch_db_builds()
-    console.log(response)
-}
+import { onBeforeMount, ref, type Ref } from 'vue';
+import {universal_store} from '../stores/universal'
+const u_inst = universal_store();
+const complete_build_data: Ref<any> = ref(new Array())
 
 onBeforeMount(()=>{
-    get_builds()
+    const build_data: any = u_inst.get_general_builds();
+    complete_build_data.value = build_data;
 })
 
 </script>
 
 <template>
-    <article>
-
+    <article class="build_article">
+        <div v-for="(build, b) in complete_build_data" :key="b">
+            
+        </div>
     </article>
 </template>
 
