@@ -6,8 +6,10 @@ import AboutSection from '../about/AboutSection.vue';
 import AllBuilds from '@/userbuilds/AllBuilds.vue';
 import AllocatorBox from '@/components/AllocatorBox.vue';
 import AboutAside from '@/about/AboutAside.vue';
+import AccountBox from '@/components/AccountBox.vue';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import {universal_store} from '../stores/universal'
+
 import type { AxiosResponse } from 'axios';
 const u_inst = universal_store();
 
@@ -46,6 +48,9 @@ onBeforeMount(()=>{
 
 <template>
     <main class="page_main">
+        <section class="page_header">
+            <account-box></account-box>
+        </section>
         <section class="build_info_section">
             <allocator-box></allocator-box>
         </section>

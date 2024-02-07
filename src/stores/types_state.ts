@@ -6,7 +6,7 @@ export const types_state = defineStore('types_state', () => {
     const minus = '/svgs/minus.svg';
 
     const type_list = [
-        'Knife', 'Sword', 'Fist', 'Spear',
+        'Knife', 'Sword', 'Fist',
         'Hammer', 'Pistol', 'Assault Rifle',
         'Enery Pistol', 'Throwing Knives', 'Crossbow',
         'Jetski', 'Sniper Rifle', 'Stealth', 'Spear',
