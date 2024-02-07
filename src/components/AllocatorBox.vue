@@ -2,8 +2,11 @@
 import StatContainer from './StatContainer.vue';
 import SkillContainer from './SkillContainer.vue';
 import AllocatorSwitch from './AllocatorSwitch.vue';
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, onBeforeMount } from 'vue';
+import { universal_store } from '@/stores/universal';
+const u_inst = universal_store();
 const is_switched: Ref<boolean> = ref(true)
+
 const switch_box = (switched: boolean) => {
     if(!switched){
         is_switched.value = switched;
@@ -11,6 +14,14 @@ const switch_box = (switched: boolean) => {
     }
     is_switched.value = switched;
 }
+
+onBeforeMount(()=>{
+    u_inst.load_from_cookies();
+    const last_state: boolean = u_inst.get_value_state();
+    is_switched.value = !last_state;
+})
+
+
 </script>
 
 <template>

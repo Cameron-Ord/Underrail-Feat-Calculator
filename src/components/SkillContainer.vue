@@ -8,7 +8,11 @@ const plus = '/svgs/plus.svg';
 const minus = '/svgs/minus.svg';
 
 const increase_skill = (i: number, event: MouseEvent | null) => {
-    const lmtr = skill_inst.get_skill_limiter();
+    const lmtr: number = skill_inst.get_skill_limiter();
+    const s_len: number = skill_inst.get_skill_list_len();
+    if(i > s_len || i < 0){
+        return
+    }
     if(!event){
         return
     }
@@ -21,7 +25,11 @@ const increase_skill = (i: number, event: MouseEvent | null) => {
 }
 
 const decrease_skill = (i: number, event: MouseEvent | null) => {
-    const lmtr = skill_inst.get_skill_limiter();
+    const lmtr: number = skill_inst.get_skill_limiter();
+    const s_len: number = skill_inst.get_skill_list_len();
+    if(i > s_len || i < 0){
+        return
+    }
     if(!event){
         return
     }

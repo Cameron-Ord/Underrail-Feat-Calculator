@@ -80,6 +80,10 @@ export const skill_state = defineStore('skill_state', () => {
   const get_skill_list=()=>{
     return skills_list;
   }
+  
+  const get_skill_list_len=()=>{
+    return skills_list.length;
+  }
 
   const get_skill_limiter = () => {
     return skill_limiter;
@@ -105,6 +109,7 @@ export const skill_state = defineStore('skill_state', () => {
     reset_all_skills,
     get_skill_limiter,
     increase_skill,
-    decrease_skill
+    decrease_skill,
+    get_skill_list_len
   }
 })

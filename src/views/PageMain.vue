@@ -36,8 +36,9 @@ const get_builds = async () => {
     builds_loaded.value = loaded
 }
 
+
 onBeforeMount(()=>{
-    get_builds()
+    get_builds();
 })
 
 </script>

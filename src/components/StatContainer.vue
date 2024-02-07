@@ -9,6 +9,10 @@ const minus = '/svgs/minus.svg';
 
 const decrease_stat = (i: number, event: MouseEvent | null) =>{
     const lmtr: number = stat_inst.get_limiter_value();
+    const s_len: number = stat_inst.get_stat_list_len();
+    if(i > s_len || i < 0){
+        return
+    }
     if(!event){
         return
     }
@@ -22,6 +26,10 @@ const decrease_stat = (i: number, event: MouseEvent | null) =>{
 
 const increase_stat = (i: number, event: MouseEvent | null) => {
     const lmtr: number = stat_inst.get_limiter_value();
+    const s_len: number = stat_inst.get_stat_list_len();
+    if(i > s_len || i < 0){
+        return
+    }
     if(!event){
         return
     }

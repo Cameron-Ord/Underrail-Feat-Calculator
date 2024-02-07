@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import { universal_store } from '@/stores/universal';
 const {switch_box} = defineProps(['switch_box'])
 const u_inst = universal_store();
@@ -16,19 +16,29 @@ const save_state = (event_target: EventTarget | null) => {
                     u_inst.update_view_state(mut_switcher);
                     switcher.value = mut_switcher;
                     switch_box(!mut_switcher);
-                    break;
+                break;
                 case "Stats":
                     mut_switcher = false
                     u_inst.update_view_state(mut_switcher);
                     switcher.value = mut_switcher;
                     switch_box(!mut_switcher);
-                    break;
+                break;
                 default:
-                    break;
+                    mut_switcher = true; 
+                    u_inst.update_view_state(mut_switcher);
+                    switcher.value = mut_switcher;
+                    switch_box(!mut_switcher);
+                break;
             }
         }
     }
 }
+
+onBeforeMount(()=>{
+    u_inst.load_from_cookies();
+    const last_state: boolean = u_inst.get_value_state();
+    switcher.value = last_state;
+})
 
 </script>
 

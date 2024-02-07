@@ -70,6 +70,10 @@ export const stat_state = defineStore('stat_state', () => {
       return stats_list;
   }
 
+  const get_stat_list_len=()=>{
+    return stats_list.length;
+  }
+
   const get_limiter_value = (): number => {
     return stat_limiter;
   }
@@ -95,7 +99,8 @@ export const stat_state = defineStore('stat_state', () => {
     reset_all_stats,
     get_limiter_value,
     increase_stat,
-    decrease_stat
+    decrease_stat,
+    get_stat_list_len
   }
 })
 
