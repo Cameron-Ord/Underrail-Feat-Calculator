@@ -6,15 +6,17 @@ import AboutSection from '../about/AboutSection.vue';
 import AllBuilds from '@/userbuilds/AllBuilds.vue';
 import AllocatorBox from '@/components/AllocatorBox.vue';
 import AboutAside from '@/about/AboutAside.vue';
+import AboutButton from '@/components/AboutButton.vue';
 import AccountBox from '@/components/AccountBox.vue';
 import { onBeforeMount, ref, type Ref } from 'vue';
 import {universal_store} from '../stores/universal'
-
 import type { AxiosResponse } from 'axios';
 const u_inst = universal_store();
-
 const builds_loaded: Ref<boolean> = ref(false);
-
+const viewing_about: Ref<boolean> = ref(false);
+const switch_about = (signal: boolean) => {
+    viewing_about.value = signal
+}
 
 const get_builds = async () => {
     let loaded = false;
@@ -64,8 +66,9 @@ onBeforeMount(()=>{
             <all-builds></all-builds>
         </section>
         <section class="about_section">
-            <about-section></about-section>
-            <about-aside></about-aside>
+            <about-section v-if="viewing_about"></about-section>
+            <about-aside v-if="viewing_about"></about-aside>
+            <about-button :switch_about="switch_about"></about-button>
         </section>
     </main>
 </template>
