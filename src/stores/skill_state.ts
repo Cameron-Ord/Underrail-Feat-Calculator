@@ -30,22 +30,22 @@ export const skill_state = defineStore('skill_state', () => {
     { 'skillName': 'Biology', 'skillValue': 0 },
     { 'skillName': 'Chemistry', 'skillValue': 0 },
     { 'skillName': 'Electronics', 'skillValue': 0 }
-  ] as Array<{skillName: string; skillValue: number}>
+  ] as Array<{ skillName: string; skillValue: number }>
 
 
   const increase_skill = (index: number, event: MouseEvent) => {
     const current_skill_value = skills_list[index]['skillValue'];
     const max_increase = Math.min(max_skill_points - skill_limiter, 160 - current_skill_value);
-    if(max_increase > 0){
+    if (max_increase > 0) {
       let updated_limiter: number = skill_limiter;
       let increase_amount: number;
-      const updated_list: Array<{skillName: string; skillValue: number}> = [...skills_list];
-      if(event.shiftKey){
-          increase_amount = Math.min(5, max_increase);
-      } else if(event.ctrlKey){
-          increase_amount = Math.min(80, max_increase);
+      const updated_list: Array<{ skillName: string; skillValue: number }> = [...skills_list];
+      if (event.shiftKey) {
+        increase_amount = Math.min(5, max_increase);
+      } else if (event.ctrlKey) {
+        increase_amount = Math.min(80, max_increase);
       } else {
-          increase_amount = Math.min(1, max_increase);
+        increase_amount = Math.min(1, max_increase);
       }
       updated_list[index]['skillValue'] += increase_amount;
       updated_limiter += increase_amount;
@@ -56,16 +56,16 @@ export const skill_state = defineStore('skill_state', () => {
 
   const decrease_skill = (index: number, event: MouseEvent) => {
     const current_skill_value = skills_list[index]['skillValue'];
-    if(current_skill_value > min_skill_points){
+    if (current_skill_value > min_skill_points) {
       let updated_limiter: number = skill_limiter;
       let decrease_amount: number;
-      const updated_list: Array<{skillName: string; skillValue: number}> = [...skills_list];
-      if(event.shiftKey){
+      const updated_list: Array<{ skillName: string; skillValue: number }> = [...skills_list];
+      if (event.shiftKey) {
         decrease_amount = Math.min(5, current_skill_value);
-      } else if(event.ctrlKey){
-          decrease_amount = Math.min(80, current_skill_value);
+      } else if (event.ctrlKey) {
+        decrease_amount = Math.min(80, current_skill_value);
       } else {
-          decrease_amount = Math.min(1, current_skill_value);
+        decrease_amount = Math.min(1, current_skill_value);
       }
       updated_list[index]['skillValue'] -= decrease_amount;
       updated_limiter -= decrease_amount;
@@ -74,40 +74,57 @@ export const skill_state = defineStore('skill_state', () => {
     }
   }
 
-  const set_list_values=(updated_list: Array<{skillName: string; skillValue: number}>, i:number)=>{
+  const set_list_values = (updated_list: Array<{ skillName: string; skillValue: number }>, i: number) => {
     skills_list[i]['skillValue'] = updated_list[i]['skillValue'];
     try {
-      cookies.set('skill_cookie', JSON.stringify(skills_list));    
+      cookies.set('skill_cookie', JSON.stringify(skills_list));
     } catch (error) {
       console.log("Error parsing JSON : ", error);
     }
   }
 
-  const load_from_cookies = () =>{
-
+  const mutate_array = (p_cookie: any) => {
+    for (let i = 0; i < p_cookie.length; i++) {
+      skills_list[i] = p_cookie[i];
+    }
   }
 
-  const get_skill_list=()=>{
+  const load_from_cookies = () => {
+    try {
+      const skill_cookie: string = cookies.get('skill_cookie');
+      if (skill_cookie !== null) {
+        const p_cookie: any = JSON.parse(skill_cookie);
+        mutate_array(p_cookie);
+        return skills_list;
+      }
+      return null;
+    } catch (error) {
+      console.log("Error parsing JSON : ", error);
+      return null;
+    }
+  }
+
+  const get_skill_list = () => {
     return skills_list;
   }
-  
-  const get_skill_list_len=()=>{
+
+  const get_skill_list_len = () => {
     return skills_list.length;
   }
 
   const get_skill_limiter = () => {
     return skill_limiter;
   }
-  
+
   const reset_all_skills = () => {
-    for(let i = 0; skills_list.length; i++){
+    for (let i = 0; skills_list.length; i++) {
       let skill_value: number = skills_list[i]['skillValue'];
       skill_value = 5;
       skills_list[i]['skillValue'] = skill_value;
     }
     skill_limiter = 0;
   }
-  
+
   const set_limiter = (num: number) => {
     skill_limiter = num;
   }
@@ -115,6 +132,7 @@ export const skill_state = defineStore('skill_state', () => {
 
   return {
     skills_list,
+    load_from_cookies,
     get_skill_list,
     reset_all_skills,
     get_skill_limiter,

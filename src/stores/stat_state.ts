@@ -16,19 +16,19 @@ export const stat_state = defineStore('stat_state', () => {
     { 'statName': 'Perception', 'statValue': 5 },
     { 'statName': 'Will', 'statValue': 5 },
     { 'statName': 'Intelligence', 'statValue': 5 }
-  ] as Array<{statName: string; statValue: number}>
+  ] as Array<{ statName: string; statValue: number }>
 
 
   const decrease_stat = (index: number, event: MouseEvent) => {
     const current_stat_value: number = stats_list[index]['statValue'];
-    if(current_stat_value > min_stat_points) {
+    if (current_stat_value > min_stat_points) {
       let updated_limiter: number = stat_limiter;
       let decrease_amount: number;
-      const updated_list: Array<{statName: string; statValue: number}> = [...stats_list];
-      
-      if(event.shiftKey){
+      const updated_list: Array<{ statName: string; statValue: number }> = [...stats_list];
+
+      if (event.shiftKey) {
         decrease_amount = Math.min(5, current_stat_value - min_stat_points);
-      } else if (event.ctrlKey){
+      } else if (event.ctrlKey) {
         decrease_amount = Math.min(10, current_stat_value - min_stat_points);
       } else {
         decrease_amount = Math.min(1, current_stat_value - min_stat_points);
@@ -44,13 +44,13 @@ export const stat_state = defineStore('stat_state', () => {
   const increase_stat = (index: number, event: MouseEvent) => {
     const current_stat_value: number = stats_list[index]['statValue'];
     const max_increase: number = Math.min(max_stat_points - stat_limiter, 20 - current_stat_value);
-    if(max_increase > 0){
+    if (max_increase > 0) {
       let updated_limiter: number = stat_limiter;
       let increase_amount: number;
-      const updated_list: Array<{statName: string; statValue: number}> = [...stats_list];
-      if(event.shiftKey){
+      const updated_list: Array<{ statName: string; statValue: number }> = [...stats_list];
+      if (event.shiftKey) {
         increase_amount = Math.min(5, max_increase);
-      } else if (event.ctrlKey){
+      } else if (event.ctrlKey) {
         increase_amount = Math.min(10, max_increase);
       } else {
         increase_amount = Math.min(1, max_increase);
@@ -63,25 +63,41 @@ export const stat_state = defineStore('stat_state', () => {
     }
   }
 
-  const set_list_values = (updated_list: Array<{statName: string; statValue: number}>, i: number) => {
+  const set_list_values = (updated_list: Array<{ statName: string; statValue: number }>, i: number) => {
     stats_list[i]['statValue'] = updated_list[i]['statValue'];
     try {
-     cookies.set('stat_cookie', JSON.stringify(stats_list));
+      cookies.set('stat_cookie', JSON.stringify(stats_list));
     } catch (error) {
       console.log("Error parsing JSON : ", error);
     }
   }
 
-
-  const load_from_cookies = () =>{
-
+  const mutate_array = (p_cookie: any) => {
+    for (let i = 0; i < p_cookie.length; i++) {
+      stats_list[i] = p_cookie[i];
+    }
   }
 
-  const get_stat_list=()=>{
-      return stats_list;
+  const load_from_cookies = () => {
+    const stat_cookie: string = cookies.get('stat_cookie');
+    try {
+      if (stat_cookie !== null) {
+        const p_cookie: any = JSON.parse(stat_cookie);
+        mutate_array(p_cookie);
+        return stats_list;
+      }
+      return null;
+    } catch (error) {
+      console.log("Error parsing JSON : ", error);
+      return null;
+    }
   }
 
-  const get_stat_list_len=()=>{
+  const get_stat_list = () => {
+    return stats_list;
+  }
+
+  const get_stat_list_len = () => {
     return stats_list.length;
   }
 
@@ -90,7 +106,7 @@ export const stat_state = defineStore('stat_state', () => {
   }
 
   const reset_all_stats = () => {
-    for(let i = 0; stats_list.length; i++){
+    for (let i = 0; stats_list.length; i++) {
       let stat_value: number = stats_list[i]['statValue'];
       stat_value = 5;
       stats_list[i]['statValue'] = stat_value;
@@ -105,6 +121,7 @@ export const stat_state = defineStore('stat_state', () => {
 
 
   return {
+    load_from_cookies,
     stats_list,
     get_stat_list,
     reset_all_stats,
