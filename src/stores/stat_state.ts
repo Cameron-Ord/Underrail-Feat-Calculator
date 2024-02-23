@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-
+import { useCookies } from 'vue3-cookies'
+const { cookies } = useCookies();
 export const stat_state = defineStore('stat_state', () => {
 
 
@@ -64,6 +65,16 @@ export const stat_state = defineStore('stat_state', () => {
 
   const set_list_values = (updated_list: Array<{statName: string; statValue: number}>, i: number) => {
     stats_list[i]['statValue'] = updated_list[i]['statValue'];
+    try {
+     cookies.set('stat_cookie', JSON.stringify(stats_list));
+    } catch (error) {
+      console.log("Error parsing JSON : ", error);
+    }
+  }
+
+
+  const load_from_cookies = () =>{
+
   }
 
   const get_stat_list=()=>{

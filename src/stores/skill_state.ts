@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
-
+import { useCookies } from 'vue3-cookies'
+const { cookies } = useCookies();
 export const skill_state = defineStore('skill_state', () => {
 
   let skill_limiter: number = 0;
@@ -75,6 +76,15 @@ export const skill_state = defineStore('skill_state', () => {
 
   const set_list_values=(updated_list: Array<{skillName: string; skillValue: number}>, i:number)=>{
     skills_list[i]['skillValue'] = updated_list[i]['skillValue'];
+    try {
+      cookies.set('skill_cookie', JSON.stringify(skills_list));    
+    } catch (error) {
+      console.log("Error parsing JSON : ", error);
+    }
+  }
+
+  const load_from_cookies = () =>{
+
   }
 
   const get_skill_list=()=>{

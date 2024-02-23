@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, type Ref } from 'vue';
 import axios, { type AxiosResponse } from 'axios'
+import { useCookies } from 'vue3-cookies'
+const { cookies } = useCookies();
 const signing_up: Ref<boolean> = ref(true);
 const clicked_query: Ref<boolean> = ref(false);
 
@@ -28,7 +30,10 @@ const option_picker = (target: EventTarget | null) => {
 const login = async () => {
   try{ 
     const response = await axios_login();
-    const resp_data = response.data;
+    if(response.statusText){
+      const resp_data = response.data;
+      cookies.set('session_token', JSON.stringify(resp_data));
+    }
   } catch (error: any) {
     console.log(error['response']['data']);
   }
@@ -37,16 +42,25 @@ const login = async () => {
 const signup = async () => {
   try{ 
     const response = await axios_signup();
-    const resp_data = response.data;
+    if(response.statusText == "OK"){
+      clicked_query.value = false;
+      signing_up.value = true;
+    }
   } catch (error: any) {
     console.log(error['response']['data']);
-  }
+  } 
 }
 
 const get_text_contents = () => {
   const pw_box: HTMLInputElement | null = document.querySelector('.pw');
+  if(pw_box == null){
+    return [null, null];
+  }
   const usr_box: HTMLInputElement | null = document.querySelector('.usr');
-  if (pw_box !== null && usr_box !== null) {
+  if(usr_box == null){
+    return [null, null];
+  }
+  if (pw_box.value !== "" && usr_box.value !== "") {
     return [usr_box.value, pw_box.value];
   }
   return [null, null];

@@ -32,4 +32,13 @@ const btn_handler = (event: EventTarget | null) => {
 </template>
 
 <style lang="scss" scoped>
+.about_crtls{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    >p{
+
+    }
+}
 </style>
