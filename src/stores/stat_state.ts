@@ -79,10 +79,13 @@ export const stat_state = defineStore('stat_state', () => {
   }
 
   const load_from_cookies = () => {
-    const stat_cookie: string = cookies.get('stat_cookie');
     try {
+      const limtr: string = cookies.get('stat_limiter');
+      const stat_cookie: string = cookies.get('stat_cookie');
       if (stat_cookie !== null) {
         const p_cookie: any = JSON.parse(stat_cookie);
+        const p_limtr: number = JSON.parse(limtr);
+        stat_limiter = p_limtr;
         mutate_array(p_cookie);
         return stats_list;
       }
@@ -116,6 +119,11 @@ export const stat_state = defineStore('stat_state', () => {
 
   const set_limiter = (num: number) => {
     stat_limiter = num;
+    try {
+      cookies.set('stat_limiter', JSON.stringify(stat_limiter));
+    } catch (error) {
+      console.log('Error during stringification : ', error);
+    }
   }
 
 

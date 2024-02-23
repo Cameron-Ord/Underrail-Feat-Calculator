@@ -1,3 +1,4 @@
+
 import { defineStore } from 'pinia'
 import { useCookies } from 'vue3-cookies'
 const { cookies } = useCookies();
@@ -91,9 +92,12 @@ export const skill_state = defineStore('skill_state', () => {
 
   const load_from_cookies = () => {
     try {
+      const limtr: string = cookies.get('skill_limiter');
       const skill_cookie: string = cookies.get('skill_cookie');
-      if (skill_cookie !== null) {
+      if (skill_cookie !== null && limtr !== null) {
         const p_cookie: any = JSON.parse(skill_cookie);
+        const p_limtr: number = JSON.parse(limtr);
+        skill_limiter = p_limtr;
         mutate_array(p_cookie);
         return skills_list;
       }
@@ -127,6 +131,12 @@ export const skill_state = defineStore('skill_state', () => {
 
   const set_limiter = (num: number) => {
     skill_limiter = num;
+    try {
+      cookies.set('skill_limiter', JSON.stringify(skill_limiter));
+    } catch (error) {
+      console.log('Error during stringification : ', error);
+    }
+
   }
 
 
