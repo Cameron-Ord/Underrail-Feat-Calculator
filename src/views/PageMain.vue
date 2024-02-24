@@ -43,7 +43,6 @@ const get_builds = async () => {
   loaded = true
   builds_loaded.value = loaded
 }
-
 //modifying visibility for the account box 
 const modify_login_state = (state: boolean) => {
   logged_in.value = state;
@@ -54,6 +53,7 @@ onBeforeMount(() => {
   //loading the session if it exists.
   //if the result is true, then it will hide the account box
   const result: boolean = log_inst.load_session();
+  log_inst.set_login_status(result);
   modify_login_state(result);
   get_builds();
 })

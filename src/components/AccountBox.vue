@@ -7,6 +7,7 @@ const log_inst = login_state();
 const signing_up: Ref<boolean> = ref(true);
 const clicked_query: Ref<boolean> = ref(false);
 const { modify_login_state } = defineProps(['modify_login_state']);
+
 const option_picker = (target: EventTarget | null) => {
   const html_target = target as HTMLElement;
   const text = html_target.textContent
@@ -35,10 +36,11 @@ const login = async () => {
     if (response.statusText === "OK") {
       clicked_query.value = false;
       signing_up.value = true;
-      const resp_data = response.data;
+      const resp_data: { Client_Session_Token: string, Client_ID_Value: number } = response.data;
       //if cookies were set successfully, then close the account box
       //if result is false, the login failed.
       const result: boolean = log_inst.save_response(resp_data);
+      log_inst.set_login_status(result);
       modify_login_state(result);
     }
   } catch (error: any) {
