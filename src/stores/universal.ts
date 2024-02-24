@@ -1,21 +1,21 @@
 import { defineStore } from 'pinia'
 import { useCookies } from 'vue3-cookies';
 import axios, { type AxiosResponse } from 'axios';
-const {cookies} = useCookies()
+const { cookies } = useCookies()
 
 export const universal_store = defineStore('general_store', () => {
 
   let general_build: any = new Array();
   const fetch_db_builds = () => {
     return new Promise<AxiosResponse>((resolve, reject) => {
-        axios({
-            url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-all-builds`,
-            method: "GET",
-        }).then((response) => {
-            resolve(response)
-        }).catch((error) => {
-            reject(error)
-        })
+      axios({
+        url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-all-builds`,
+        method: "GET",
+      }).then((response) => {
+        resolve(response)
+      }).catch((error) => {
+        reject(error)
+      })
     })
   }
 
@@ -24,14 +24,13 @@ export const universal_store = defineStore('general_store', () => {
   }
 
   const health_checker = (): boolean => {
-    console.log(general_build)
-    if(general_build === undefined){
+    if (general_build === undefined) {
       return false;
     }
-    if(general_build.length === 0){
+    if (general_build.length === 0) {
       return false;
     }
-    if(general_build === null){
+    if (general_build === null) {
       return false;
     }
 
@@ -44,7 +43,7 @@ export const universal_store = defineStore('general_store', () => {
 
   let switcher: boolean = false;
 
-  const update_view_state = (v_switcher: boolean) =>{
+  const update_view_state = (v_switcher: boolean) => {
     switcher = v_switcher
     save_as_cookie(v_switcher)
   }
@@ -57,8 +56,8 @@ export const universal_store = defineStore('general_store', () => {
   const load_from_cookies = () => {
     const retrieved_state: string = cookies.get('view_state');
     try {
-      const _parsed_: boolean | null  = JSON.parse(retrieved_state);
-      if(_parsed_){
+      const _parsed_: boolean | null = JSON.parse(retrieved_state);
+      if (_parsed_) {
         switcher = _parsed_;
       }
     } catch (error) {

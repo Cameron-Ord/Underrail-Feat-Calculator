@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue';
 import axios, { type AxiosResponse } from 'axios'
-import { useCookies } from 'vue3-cookies'
-const { cookies } = useCookies();
+import { login_state } from '../stores/login_manager';
+
+const log_inst = login_state();
 const signing_up: Ref<boolean> = ref(true);
 const clicked_query: Ref<boolean> = ref(false);
-
+const { modify_login_state } = defineProps(['modify_login_state']);
 const option_picker = (target: EventTarget | null) => {
   const html_target = target as HTMLElement;
   const text = html_target.textContent
@@ -28,11 +29,17 @@ const option_picker = (target: EventTarget | null) => {
 }
 
 const login = async () => {
-  try{ 
+  try {
     const response = await axios_login();
-    if(response.statusText){
+    //if the response was successful, reset the original values and set cookies
+    if (response.statusText === "OK") {
+      clicked_query.value = false;
+      signing_up.value = true;
       const resp_data = response.data;
-      cookies.set('session_token', JSON.stringify(resp_data));
+      //if cookies were set successfully, then close the account box
+      //if result is false, the login failed.
+      const result: boolean = log_inst.save_response(resp_data);
+      modify_login_state(result);
     }
   } catch (error: any) {
     console.log(error['response']['data']);
@@ -40,24 +47,24 @@ const login = async () => {
 }
 
 const signup = async () => {
-  try{ 
+  try {
     const response = await axios_signup();
-    if(response.statusText == "OK"){
-      clicked_query.value = false;
-      signing_up.value = true;
+    if (response.statusText === "OK") {
+      //going to login if registration was successful
+      login();
     }
   } catch (error: any) {
     console.log(error['response']['data']);
-  } 
+  }
 }
 
 const get_text_contents = () => {
   const pw_box: HTMLInputElement | null = document.querySelector('.pw');
-  if(pw_box == null){
+  if (pw_box == null) {
     return [null, null];
   }
   const usr_box: HTMLInputElement | null = document.querySelector('.usr');
-  if(usr_box == null){
+  if (usr_box == null) {
     return [null, null];
   }
   if (pw_box.value !== "" && usr_box.value !== "") {
@@ -96,7 +103,9 @@ const axios_signup = () => {
   });
 };
 
+onBeforeMount(() => {
 
+})
 
 </script>
 
@@ -121,11 +130,12 @@ const axios_signup = () => {
 </template>
 
 <style lang="scss" scoped>
-.account{
+.account {
   display: grid;
   align-items: center;
   justify-items: center;
-  >.query_box{
+
+  >.query_box {
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -133,17 +143,19 @@ const axios_signup = () => {
     width: 90%;
   }
 
-  >.box{
+  >.box {
     display: grid;
     row-gap: 15px;
     justify-items: center;
-    >.input_box{
+
+    >.input_box {
       display: flex;
       flex-direction: column;
       row-gap: 12px;
       width: 90%;
     }
-    >.options_box{
+
+    >.options_box {
       display: flex;
       align-items: center;
       flex-direction: row;

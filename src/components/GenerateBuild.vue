@@ -15,7 +15,6 @@ const feats_inst = feats_state();
 
 const send_data = () => {
   return new Promise<AxiosResponse>((resolve, reject) => {
-    console.log(type_inst.get_chosen())
     axios.post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`, {
       stats: stat_inst.get_stat_list(),
       skills: skill_inst.get_skill_list(),
@@ -30,8 +29,6 @@ const send_data = () => {
 
 const generate_list = async () => {
 
-  const types = type_inst.get_chosen();
-  console.log("TYPES: ", types);
 
   console.log("Generating list..")
   const new_list: boolean = feats_inst.reset_feat_list();
@@ -77,6 +74,31 @@ const generate_list = async () => {
   }
 }
 
+//const send_message = () => {
+//return new Promise<AxiosResponse>((resolve, reject) => {
+//axios.post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/savebuild`, {
+//stats:,
+//skills:,
+//feats:,
+//title:,
+//client_id:,
+//session_token:,
+//}).then((response) => {
+//resolve(response);
+//}).catch((error) => {
+//reject(error);
+//})
+//})
+//}
+
+const commit_build = async () => {
+  console.log("Saving build..");
+  const name_data: HTMLInputElement | null = document.querySelector('.build_name_input');
+  if (name_data === null) {
+    return;
+  }
+
+}
 </script>
 
 <template>
@@ -88,6 +110,10 @@ const generate_list = async () => {
       <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">
         <p>{{ feat['Feat'] }}</p>
       </div>
+    </div>
+    <div class="build_saver" v-if="feats_list_exists">
+      <input type="text" class="build_name_input" placeholder="build name..">
+      <p @click="commit_build">Submit</p>
     </div>
   </article>
 </template>
