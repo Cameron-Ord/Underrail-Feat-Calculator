@@ -64,6 +64,8 @@ const generate_list = async () => {
       console.log("Assigning result..")
       is_logged_in.value = log_inst.get_login_status();
       retrieved_feat_list.value = result;
+
+      console.log(retrieved_feat_list.value);
       feats_list_exists.value = true;
     }
   } catch (error) {
