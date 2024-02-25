@@ -15,7 +15,8 @@ const stat_inst = stat_state();
 const skill_inst = skill_state();
 const type_inst = types_state();
 const feats_inst = feats_state();
-
+const status_text: Ref<string> = ref("");
+const status_text_active: Ref<boolean> = ref(false);
 
 const send_data = () => {
   return new Promise<AxiosResponse>((resolve, reject) => {
@@ -64,8 +65,6 @@ const generate_list = async () => {
       console.log("Assigning result..")
       is_logged_in.value = log_inst.get_login_status();
       retrieved_feat_list.value = result;
-
-      console.log(retrieved_feat_list.value);
       feats_list_exists.value = true;
     }
   } catch (error) {
@@ -109,7 +108,8 @@ const commit_build = async () => {
   const title_obj: { input: string, result: number } = get_build_title();
   if (title_obj['result'] !== -1) {
     const response: AxiosResponse = await send_save_message(title_obj.input);
-    console.log(response);
+    status_text.value = response['data'];
+    status_text_active.value = true;
   }
 }
 
@@ -141,6 +141,7 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
     <div class="build_saver" v-if="feats_list_exists && is_logged_in">
       <input type="text" class="build_name_input" placeholder="build name..">
       <p @click="commit_build">Submit</p>
+      <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
     </div>
   </article>
 </template>

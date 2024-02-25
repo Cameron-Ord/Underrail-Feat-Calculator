@@ -16,7 +16,7 @@ const log_inst = login_state();
 const u_inst = universal_store();
 const builds_loaded: Ref<boolean> = ref(false);
 const viewing_about: Ref<boolean> = ref(false);
-const logged_in: Ref<boolean> = ref(false);
+
 
 //modifying visibility for the about section 
 const switch_about = (signal: boolean) => {
@@ -43,18 +43,10 @@ const get_builds = async () => {
   loaded = true
   builds_loaded.value = loaded
 }
-//modifying visibility for the account box 
-const modify_login_state = (state: boolean) => {
-  logged_in.value = state;
-}
-
 
 onBeforeMount(() => {
   //loading the session if it exists.
   //if the result is true, then it will hide the account box
-  const result: boolean = log_inst.load_session();
-  log_inst.set_login_status(result);
-  modify_login_state(result);
   get_builds();
 })
 
@@ -63,8 +55,8 @@ onBeforeMount(() => {
 
 <template>
   <main class="page_main">
-    <section class="page_header" v-if="!logged_in">
-      <account-box :modify_login_state="modify_login_state"></account-box>
+    <section class="page_header">
+      <account-box></account-box>
     </section>
     <section class="build_info_section">
       <allocator-box></allocator-box>

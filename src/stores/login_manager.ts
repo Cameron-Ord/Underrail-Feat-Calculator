@@ -17,6 +17,11 @@ export const login_state = defineStore('login_state', () => {
     login_status = status;
   }
 
+  const log_user_out = () => {
+    cookies.remove('session_data');
+    set_login_status(false);
+  }
+
   const save_response = (resp: { Client_Session_Token: string, Client_ID_Value: number }): boolean => {
     const err: number = set_resp_cookie(resp);
     //if the cookie was set without errors, it will assign the object to the global variable and return true.
@@ -78,7 +83,7 @@ export const login_state = defineStore('login_state', () => {
   }
 
   return {
-    save_response, load_session, set_login_status, get_login_status, get_client_id, get_client_token
+    log_user_out, save_response, load_session, set_login_status, get_login_status, get_client_id, get_client_token
   }
 })
 
