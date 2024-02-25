@@ -4,8 +4,13 @@ import axios, { type AxiosResponse } from 'axios';
 const { cookies } = useCookies()
 
 export const universal_store = defineStore('general_store', () => {
-
-  let general_build: any = new Array();
+  let general_build: Array<{
+    Build_ID: number,
+    Build_Title: string,
+    Feat_Slice: Array<{ Name: string, Build_ID: number }>,
+    Skill_Slice: Array<{ Name: string, Value: number, Build_ID: number }>,
+    Stat_Slice: Array<{ Name: string, Value: number, Build_ID: number }>
+  }> = [];
   const fetch_db_builds = () => {
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
