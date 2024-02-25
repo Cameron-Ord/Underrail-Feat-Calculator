@@ -97,4 +97,90 @@ const previous_build = () => {
   </article>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.build_article {
+  display: grid;
+  align-items: center;
+  text-align: center;
+  row-gap: 25px;
+
+  >.build_container {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    row-gap: 20px;
+
+    >.build_title {}
+
+    >.bstats_container {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+
+      >.stats_loop_cont {
+        display: flex;
+        flex-direction: row;
+        row-gap: 10px;
+        column-gap: 10px;
+        justify-content: space-between;
+
+        >p {}
+      }
+    }
+
+    >.bskills_container {
+      display: flex;
+      flex-direction: column;
+      width: 80%;
+
+      >.skills_loop_cont {
+        display: flex;
+        flex-direction: row;
+        row-gap: 10px;
+        column-gap: 10px;
+        justify-content: space-between;
+
+        >p {}
+      }
+    }
+
+    >.bfeats_container {
+
+      display: flex;
+      flex-wrap: wrap;
+      width: 80%;
+      justify-content: space-evenly;
+      row-gap: 10px;
+      column-gap: 10px;
+
+      >p {}
+    }
+  }
+
+  >.bcontrols {
+    justify-self: center;
+    justify-content: space-evenly;
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    row-gap: 10px;
+
+    >p {}
+  }
+
+  >.bcycler {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: 15px;
+    row-gap: 10px;
+    justify-self: center;
+    justify-content: space-evenly;
+
+    >p {}
+  }
+
+  >.build_header {
+    >h2 {}
+  }
+}
+</style>

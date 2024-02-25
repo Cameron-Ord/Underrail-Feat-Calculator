@@ -23,7 +23,7 @@ const send_data = () => {
     axios.post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/calculate`, {
       stats: stat_inst.get_stat_list(),
       skills: skill_inst.get_skill_list(),
-      type: type_inst.get_chosen_type_only()
+      type: type_inst.get_chosen_list(),
     }).then((response) => {
       resolve(response);
     }).catch((error) => {
@@ -140,7 +140,7 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
     </div>
     <div class="build_saver" v-if="feats_list_exists && is_logged_in">
       <input type="text" class="build_name_input" placeholder="build name..">
-      <p @click="commit_build">Submit</p>
+      <p class="submit_tag" @click="commit_build">Submit</p>
       <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
     </div>
   </article>
@@ -152,6 +152,21 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
   align-items: center;
   justify-items: center;
   row-gap: 30px;
+  text-align: center;
+
+  >.build_saver {
+    display: flex;
+    row-gap: 15px;
+    flex-direction: column;
+    align-items: center;
+
+    >.class_name_input {}
+
+    >.submit_tag {}
+
+    >.status_text {}
+  }
+
 
   >.generate_btn_div {
     display: flex;
