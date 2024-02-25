@@ -34,7 +34,7 @@ export const skill_state = defineStore('skill_state', () => {
   ] as Array<{ skillName: string; skillValue: number }>
 
 
-  const increase_skill = (index: number, event: MouseEvent) => {
+  const increase_skill = (index: number, event: MouseEvent | TouchEvent) => {
     const current_skill_value = skills_list[index]['skillValue'];
     const max_increase = Math.min(max_skill_points - skill_limiter, 160 - current_skill_value);
     if (max_increase > 0) {
@@ -55,7 +55,7 @@ export const skill_state = defineStore('skill_state', () => {
     }
   }
 
-  const decrease_skill = (index: number, event: MouseEvent) => {
+  const decrease_skill = (index: number, event: MouseEvent | TouchEvent) => {
     const current_skill_value = skills_list[index]['skillValue'];
     if (current_skill_value > min_skill_points) {
       let updated_limiter: number = skill_limiter;

@@ -19,7 +19,7 @@ export const stat_state = defineStore('stat_state', () => {
   ] as Array<{ statName: string; statValue: number }>
 
 
-  const decrease_stat = (index: number, event: MouseEvent) => {
+  const decrease_stat = (index: number, event: MouseEvent | TouchEvent) => {
     const current_stat_value: number = stats_list[index]['statValue'];
     if (current_stat_value > min_stat_points) {
       let updated_limiter: number = stat_limiter;
@@ -41,7 +41,7 @@ export const stat_state = defineStore('stat_state', () => {
     }
   }
 
-  const increase_stat = (index: number, event: MouseEvent) => {
+  const increase_stat = (index: number, event: MouseEvent | TouchEvent) => {
     const current_stat_value: number = stats_list[index]['statValue'];
     const max_increase: number = Math.min(max_stat_points - stat_limiter, 20 - current_stat_value);
     if (max_increase > 0) {
