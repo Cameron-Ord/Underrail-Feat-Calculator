@@ -66,6 +66,8 @@ const generate_list = async () => {
       is_logged_in.value = log_inst.get_login_status();
       retrieved_feat_list.value = result;
       feats_list_exists.value = true;
+      feats_inst.reset_chosen();
+      feats_inst.reset_chosen_styles();
     }
   } catch (error) {
     feats_list_exists.value = false;
@@ -114,16 +116,26 @@ const commit_build = async () => {
 }
 
 const handle_select_feat = (event: TouchEvent | MouseEvent) => {
-  const event_target = (event.target as HTMLElement);
-  if (event_target !== null) {
+  if (event.target !== null) {
+    const event_target = (event.target as HTMLElement);
     const feat_text: string = event_target.innerText;
     const result: { found: boolean, index: number } = feats_inst.check_if_chosen(feat_text);
     if (result['found'] === true) {
       feats_inst.remove_from_chosen(result['index']);
+      remove_style_for_target(event_target);
     } else if (result['found'] === false) {
       feats_inst.add_to_chosen(feat_text);
+      set_style_for_target(event_target);
     }
   }
+}
+
+const remove_style_for_target = (target: HTMLElement) => {
+  target.style.textDecoration = '';
+}
+
+const set_style_for_target = (target: HTMLElement) => {
+  target.style.textDecoration = 'underline';
 }
 
 </script>
@@ -135,7 +147,7 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
     </div>
     <div v-if="feats_list_exists" class="feat_list_div">
       <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">
-        <p @click="handle_select_feat($event)">{{ feat['Feat'] }}</p>
+        <p @click="handle_select_feat($event)" class="gen_feat_text">{{ feat['Feat'] }}</p>
       </div>
     </div>
     <div class="build_saver" v-if="feats_list_exists && is_logged_in">

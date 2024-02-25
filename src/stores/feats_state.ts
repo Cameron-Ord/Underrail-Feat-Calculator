@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { nextTick } from 'vue';
 
 export const feats_state = defineStore('feats_state', () => {
   let feats = [] as Array<{ Feat: string, Desc: string }> || null;
@@ -37,6 +38,24 @@ export const feats_state = defineStore('feats_state', () => {
     return false;
   }
 
+  const reset_chosen = () => {
+    if (chosen_feats.length > 0) {
+      chosen_feats.pop();
+      reset_chosen();
+    }
+  }
+
+  const reset_chosen_styles = () => {
+    nextTick(() => {
+      let list_nodes: NodeList | null = document.querySelectorAll('.gen_feat_text');
+      if (list_nodes !== null) {
+        for (let i = 0; i < list_nodes.length; i++) {
+          const node: HTMLElement = (list_nodes[i] as HTMLElement);
+          node.style.textDecoration = '';
+        }
+      }
+    })
+  }
 
   const remove_from_chosen = (index: number) => {
     chosen_feats.splice(index, 1);
@@ -55,6 +74,6 @@ export const feats_state = defineStore('feats_state', () => {
   }
 
   return {
-    feats, add_to_chosen, remove_from_chosen, set_feats, get_feats, reset_feat_list, get_chosen_feats, check_if_chosen
+    feats, reset_chosen, add_to_chosen, reset_chosen_styles, remove_from_chosen, set_feats, get_feats, reset_feat_list, get_chosen_feats, check_if_chosen
   }
 })
