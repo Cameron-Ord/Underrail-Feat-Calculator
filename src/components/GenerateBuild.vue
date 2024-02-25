@@ -195,4 +195,23 @@ const set_style_for_target = (target: HTMLElement) => {
     justify-content: space-evenly;
   }
 }
+
+
+
+@media only screen and (min-width: 770px) {
+  .generator_article {
+    >.feat_list_div {
+      width: 70%;
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .generator_article {
+    >.feat_list_div {
+      width: 50%;
+      max-width: 500px;
+    }
+  }
+}
 </style>

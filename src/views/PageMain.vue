@@ -70,9 +70,11 @@ onBeforeMount(() => {
     <section class="user_builds" v-if="builds_loaded">
       <all-builds></all-builds>
     </section>
-    <section class="about_section">
-      <about-section v-if="viewing_about"></about-section>
-      <about-aside v-if="viewing_about"></about-aside>
+    <section class="about_section" v-if="viewing_about">
+      <about-section></about-section>
+      <about-aside></about-aside>
+    </section>
+    <section class="about_switch">
       <about-button :switch_about="switch_about"></about-button>
     </section>
   </main>
@@ -113,5 +115,24 @@ onBeforeMount(() => {
     row-gap: 30px;
   }
 
+  >.about_switch {
+    display: grid;
+    align-items: center;
+  }
+
+}
+
+
+@media only screen and (min-width: 770px) {}
+
+@media only screen and (min-width: 1024px) {
+  .page_main {
+    >.about_section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
+      align-items: center;
+      row-gap: 30px;
+    }
+  }
 }
 </style>

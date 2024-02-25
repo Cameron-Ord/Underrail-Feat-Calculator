@@ -120,8 +120,8 @@ const previous_build = () => {
       >.stats_loop_cont {
         display: flex;
         flex-direction: row;
-        row-gap: 10px;
-        column-gap: 10px;
+        row-gap: 20px;
+        column-gap: 20px;
         justify-content: space-between;
 
         >p {}
@@ -182,5 +182,64 @@ const previous_build = () => {
   >.build_header {
     >h2 {}
   }
+}
+
+
+@media only screen and (min-width: 770px) {
+  .build_article {
+
+    >.build_container {
+
+      >.build_title {}
+
+      >.bstats_container {
+        width: 70%;
+        max-width: 400px;
+
+        >.stats_loop_cont {}
+      }
+
+      >.bskills_container {
+        width: 70%;
+        max-width: 400px;
+
+        >.skills_loop_cont {}
+      }
+
+      >.bfeats_container {
+        width: 70%;
+        max-width: 400px;
+      }
+    }
+
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .build_article {
+
+    >.build_container {
+
+      >.build_title {}
+
+      >.bstats_container {
+        width: 50%;
+        max-width: 500px;
+      }
+
+      >.bskills_container {
+        width: 50%;
+        max-width: 500px;
+
+      }
+
+      >.bfeats_container {
+        width: 50%;
+        max-width: 500px;
+      }
+    }
+
+  }
+
 }
 </style>

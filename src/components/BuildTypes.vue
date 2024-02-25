@@ -75,7 +75,7 @@ onBeforeMount(() => {
     <div class="header_types">
       <h2>Build Type Filtering</h2>
     </div>
-    <div class="loop_wrapper">
+    <div class="type_loop_wrapper">
       <div class="type_item" v-for="(type_str, i) in types_array" :key="i">
         <p class="type_text" @click="choose_type($event)">{{ type_str }}</p>
       </div>
@@ -94,11 +94,11 @@ onBeforeMount(() => {
     text-align: center;
   }
 
-  >.loop_wrapper {
+  >.type_loop_wrapper {
     display: flex;
     flex-wrap: wrap;
     row-gap: 20px;
-    column-gap: 10px;
+    column-gap: 20px;
     justify-content: space-evenly;
     width: 80%;
     overflow-y: auto;
@@ -111,6 +111,22 @@ onBeforeMount(() => {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+    }
+  }
+}
+
+@media only screen and (min-width: 770px) {
+  .build_types {
+    >.type_loop_wrapper {
+      width: 70%;
+    }
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .build_types {
+    >.type_loop_wrapper {
+      width: 50%;
     }
   }
 }

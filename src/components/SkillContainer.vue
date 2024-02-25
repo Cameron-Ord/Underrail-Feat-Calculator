@@ -128,4 +128,17 @@ onBeforeMount(() => {
     }
   }
 }
+
+
+@media only screen and (min-width: 770px) {
+  .skills_div {
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .skills_div {
+    width: 50%;
+  }
+}
 </style>
