@@ -68,19 +68,19 @@ const previous_build = () => {
         <p>{{ builds[index]['Build_Title'] }}</p>
       </div>
       <div class="bfeats_container" v-if="viewing === 'Feats'">
-        <p v-for="(feat, f) in builds[index]['Feat_Slice']" :key="f">
+        <h3 v-for="(feat, f) in builds[index]['Feat_Slice']" :key="f">
           {{ feat['Name'] }}
-        </p>
+        </h3>
       </div>
       <div class="bskills_container" v-if="viewing === 'Skills'">
         <div class="skills_loop_cont" v-for="(skill, sk) in builds[index]['Skill_Slice']" :key="sk">
-          <p>{{ skill['Name'] }}</p>
+          <h3>{{ skill['Name'] }}</h3>
           <p>{{ skill['Value'] }}</p>
         </div>
       </div>
       <div class="bstats_container" v-if="viewing === 'Stats'">
         <div class="stats_loop_cont" v-for="(stat, st) in builds[index]['Stat_Slice']" :key="st">
-          <p>{{ stat['Name'] }}</p>
+          <h3>{{ stat['Name'] }}</h3>
           <p>{{ stat['Value'] }}</p>
         </div>
       </div>

@@ -6,17 +6,36 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-h1,h2,h3,h4,h5{
+h1,
+h2,
+h3,
+h4,
+h5 {
   padding: 0px;
   margin: 0px;
   word-break: break-word;
 }
-p{
+
+h1 {
+  font-size: clamp(1.5em, 3vw, 2em);
+}
+
+h2 {
+  font-size: clamp(1.25em, 3vw, 1.75em);
+}
+
+h3 {
+  font-size: clamp(1em, 3vw, 1.3em);
+}
+
+p {
   padding: 0px;
   word-break: break-word;
   margin: 0px;
+  font-size: clamp(1em, 3vw, 1.3em);
 }
-img{
+
+img {
   padding: 0px;
   margin: 0px;
 }

@@ -131,11 +131,11 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
 }
 
 const remove_style_for_target = (target: HTMLElement) => {
-  target.style.textDecoration = '';
+  target.style.color = ''
 }
 
 const set_style_for_target = (target: HTMLElement) => {
-  target.style.textDecoration = 'underline';
+  target.style.color = 'var(--orange)'
 }
 
 </script>
@@ -143,7 +143,7 @@ const set_style_for_target = (target: HTMLElement) => {
 <template>
   <article class="generator_article">
     <div class="generate_btn_div">
-      <p @click="generate_list">Generate</p>
+      <p @click="generate_list" class="generate_btn">Generate</p>
     </div>
     <div v-if="feats_list_exists" class="feat_list_div">
       <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">

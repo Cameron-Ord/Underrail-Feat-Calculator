@@ -51,7 +51,7 @@ export const feats_state = defineStore('feats_state', () => {
       if (list_nodes !== null) {
         for (let i = 0; i < list_nodes.length; i++) {
           const node: HTMLElement = (list_nodes[i] as HTMLElement);
-          node.style.textDecoration = '';
+          node.style.color = '';
         }
       }
     })

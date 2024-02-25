@@ -131,9 +131,9 @@ const user_logout = () => {
         <input class="pw" placeholder="password.." type="password">
       </div>
       <div class="options_box">
-        <p v-if="clicked_query" @click="option_picker($event.target)">Back</p>
-        <p v-if="signing_up" @click="signup">Signup</p>
-        <p v-if="!signing_up" @click="login">Login</p>
+        <p v-if="clicked_query" @click="option_picker($event.target)" class="back_button">Back</p>
+        <p v-if="signing_up" @click="signup" class="option_text">Signup</p>
+        <p v-if="!signing_up" @click="login" class="option_text">Login</p>
       </div>
     </article>
     <article class="logout_box" v-if="logged_in">

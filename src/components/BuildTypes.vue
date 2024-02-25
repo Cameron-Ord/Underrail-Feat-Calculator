@@ -22,11 +22,11 @@ const choose_type = (event: MouseEvent | TouchEvent) => {
 }
 
 const remove_style_for_target = (target: HTMLElement) => {
-  target.style.textDecoration = '';
+  target.style.color = '';
 }
 
 const set_style_for_target = (target: HTMLElement) => {
-  target.style.textDecoration = 'underline';
+  target.style.color = 'var(--orange)';
 }
 
 //setting styles on load, only called once on page load if there is an existing cookie
@@ -40,7 +40,7 @@ const style_chosen = (): { result: number } => {
         const chosen_item: string = chosen_list[c];
         const comparison_node: HTMLElement = (list_node as HTMLElement);
         if (chosen_item === comparison_node.innerText) {
-          comparison_node.style.textDecoration = 'underline'
+          comparison_node.style.color = 'var(--orange)'
         }
       }
     }

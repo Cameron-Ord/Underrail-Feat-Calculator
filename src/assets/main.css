@@ -1,1 +1,88 @@
 @import './base.css';
+
+/* CSS FILE ONLY FOR COLOURS/STYLE */
+
+
+:root {
+  --orange: #ff7f11;
+  --black: #000000;
+  --grey: #2f2f2f;
+  --white: #fffffc;
+}
+
+body {
+  background-color: var(--black);
+}
+
+p {
+  color: var(--white);
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--orange);
+}
+
+.about_aside>h3 {
+  cursor: pointer;
+}
+
+.usr {
+  border-color: var(--orange);
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--black);
+}
+
+.pw {
+  border-color: var(--orange);
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--black);
+}
+
+.option_text {
+  color: var(--orange);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.back_button {
+  cursor: pointer;
+}
+
+.bcontrols>p {
+  cursor: pointer;
+}
+
+.bcycler>p {
+  cursor: pointer;
+}
+
+.about_crtls>h2 {
+  cursor: pointer;
+}
+
+.query_box>p {
+  cursor: pointer;
+}
+
+.gen_feat_text {
+  cursor: pointer;
+}
+
+.switch_div>p {
+  cursor: pointer;
+}
+
+.type_text {
+  cursor: pointer;
+}
+
+.generate_btn {
+  cursor: pointer;
+}

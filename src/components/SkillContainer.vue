@@ -88,7 +88,7 @@ onBeforeMount(() => {
 <template>
   <div class="skills_div">
     <div v-for="(skill, i) in skill_list" :key="i" class="loop_div">
-      <p class="skill_name">{{ skill.skillName }}</p>
+      <h3 class="skill_name">{{ skill.skillName }}</h3>
       <div class="icon_value_div">
         <p>{{ skill.skillValue }}</p>
         <img @click="increase_skill(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
@@ -115,9 +115,7 @@ onBeforeMount(() => {
     flex-wrap: wrap;
     column-gap: 25px;
 
-    >.skill_name {
-      max-width: 125px;
-    }
+    >.skill_name {}
 
     >.icon_value_div {
       display: flex;
@@ -133,6 +131,7 @@ onBeforeMount(() => {
 @media only screen and (min-width: 770px) {
   .skills_div {
     width: 70%;
+    max-height: 450px;
   }
 }
 

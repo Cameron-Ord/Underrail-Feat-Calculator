@@ -86,7 +86,7 @@ onBeforeMount(() => {
 <template>
   <div class="stats_div">
     <div v-for="(stat, i) in stat_list" :key="i" class="loop_div">
-      <p class="stat_name">{{ stat.statName }}</p>
+      <h3 class="stat_name">{{ stat.statName }}</h3>
       <div class="icon_value_div">
         <p>{{ stat.statValue }}</p>
         <img @click="increase_stat(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
@@ -115,9 +115,7 @@ onBeforeMount(() => {
     column-gap: 25px;
     row-gap: 5px;
 
-    >.stat_name {
-      max-width: 125px;
-    }
+    >.stat_name {}
 
     >.icon_value_div {
       align-items: center;
@@ -133,6 +131,7 @@ onBeforeMount(() => {
 @media only screen and (min-width: 770px) {
   .stats_div {
     width: 70%;
+    max-height: 450px;
   }
 }
 
