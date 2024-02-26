@@ -55,14 +55,14 @@ const start_interval_inc = (i: number, event: TouchEvent | null) => {
   if (event !== null) {
     interval_UID = setInterval(() => {
       increase_skill(i, event);
-    }, 100);
+    }, 10);
   }
 }
 const start_interval_dec = (i: number, event: TouchEvent | null) => {
   if (event !== null) {
     interval_UID = setInterval(() => {
       decrease_skill(i, event);
-    }, 100);
+    }, 10);
   }
 }
 

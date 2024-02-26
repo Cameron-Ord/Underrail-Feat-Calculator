@@ -25,6 +25,12 @@ h4 {
   color: var(--orange);
 }
 
+.svg {
+  padding: 2px;
+  border-radius: 5px;
+  border: solid var(--orange) 1px;
+}
+
 .about_aside>h3 {
   cursor: pointer;
 }

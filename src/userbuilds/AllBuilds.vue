@@ -208,7 +208,7 @@ const previous_build = () => {
 
       >.bfeats_container {
         width: 70%;
-        max-width: 400px;
+        max-width: 600px;
       }
     }
 
@@ -235,7 +235,7 @@ const previous_build = () => {
 
       >.bfeats_container {
         width: 50%;
-        max-width: 500px;
+        max-width: 700px;
       }
     }
 
