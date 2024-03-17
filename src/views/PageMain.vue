@@ -1,14 +1,13 @@
-
 <script setup lang="ts">
 import BuildTypes from '../components/BuildTypes.vue';
 import GenerateBuild from '../components/GenerateBuild.vue';
 import AboutSection from '../about/AboutSection.vue';
-import AllBuilds from '@/userbuilds/AllBuilds.vue';
-import AllocatorBox from '@/components/AllocatorBox.vue';
-import AboutAside from '@/about/AboutAside.vue';
-import AboutButton from '@/components/AboutButton.vue';
-import AccountBox from '@/components/AccountBox.vue';
-import { onBeforeMount, ref, type Ref } from 'vue';
+import AllBuilds from '../userbuilds/AllBuilds.vue';
+import AllocatorBox from '../components/AllocatorBox.vue';
+import AboutAside from '../about/AboutAside.vue';
+import AboutButton from '../components/AboutButton.vue';
+import AccountBox from '../components/AccountBox.vue';
+import { onBeforeMount, nextTick, ref, type Ref } from 'vue';
 import { universal_store } from '../stores/universal'
 import type { AxiosResponse } from 'axios';
 import { login_state } from '../stores/login_manager';
@@ -50,6 +49,49 @@ onBeforeMount(() => {
   get_builds();
 })
 
+
+const before_enter = (el: Element) => {
+  if (el instanceof HTMLElement) {
+    let children: NodeListOf<ChildNode> = el.childNodes;
+    if(children){
+      for(let c = 0; c < children.length; c++){
+        let mut_child:HTMLElement = children[c] as HTMLElement;
+        mut_child.style.opacity = '0';
+      }
+    }
+  }
+}
+
+const on_enter = async (el: Element, done: any) => {
+  if (el instanceof HTMLElement) {
+    await nextTick();
+    let timeout_len = 0;
+    let children: NodeListOf<ChildNode> = el.childNodes;
+    if(children){
+     for(let c = 0; c < children.length; c++){
+        let mut_child: HTMLElement = children[c] as HTMLElement;
+        mut_child.style.transition = '0.3s ease-in-out';
+        setTimeout(()=>{
+          mut_child.style.opacity = '1';
+        },25 + timeout_len);
+        timeout_len += 50;
+      }
+    }
+  }
+}
+
+const after_enter = (el: Element) => {
+
+}
+
+const before_leave = (el: Element) => {
+
+}
+
+const on_leave = (el: Element) => {
+
+}
+
 </script>
 
 
@@ -70,10 +112,19 @@ onBeforeMount(() => {
     <section class="user_builds" v-if="builds_loaded">
       <all-builds></all-builds>
     </section>
-    <section class="about_section" v-if="viewing_about">
-      <about-section></about-section>
-      <about-aside></about-aside>
-    </section>
+    <transition 
+      name="transition_handler"
+      :css="false" 
+      @before-enter="before_enter" 
+      @enter="on_enter"
+      @after-enter="after_enter" 
+      @before-leave="before_leave" 
+      @leave="on_leave">
+      <section class="about_section" v-if="viewing_about">
+        <about-section></about-section>
+        <about-aside></about-aside>
+      </section>
+    </transition>
     <section class="about_switch">
       <about-button :switch_about="switch_about"></about-button>
     </section>
