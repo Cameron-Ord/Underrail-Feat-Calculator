@@ -62,9 +62,27 @@ const before_enter = (el: Element) => {
   }
 }
 
-const on_enter = async (el: Element, done: any) => {
+const on_enter = async (el: Element, done: () => void) => {
   if (el instanceof HTMLElement) {
     await nextTick();
+    let timeout_len = 0;
+    let children: NodeListOf<ChildNode> = el.childNodes;
+    if(children){
+     for(let c = 0; c < children.length; c++){
+        let mut_child: HTMLElement = children[c] as HTMLElement;
+        mut_child.style.transition = '0.3s ease-in-out';
+        setTimeout(()=>{
+          mut_child.style.opacity = '0.5';
+        },25 + timeout_len);
+        timeout_len += 50;
+      }
+    }
+  }
+  done();
+}
+
+const after_enter = (el: Element) => {
+  if (el instanceof HTMLElement) {
     let timeout_len = 0;
     let children: NodeListOf<ChildNode> = el.childNodes;
     if(children){
@@ -78,10 +96,6 @@ const on_enter = async (el: Element, done: any) => {
       }
     }
   }
-}
-
-const after_enter = (el: Element) => {
-
 }
 
 const before_leave = (el: Element) => {
@@ -109,12 +123,17 @@ const on_leave = (el: Element) => {
     <section class="generate_section">
       <generate-build></generate-build>
     </section>
+     <transition 
+      @before-enter="before_enter" 
+      @enter="on_enter"
+      @after-enter="after_enter" 
+      @before-leave="before_leave" 
+      @leave="on_leave">
     <section class="user_builds" v-if="builds_loaded">
       <all-builds></all-builds>
     </section>
+     </transition>
     <transition 
-      name="transition_handler"
-      :css="false" 
       @before-enter="before_enter" 
       @enter="on_enter"
       @after-enter="after_enter" 

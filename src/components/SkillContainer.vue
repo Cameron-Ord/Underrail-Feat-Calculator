@@ -1,3 +1,4 @@
+
 <script setup lang="ts">
 import { onBeforeMount, ref, type Ref } from 'vue';
 import { skill_state } from '../stores/skill_state';
@@ -106,14 +107,18 @@ onBeforeMount(() => {
   width: 80%;
   row-gap: 25px;
   overflow-y: auto;
-  max-height: 350px;
+  max-height: 300px;
+  padding: 10px;
 
   >.loop_div {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-direction: row;
     column-gap: 25px;
+    row-gap: 5px;
+    justify-self: center;
+    width: 90%;
 
     >.skill_name {}
 

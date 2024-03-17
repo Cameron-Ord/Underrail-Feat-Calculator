@@ -3,7 +3,7 @@ import { onBeforeMount, ref, type Ref } from 'vue';
 import { stat_state } from '../stores/stat_state'
 const stat_inst = stat_state();
 const stat_list: Ref<Array<{ statName: string; statValue: number }>> = ref(new Array())
-let interval_UID: number | undefined;
+let interval_UID: number;
 const plus = '/svgs/plus.svg';
 const minus = '/svgs/minus.svg';
 
@@ -66,15 +66,11 @@ const start_interval_dec = (i: number, event: TouchEvent | null) => {
 }
 
 const clear_interval_inc = () => {
-  if (interval_UID !== undefined) {
-    clearInterval(interval_UID);
-  }
+  clearInterval(interval_UID);
 }
 
 const clear_interval_dec = () => {
-  if (interval_UID !== undefined) {
-    clearInterval(interval_UID);
-  }
+  clearInterval(interval_UID);
 }
 
 onBeforeMount(() => {
@@ -103,18 +99,16 @@ onBeforeMount(() => {
   display: grid;
   width: 80%;
   row-gap: 25px;
-  overflow-y: auto;
-  max-height: 350px;
-
+  padding: 10px;
   >.loop_div {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    flex-wrap: wrap;
     column-gap: 25px;
     row-gap: 5px;
-
+    justify-self: center;
+    width: 90%;
     >.stat_name {}
 
     >.icon_value_div {

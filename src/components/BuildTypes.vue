@@ -102,6 +102,7 @@ onBeforeMount(() => {
     justify-content: space-evenly;
     width: 80%;
     overflow-y: auto;
+    padding: 10px;
     height: 200px;
 
     >.type_item {
@@ -111,6 +112,14 @@ onBeforeMount(() => {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+
+      >.type_text{
+
+        &:hover{
+          transition: 125ms ease-in-out;
+          color: var(--orange);
+        }
+      }
     }
   }
 }

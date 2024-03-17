@@ -58,6 +58,8 @@ export const universal_store = defineStore('general_store', () => {
     cookies.set('view_state', JSON.stringify(view_state))
   }
 
+
+  // not used anymore
   const load_from_cookies = () => {
     const retrieved_state: string = cookies.get('view_state');
     try {
