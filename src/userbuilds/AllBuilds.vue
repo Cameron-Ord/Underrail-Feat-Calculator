@@ -18,8 +18,26 @@ onBeforeMount(() => {
 })
 
 
+const remove_style_for_target = (target: HTMLElement) => {
+  target.style.color = '';
+  target.style.border = ''
+  target.style.padding = '';
+}
+
+const set_style_for_target = (target: HTMLElement) => {
+  target.style.color = 'var(--orange)';
+  target.style.border = 'solid var(--orange) 2px'
+  target.style.padding = '6px';
+  setTimeout(()=>{
+    remove_style_for_target(target);
+  }, 150)
+}
+
+
 const handle_selection = (event: MouseEvent | TouchEvent) => {
   if (event.target !== null) {
+    let target: HTMLElement = event.target as HTMLElement;
+    set_style_for_target(target);
     const text: string = (event.target as HTMLElement).innerText;
     switch (text) {
       case "Stats":
@@ -37,7 +55,11 @@ const handle_selection = (event: MouseEvent | TouchEvent) => {
   }
 }
 
-const next_build = () => {
+const next_build = (event: MouseEvent | TouchEvent) => {
+  if (event.target !== null) {
+    let target: HTMLElement = event.target as HTMLElement;
+    set_style_for_target(target);
+  }
   const builds_len: number = builds.value.length;
   let t_index: number = index.value;
   t_index++;
@@ -47,7 +69,11 @@ const next_build = () => {
   index.value = t_index;
 }
 
-const previous_build = () => {
+const previous_build = (event: MouseEvent | TouchEvent) => {
+  if (event.target !== null) {
+    let target: HTMLElement = event.target as HTMLElement;
+    set_style_for_target(target);
+  }
   const builds_len: number = builds.value.length;
   let t_index: number = index.value;
   t_index--;
@@ -91,8 +117,8 @@ const previous_build = () => {
       <p @click="handle_selection($event)">Feats</p>
     </div>
     <div class="bcycler">
-      <p @click="previous_build">Prev</p>
-      <p @click="next_build">Next</p>
+      <p @click="previous_build($event)">Prev</p>
+      <p @click="next_build($event)">Next</p>
     </div>
   </article>
 </template>
@@ -113,6 +139,7 @@ const previous_build = () => {
     >.build_title {}
 
     >.bstats_container {
+      row-gap: 20px;
       display: flex;
       flex-direction: column;
       width: 80%;
@@ -129,6 +156,7 @@ const previous_build = () => {
     }
 
     >.bskills_container {
+      row-gap: 20px;
       display: flex;
       flex-direction: column;
       width: 80%;
@@ -150,7 +178,7 @@ const previous_build = () => {
       flex-wrap: wrap;
       width: 80%;
       justify-content: space-evenly;
-      row-gap: 10px;
+      row-gap: 20px;
       column-gap: 10px;
 
       >p {}
@@ -165,7 +193,16 @@ const previous_build = () => {
     column-gap: 15px;
     row-gap: 10px;
 
-    >p {}
+    >p {
+      transition: 150ms ease-in-out;
+      border: solid var(--white) 1px;
+      border-radius: 5px;
+      padding: 5px;
+      &:hover{
+        border: solid var(--orange) 1px;
+        color: var(--orange);
+      }
+    }
   }
 
   >.bcycler {
@@ -176,7 +213,17 @@ const previous_build = () => {
     justify-self: center;
     justify-content: space-evenly;
 
-    >p {}
+
+    >p {
+      transition: 150ms ease-in-out;
+      border: solid var(--white) 1px;
+      border-radius: 5px;
+      padding: 5px;
+      &:hover{
+        border: solid var(--orange) 1px;
+        color: var(--orange);
+      }
+    }
   }
 
   >.build_header {

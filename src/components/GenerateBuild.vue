@@ -5,7 +5,7 @@ import { skill_state } from '../stores/skill_state';
 import { types_state } from '../stores/types_state';
 import { feats_state } from '../stores/feats_state';
 import { login_state } from '../stores/login_manager';
-import { ref, type Ref } from 'vue';
+import { ref, type Ref, nextTick } from 'vue';
 
 const is_logged_in: Ref<boolean> = ref(false);
 const feats_list_exists: Ref<boolean> = ref(false);
@@ -32,7 +32,32 @@ const send_data = () => {
   })
 }
 
-const generate_list = async () => {
+const click_effect = (target: HTMLElement) => {
+  target.style.transition = '150ms ease-in-out';
+  target.style.color = 'var(--white)';
+  target.style.border = 'solid var(--white) 2px';
+  target.style.borderRadius = '5px'
+  target.style.padding = '7px';
+  release_effect(target);
+}
+
+const release_effect = (target: HTMLElement) => {
+  setTimeout(()=>{
+    target.style.color = '';
+    target.style.border = '';
+    target.style.borderRadius = ''
+    target.style.padding = '';
+  }, 150)
+}
+
+const generate_list = async (event: TouchEvent | MouseEvent | null) => {
+  
+  if(event !== null){
+    if(event.target instanceof HTMLElement){
+      let target: HTMLElement = event.target as HTMLElement;
+      click_effect(target);
+    }
+  }
   console.log("Generating list..")
   const new_list: boolean = feats_inst.reset_feat_list();
   if (!new_list) {
@@ -105,7 +130,13 @@ const send_save_message = (title_input: string) => {
   })
 }
 
-const commit_build = async () => {
+const commit_build = async (event: TouchEvent | MouseEvent | null) => {
+  if(event !== null){
+    if(event.target instanceof HTMLElement){
+      let target: HTMLElement = event.target as HTMLElement;
+      click_effect(target);
+    }
+  }
   console.log("Saving build..");
   const title_obj: { input: string, result: number } = get_build_title();
   if (title_obj['result'] !== -1) {
@@ -131,11 +162,46 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
 }
 
 const remove_style_for_target = (target: HTMLElement) => {
-  target.style.color = ''
+  target.style.transition = '0.3s ease-in-out';
+  target.style.color = '';
+  target.style.border = '';
+  target.style.borderRadius = ''
+  target.style.padding = '';
 }
 
 const set_style_for_target = (target: HTMLElement) => {
-  target.style.color = 'var(--orange)'
+  target.style.transition = '0.3s ease-in-out';
+  target.style.color = 'var(--orange)';
+  target.style.border = 'solid var(--orange) 1px';
+  target.style.borderRadius = '5px'
+  target.style.padding = '5px';
+}
+
+const before_enter = (el: Element) =>{
+  if(el instanceof HTMLElement){
+    let html_tag: HTMLElement = el as HTMLElement;
+    html_tag.style.opacity = '0';
+    html_tag.style.transition = '0.3s ease-in-out';
+  }
+}
+
+const on_enter = async (el: Element, done: ()=> void) =>{
+  if(el instanceof HTMLElement){
+    await nextTick();
+    let html_tag: HTMLElement = el as HTMLElement;
+    void html_tag.offsetWidth;
+    html_tag.style.opacity = '1';
+  }
+  done();
+}
+
+const on_leave = async (el: Element, done: ()=> void) =>{
+  if(el instanceof HTMLElement){
+    let html_tag: HTMLElement = el as HTMLElement;
+    html_tag.style.transition = '0.3s ease-in-out';
+    html_tag.style.opacity = '0';
+  }
+  done();
 }
 
 </script>
@@ -143,18 +209,32 @@ const set_style_for_target = (target: HTMLElement) => {
 <template>
   <article class="generator_article">
     <div class="generate_btn_div">
-      <p @click="generate_list" class="generate_btn">Generate</p>
+      <p @click="generate_list($event)" class="generate_btn">Generate</p>
     </div>
-    <div v-if="feats_list_exists" class="feat_list_div">
-      <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">
-        <p @click="handle_select_feat($event)" class="gen_feat_text">{{ feat['Feat'] }}</p>
+    <transition
+    :css="false"
+    @before-enter="before_enter"
+    @enter="on_enter"
+    @leave="on_leave"
+    >
+      <div v-if="feats_list_exists" class="feat_list_div">
+        <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">
+          <p @click="handle_select_feat($event)" class="gen_feat_text">{{ feat['Feat'] }}</p>
+        </div>
       </div>
-    </div>
+    </transition>
+    <transition
+    :css="false"
+    @before-enter="before_enter"
+    @enter="on_enter"
+    @leave="on_leave"
+    >
     <div class="build_saver" v-if="feats_list_exists && is_logged_in">
       <input type="text" class="build_name_input" placeholder="build name..">
-      <p class="submit_tag" @click="commit_build">Submit</p>
+      <p class="submit_tag" @click="commit_build($event)">Submit</p>
       <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
     </div>
+  </transition>
   </article>
 </template>
 
@@ -168,13 +248,25 @@ const set_style_for_target = (target: HTMLElement) => {
 
   >.build_saver {
     display: flex;
-    row-gap: 15px;
+    row-gap: 25px;
     flex-direction: column;
     align-items: center;
 
-    >.class_name_input {}
+    >.class_name_input {
+    }
 
-    >.submit_tag {}
+    >.submit_tag {
+      cursor: pointer;
+      transition: 100ms ease-in-out;
+      color: var(--orange);
+      padding: 5px;
+      border-radius: 5px;
+      border: solid var(--orange) 1px;
+      &:hover{
+        color: var(--white);
+        border: solid var(--white) 1px;
+      }
+    }
 
     >.status_text {}
   }
@@ -183,6 +275,18 @@ const set_style_for_target = (target: HTMLElement) => {
   >.generate_btn_div {
     display: flex;
     flex-wrap: wrap;
+    >.generate_btn{
+      transition: 100ms ease-in-out;
+      color: var(--orange);
+      padding: 5px;
+      border-radius: 5px;
+      border: solid var(--orange) 1px;
+      &:hover{
+        color: var(--white);
+        border: solid var(--white) 1px;
+      }
+    }
+    
   }
 
   >.feat_list_div {

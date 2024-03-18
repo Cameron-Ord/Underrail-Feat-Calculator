@@ -8,6 +8,7 @@
   --black: #000000;
   --grey: #2f2f2f;
   --white: #fffffc;
+  --transp_orange: rgba(255, 127, 17, 0.8);
 }
 
 body {
@@ -52,13 +53,45 @@ h4 {
 }
 
 .option_text {
+  transition: 0.3s ease-in-out;
   color: var(--orange);
+  padding: 5px;
+  border: solid var(--orange) 1px;
+  border-radius: 5px;
   cursor: pointer;
   font-weight: 700;
 }
+.option_text:hover{
+  color: var(--white);
+  border: solid var(--white) 1px;
+}
 
+.acc_p_tag{
+  transition: 0.3s ease-in-out;
+  color: var(--white);
+  border: solid var(--white) 1px;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.build_name_input{
+  border-color: var(--orange);
+  border-width: 1px;
+  border-radius: 5px;
+  padding: 5px;
+  color: var(--black);
+}
+
+.acc_p_tag:hover{
+  color: var(--orange);
+  border: solid var(--orange) 1px;
+}
 .back_button {
+  transition: 0.3s ease-in-out;
   cursor: pointer;
+}
+.back_button:hover{
+  color: var(--orange);
 }
 
 .bcontrols>p {
@@ -69,6 +102,18 @@ h4 {
   cursor: pointer;
 }
 
+.logout_button{
+  transition: 0.3s ease-in-out;
+  color: var(--white);
+  border: solid var(--white) 1px;
+  padding: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.logout_button:hover{
+  color: var(--orange);
+  border: solid var(--orange) 1px;
+}
 .about_crtls>h2 {
   cursor: pointer;
 }

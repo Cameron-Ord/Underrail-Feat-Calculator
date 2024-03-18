@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref, nextTick } from 'vue';
 import axios, { type AxiosResponse } from 'axios'
 import { login_state } from '../stores/login_manager';
 
@@ -115,30 +115,71 @@ const user_logout = () => {
   log_inst.log_user_out();
   logged_in.value = log_inst.get_login_status();
   clicked_query.value = false;
+  window.location.reload();
+}
+
+const before_enter = (el: Element) =>{
+  if(el instanceof HTMLElement){
+    let h_el: HTMLElement = el as HTMLElement;
+    h_el.style.opacity = '0';
+    h_el.style.transition = '0.3s ease-in-out';
+  }
+}
+
+const on_enter = async (el: Element, done: ()=> void) => {
+  if(el instanceof HTMLElement){
+    await nextTick();
+    let h_el: HTMLElement = el as HTMLElement;
+    /*
+    fuck you fuck you fuck you fuck you 
+    fuck you fuck you fuck you fuck you fuck 
+    you just FUCK you (forcing reflow) FUCK OFF MAN.
+    */
+    void h_el.offsetWidth;
+    h_el.style.opacity = '1';
+  }
+  done();
+}
+
+const on_leave = async(el: Element, done: ()=> void) => {
+  if(el instanceof HTMLElement){
+    await nextTick();
+    let h_el: HTMLElement = el as HTMLElement;
+    void h_el.offsetWidth;
+    h_el.style.opacity = '0';
+  }
+  done();
 }
 
 </script>
 
 <template>
   <div class="account">
+    <transition
+    :css="false"
+    @before-enter="before_enter"
+    @enter="on_enter"
+    @leave="on_leave"
+    >
     <article v-if="!clicked_query && !logged_in" class="query_box">
-      <p @click="option_picker($event.target)">Login</p>
-      <p @click="option_picker($event.target)">Signup</p>
+      <p @click="option_picker($event.target)" class="acc_p_tag">Login</p>
+      <p @click="option_picker($event.target)" class="acc_p_tag">Signup</p>
     </article>
-    <article class="box" v-if="clicked_query && !logged_in">
-      <div class="input_box">
-        <input class="usr" placeholder="username.." type="text">
-        <input class="pw" placeholder="password.." type="password">
-      </div>
-      <div class="options_box">
-        <p v-if="clicked_query" @click="option_picker($event.target)" class="back_button">Back</p>
-        <p v-if="signing_up" @click="signup" class="option_text">Signup</p>
-        <p v-if="!signing_up" @click="login" class="option_text">Login</p>
-      </div>
+      <article class="box" v-else-if="clicked_query && !logged_in">
+        <div class="input_box">
+          <input class="usr" placeholder="username.." type="text">
+          <input class="pw" placeholder="password.." type="password">
+        </div>
+        <div class="options_box">
+          <p v-if="clicked_query" @click="option_picker($event.target)" class="back_button">Back</p>
+          <p v-if="signing_up" @click="signup" class="option_text">Signup</p>
+          <p v-if="!signing_up" @click="login" class="option_text">Login</p>
+        </div>
+      </article>
+    <article class="logout_box" v-else-if="logged_in">
+      <p @click="user_logout" class="logout_button">Logout</p>
     </article>
-    <article class="logout_box" v-if="logged_in">
-      <p @click="user_logout">Logout</p>
-    </article>
+  </transition>
   </div>
 </template>
 

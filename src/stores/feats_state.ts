@@ -3,7 +3,7 @@ import { nextTick } from 'vue';
 
 export const feats_state = defineStore('feats_state', () => {
   let feats = [] as Array<{ Feat: string, Desc: string }> || null;
-  let chosen_feats = [] as Array<{ Feat: string, Desc: string }>
+  const chosen_feats = [] as Array<{ Feat: string, Desc: string }>
   const set_feats = (data: Array<{ Feat: string, Desc: string }> | null): boolean => {
     if (data !== null) {
       for (let i = 0; i < data.length; i++) {
@@ -47,11 +47,15 @@ export const feats_state = defineStore('feats_state', () => {
 
   const reset_chosen_styles = () => {
     nextTick(() => {
-      let list_nodes: NodeList | null = document.querySelectorAll('.gen_feat_text');
+      const list_nodes: NodeList | null = document.querySelectorAll('.gen_feat_text');
       if (list_nodes !== null) {
         for (let i = 0; i < list_nodes.length; i++) {
           const node: HTMLElement = (list_nodes[i] as HTMLElement);
+          node.style.transition = '0.3s ease-in-out';
           node.style.color = '';
+          node.style.border = '';
+          node.style.borderRadius = '';
+          node.style.padding = '';
         }
       }
     })

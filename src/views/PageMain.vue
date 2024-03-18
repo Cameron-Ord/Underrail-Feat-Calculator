@@ -71,6 +71,7 @@ const on_enter = async (el: Element, done: () => void) => {
      for(let c = 0; c < children.length; c++){
         let mut_child: HTMLElement = children[c] as HTMLElement;
         mut_child.style.transition = '0.3s ease-in-out';
+        void mut_child.offsetWidth;
         setTimeout(()=>{
           mut_child.style.opacity = '0.5';
         },25 + timeout_len);
@@ -102,8 +103,8 @@ const before_leave = (el: Element) => {
 
 }
 
-const on_leave = (el: Element) => {
-
+const on_leave = async (el: Element, done: ()=>void) => {
+  done();
 }
 
 </script>
