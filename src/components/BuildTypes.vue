@@ -113,9 +113,7 @@ onBeforeMount(() => {
     column-gap: 20px;
     justify-content: space-evenly;
     width: 80%;
-    overflow-y: auto;
     padding: 20px;
-    max-height: 200px;
     border: solid var(--white) 1px;
     border-radius: 5px;
     >.type_item {
