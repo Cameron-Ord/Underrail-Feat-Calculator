@@ -23,7 +23,6 @@ h1,
 h2,
 h3,
 h4 {
-  color: var(--orange);
 }
 
 .svg {
@@ -61,10 +60,6 @@ h4 {
   cursor: pointer;
   font-weight: 700;
 }
-.option_text:hover{
-  color: var(--white);
-  border: solid var(--white) 1px;
-}
 
 .acc_p_tag{
   transition: 0.3s ease-in-out;
@@ -82,16 +77,9 @@ h4 {
   color: var(--black);
 }
 
-.acc_p_tag:hover{
-  color: var(--orange);
-  border: solid var(--orange) 1px;
-}
 .back_button {
   transition: 0.3s ease-in-out;
   cursor: pointer;
-}
-.back_button:hover{
-  color: var(--orange);
 }
 
 .bcontrols>p {
@@ -110,9 +98,27 @@ h4 {
   border-radius: 5px;
   cursor: pointer;
 }
-.logout_button:hover{
-  color: var(--orange);
-  border: solid var(--orange) 1px;
+
+@media only screen and (min-width: 1024px) {
+
+  .option_text:hover{
+    color: var(--white);
+    border: solid var(--white) 1px;
+  }
+
+  .back_button:hover{
+    color: var(--orange);
+  }
+
+  .acc_p_tag:hover{
+    color: var(--orange);
+    border: solid var(--orange) 1px;
+  }
+
+  .logout_button:hover{
+    color: var(--orange);
+    border: solid var(--orange) 1px;
+  }
 }
 .about_crtls>h2 {
   cursor: pointer;
@@ -124,6 +130,7 @@ h4 {
 
 .gen_feat_text {
   cursor: pointer;
+  color: var(--white);
 }
 
 .switch_div>p {

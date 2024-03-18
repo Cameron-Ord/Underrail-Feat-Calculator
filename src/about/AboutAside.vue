@@ -51,6 +51,7 @@ const handle_click = (event_target: EventTarget | null) => {
   align-items: center;
   width: 80%;
   justify-content: space-evenly;
+  color: var(--orange);
 }
 
 

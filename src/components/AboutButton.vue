@@ -76,5 +76,6 @@ const on_leave = async (el: Element, done: ()=>void) =>{
   align-items: center;
   justify-content: center;
   text-align: center;
+  >h2{color:var(--orange);}
 }
 </style>

@@ -168,8 +168,14 @@ onBeforeMount(() => {
   display: grid;
   width: 80%;
   row-gap: 25px;
-  padding: 10px;
+  padding: 5px;
   >.loop_div {
+    border: solid var(--orange) 1px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -178,7 +184,10 @@ onBeforeMount(() => {
     row-gap: 5px;
     justify-self: center;
     width: 90%;
-    >.stat_name {}
+    color: var(--orange);
+    >.stat_name {
+      
+    }
 
     >.icon_value_div {
       align-items: center;
@@ -194,13 +203,19 @@ onBeforeMount(() => {
 @media only screen and (min-width: 770px) {
   .stats_div {
     width: 70%;
-    max-height: 450px;
   }
 }
 
 @media only screen and (min-width: 1024px) {
   .stats_div {
-    width: 50%;
+    >.loop_div{
+      transition: 150ms ease-in-out;
+      &:hover{
+        color: var(--white);
+        border: solid var(--white) 1px;
+
+      }
+    }
   }
 }
 </style>

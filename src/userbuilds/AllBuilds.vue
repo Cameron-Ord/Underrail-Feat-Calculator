@@ -28,16 +28,15 @@ const set_style_for_target = (target: HTMLElement) => {
   target.style.color = 'var(--orange)';
   target.style.border = 'solid var(--orange) 2px'
   target.style.padding = '6px';
-  setTimeout(()=>{
-    remove_style_for_target(target);
-  }, 150)
 }
-
 
 const handle_selection = (event: MouseEvent | TouchEvent) => {
   if (event.target !== null) {
     let target: HTMLElement = event.target as HTMLElement;
     set_style_for_target(target);
+    setTimeout(()=>{
+      remove_style_for_target(target);
+    }, 150);
     const text: string = (event.target as HTMLElement).innerText;
     switch (text) {
       case "Stats":
@@ -219,10 +218,6 @@ const previous_build = (event: MouseEvent | TouchEvent) => {
       border: solid var(--white) 1px;
       border-radius: 5px;
       padding: 5px;
-      &:hover{
-        border: solid var(--orange) 1px;
-        color: var(--orange);
-      }
     }
   }
 
@@ -285,6 +280,16 @@ const previous_build = (event: MouseEvent | TouchEvent) => {
         max-width: 700px;
       }
     }
+
+    >.bcycler{
+      
+      >p{
+        &:hover{
+         border: solid var(--orange) 1px;
+         color: var(--orange);
+        }
+       }
+      }
 
   }
 

@@ -38,16 +38,13 @@ const click_effect = (target: HTMLElement) => {
   target.style.border = 'solid var(--white) 2px';
   target.style.borderRadius = '5px'
   target.style.padding = '7px';
-  release_effect(target);
 }
 
 const release_effect = (target: HTMLElement) => {
-  setTimeout(()=>{
     target.style.color = '';
     target.style.border = '';
     target.style.borderRadius = ''
     target.style.padding = '';
-  }, 150)
 }
 
 const generate_list = async (event: TouchEvent | MouseEvent | null) => {
@@ -56,6 +53,9 @@ const generate_list = async (event: TouchEvent | MouseEvent | null) => {
     if(event.target instanceof HTMLElement){
       let target: HTMLElement = event.target as HTMLElement;
       click_effect(target);
+      setTimeout(()=>{
+        release_effect(target);
+      }, 150);
     }
   }
   console.log("Generating list..")
@@ -162,7 +162,7 @@ const handle_select_feat = (event: TouchEvent | MouseEvent) => {
 }
 
 const remove_style_for_target = (target: HTMLElement) => {
-  target.style.transition = '0.3s ease-in-out';
+  target.style.transition = '125ms ease-in-out';
   target.style.color = '';
   target.style.border = '';
   target.style.borderRadius = ''
@@ -170,7 +170,7 @@ const remove_style_for_target = (target: HTMLElement) => {
 }
 
 const set_style_for_target = (target: HTMLElement) => {
-  target.style.transition = '0.3s ease-in-out';
+  target.style.transition = '125ms ease-in-out';
   target.style.color = 'var(--orange)';
   target.style.border = 'solid var(--orange) 1px';
   target.style.borderRadius = '5px'
@@ -262,10 +262,6 @@ const on_leave = async (el: Element, done: ()=> void) =>{
       padding: 5px;
       border-radius: 5px;
       border: solid var(--orange) 1px;
-      &:hover{
-        color: var(--white);
-        border: solid var(--white) 1px;
-      }
     }
 
     >.status_text {}
@@ -281,10 +277,6 @@ const on_leave = async (el: Element, done: ()=> void) =>{
       padding: 5px;
       border-radius: 5px;
       border: solid var(--orange) 1px;
-      &:hover{
-        color: var(--white);
-        border: solid var(--white) 1px;
-      }
     }
     
   }
@@ -297,6 +289,13 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
+    
+    transition: 150ms ease-in-out;
+    border: solid var(--white) 1px;
+    padding: 20px;
+    border-radius: 5px;
+    >.feat_container{
+    }
   }
 }
 
@@ -312,10 +311,50 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
 @media only screen and (min-width: 1024px) {
   .generator_article {
+     >.build_saver {
+
+    >.class_name_input {
+    }
+
+    >.submit_tag {
+      &:hover{
+        color: var(--white);
+        border: solid var(--white) 1px;
+      }
+    }
+
+    >.status_text {}
+  }
+
+
     >.feat_list_div {
       width: 50%;
       max-width: 500px;
+ 
+        &:hover{
+          border: solid var(--orange) 1px;
+        }
+      >.feat_container{
+        >.gen_feat_text{
+          
+          &:hover{
+            transition: 125ms ease-in-out;
+            color: var(--transp_orange);
+            cursor: pointer;
+          }
+        }
+      }
+
     }
+    >.generate_btn_div{
+      >.generate_btn{
+        &:hover{
+          color: var(--white);
+          border: solid var(--white) 1px;
+        }
+       }
+      }
   }
+
 }
 </style>

@@ -85,11 +85,16 @@
       flex-direction: column;
       row-gap: 10px;
 
+      >h3{color:var(--orange);}
+      >h2{color:var(--orange);}
+
       >.controls_tut {
         display: flex;
         align-items: start;
         flex-direction: column;
         row-gap: 10px;
+
+        >h4{color:var(--orange);}
       }
     }
   }

@@ -184,8 +184,17 @@ onBeforeMount(() => {
     row-gap: 5px;
     justify-self: center;
     width: 90%;
+    color: var(--orange);
+    border: solid var(--orange) 1px;
+    border-radius: 5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    padding-bottom: 7.5px;
+    padding-top: 7.5px;
 
-    >.skill_name {}
+    >.skill_name {
+    
+    }
 
     >.icon_value_div {
       display: flex;
@@ -207,7 +216,13 @@ onBeforeMount(() => {
 
 @media only screen and (min-width: 1024px) {
   .skills_div {
-    width: 50%;
+    >.loop_div{
+      transition: 150ms ease-in-out;
+      &:hover{
+        color: var(--white);
+        border: solid var(--white) 1px;
+      }
+    }
   }
 }
 </style>

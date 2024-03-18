@@ -161,6 +161,8 @@ const on_leave = async (el: Element, done: ()=>void) => {
   row-gap: 50px;
 
   >.build_info_section {
+    padding-top: 10px;
+    padding-bottom: 10px;
     display: grid;
     align-items: center;
   }
@@ -198,6 +200,9 @@ const on_leave = async (el: Element, done: ()=>void) => {
 
 @media only screen and (min-width: 1024px) {
   .page_main {
+    >.build_info_section{
+      justify-items: center;
+    }
     >.about_section {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(700px, 1fr));
