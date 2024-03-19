@@ -196,7 +196,13 @@ const on_leave = async (el: Element, done: ()=>void) => {
 }
 
 
-@media only screen and (min-width: 770px) {}
+@media only screen and (min-width: 770px) {
+  .page_main {
+    >.build_info_section{
+      justify-items: center;
+    }
+  }
+}
 
 @media only screen and (min-width: 1024px) {
   .page_main {

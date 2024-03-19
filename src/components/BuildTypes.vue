@@ -113,6 +113,7 @@ onBeforeMount(() => {
     column-gap: 20px;
     justify-content: space-evenly;
     width: 80%;
+    max-width: 475px;
     padding: 20px;
     border: solid var(--white) 1px;
     border-radius: 5px;

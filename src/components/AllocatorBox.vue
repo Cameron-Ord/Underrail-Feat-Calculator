@@ -30,4 +30,16 @@ import SkillContainer from './SkillContainer.vue';
     row-gap: 50px;
   }
 }
+
+@media only screen and (min-width: 770px) {
+  .allocator_box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    justify-items:center;
+    width: 90%;
+    row-gap: 50px;
+  }
+}
+
 </style>

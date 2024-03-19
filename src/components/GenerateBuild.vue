@@ -284,6 +284,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   >.feat_list_div {
     text-align: center;
     width: 80%;
+    max-width: 475px;
     row-gap: 20px;
     column-gap: 20px;
     display: flex;
@@ -304,7 +305,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 @media only screen and (min-width: 770px) {
   .generator_article {
     >.feat_list_div {
-      width: 70%;
+
     }
   }
 }
@@ -328,8 +329,6 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
 
     >.feat_list_div {
-      width: 50%;
-      max-width: 500px;
  
         &:hover{
           border: solid var(--orange) 1px;

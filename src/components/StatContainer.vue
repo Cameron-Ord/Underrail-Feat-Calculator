@@ -32,6 +32,7 @@ const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
 const increase_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
   const lmtr: number = stat_inst.get_limiter_value();
   const s_len: number = stat_inst.get_stat_list_len();
+  console.log(s_len)
   if (i > s_len || i < 0) {
     return
   }
@@ -67,12 +68,10 @@ const apply_click_effect = (target: EventTarget | null) => {
     e.style.transition = '100ms ease-in-out';
     e.style.width = '27px';
     e.style.borderColor = 'var(--black)';
-    e.style.backgroundColor = 'var(--transp_orange)';
     let filename: string = extract_filename(e.src);
     const new_src: string = filename + "blk" + ".svg";
     e.src = new_src;
     setTimeout(()=>{
-      e.style.backgroundColor = '';
       e.style.color = '';
       e.style.width = '';
       e.style.borderColor = '';
@@ -169,6 +168,7 @@ onBeforeMount(() => {
   width: 80%;
   row-gap: 25px;
   padding: 5px;
+  max-width: 375px;
   >.loop_div {
     border: solid var(--orange) 1px;
     padding-top: 7.5px;
@@ -208,6 +208,8 @@ onBeforeMount(() => {
 
 @media only screen and (min-width: 1024px) {
   .stats_div {
+    row-gap: 40px;
+    
     >.loop_div{
       transition: 150ms ease-in-out;
       &:hover{

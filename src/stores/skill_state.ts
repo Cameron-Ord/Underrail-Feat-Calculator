@@ -2,45 +2,70 @@
 import { defineStore } from 'pinia'
 import { useCookies } from 'vue3-cookies'
 const { cookies } = useCookies();
+
+
+interface Skill {
+  skillName: string;
+  skillValue: number; 
+}
+
+interface SkillCategory {
+  category: string;
+  skills: Skill[]
+}
+
 export const skill_state = defineStore('skill_state', () => {
 
   let skill_limiter: number = 0;
   const max_skill_points = 1280;
   const min_skill_points = 0;
-  const skills_list = [
-    { 'skillName': 'Guns', 'skillValue': 0 },
-    { 'skillName': 'Throwing', 'skillValue': 0 },
-    { 'skillName': 'Crossbows', 'skillValue': 0 },
-    { 'skillName': 'Melee', 'skillValue': 0 },
-    { 'skillName': 'Dodge', 'skillValue': 0 },
-    { 'skillName': 'Evasion', 'skillValue': 0 },
+
+  const skills_list: SkillCategory[] = [
+    { category :"Offense", skills: [    
+    { skillName: 'Guns', skillValue: 0 },
+    { skillName: 'Throwing', skillValue: 0 },
+    { skillName: 'Crossbows', skillValue: 0 },
+    { skillName: 'Melee', skillValue: 0 }
+    ]},
+    { category: "Survivability", skills: [    
+    { skillName: 'Dodge', skillValue: 0 },
+    { skillName: 'Evasion', skillValue: 0 }
+    ]},
+    { category: "Subterfuge", skills: [    
     { 'skillName': 'Stealth', 'skillValue': 0 },
     { 'skillName': 'Hacking', 'skillValue': 0 },
     { 'skillName': 'Lockpicking', 'skillValue': 0 },
     { 'skillName': 'Pickpocketing', 'skillValue': 0 },
     { 'skillName': 'Traps', 'skillValue': 0 },
+    ]},
+    { category: "Crafting", skills: [
     { 'skillName': 'Mechanics', 'skillValue': 0 },
-    { 'skillName': 'Temporal Manipulation', 'skillValue': 0 },
-    { 'skillName': 'Persuasion', 'skillValue': 0 },
-    { 'skillName': 'Intimidation', 'skillValue': 0 },
-    { 'skillName': 'Mercantile', 'skillValue': 0 },
-    { 'skillName': 'Metathermics', 'skillValue': 0 },
-    { 'skillName': 'Psychokinesis', 'skillValue': 0 },
-    { 'skillName': 'Thought Control', 'skillValue': 0 },
     { 'skillName': 'Tailoring', 'skillValue': 0 },
     { 'skillName': 'Biology', 'skillValue': 0 },
     { 'skillName': 'Chemistry', 'skillValue': 0 },
     { 'skillName': 'Electronics', 'skillValue': 0 }
-  ] as Array<{ skillName: string; skillValue: number }>
+    ]},
+    { category: "Psi", skills: [
+    { 'skillName': 'Metathermics', 'skillValue': 0 },
+    { 'skillName': 'Psychokinesis', 'skillValue': 0 },
+    { 'skillName': 'Thought Control', 'skillValue': 0 },
+    { 'skillName': 'Temporal Manipulation', 'skillValue': 0 },
+    ]},
+    { category: "Social", skills: [
+    { 'skillName': 'Persuasion', 'skillValue': 0 },
+    { 'skillName': 'Intimidation', 'skillValue': 0 },
+    { 'skillName': 'Mercantile', 'skillValue': 0 },
+    ]},
+  ];
 
 
-  const increase_skill = (index: number, event: MouseEvent | TouchEvent) => {
-    const current_skill_value = skills_list[index]['skillValue'];
+  const increase_skill = (index: number, findex: number, event: MouseEvent | TouchEvent) => {
+    const current_skill_value = skills_list[index]['skills'][findex]['skillValue'];
     const max_increase = Math.min(max_skill_points - skill_limiter, 160 - current_skill_value);
     if (max_increase > 0) {
       let updated_limiter: number = skill_limiter;
       let increase_amount: number;
-      const updated_list: Array<{ skillName: string; skillValue: number }> = [...skills_list];
+      const updated_list: SkillCategory[] = [...skills_list];
       if (event.shiftKey) {
         increase_amount = Math.min(5, max_increase);
       } else if (event.ctrlKey) {
@@ -48,19 +73,19 @@ export const skill_state = defineStore('skill_state', () => {
       } else {
         increase_amount = Math.min(1, max_increase);
       }
-      updated_list[index]['skillValue'] += increase_amount;
+      updated_list[index]['skills'][findex]['skillValue'] += increase_amount;
       updated_limiter += increase_amount;
       set_limiter(updated_limiter);
-      set_list_values(updated_list, index);
+      set_list_values(updated_list, index, findex);
     }
   }
 
-  const decrease_skill = (index: number, event: MouseEvent | TouchEvent) => {
-    const current_skill_value = skills_list[index]['skillValue'];
+  const decrease_skill = (index: number,  findex: number, event: MouseEvent | TouchEvent) => {
+    const current_skill_value = skills_list[index]['skills'][findex]['skillValue'];
     if (current_skill_value > min_skill_points) {
       let updated_limiter: number = skill_limiter;
       let decrease_amount: number;
-      const updated_list: Array<{ skillName: string; skillValue: number }> = [...skills_list];
+      const updated_list: SkillCategory[] = [...skills_list];
       if (event.shiftKey) {
         decrease_amount = Math.min(5, current_skill_value);
       } else if (event.ctrlKey) {
@@ -68,15 +93,15 @@ export const skill_state = defineStore('skill_state', () => {
       } else {
         decrease_amount = Math.min(1, current_skill_value);
       }
-      updated_list[index]['skillValue'] -= decrease_amount;
+      updated_list[index]['skills'][findex]['skillValue'] -= decrease_amount;
       updated_limiter -= decrease_amount;
       set_limiter(updated_limiter);
-      set_list_values(updated_list, index);
+      set_list_values(updated_list, index, findex);
     }
   }
 
-  const set_list_values = (updated_list: Array<{ skillName: string; skillValue: number }>, i: number) => {
-    skills_list[i]['skillValue'] = updated_list[i]['skillValue'];
+  const set_list_values = (updated_list: SkillCategory[], i: number, f: number) => {
+    skills_list[i]['skills'][f]['skillValue'] = updated_list[i]['skills'][f]['skillValue'];
     try {
       cookies.set('skill_cookie', JSON.stringify(skills_list));
     } catch (error) {
@@ -122,9 +147,10 @@ export const skill_state = defineStore('skill_state', () => {
 
   const reset_all_skills = () => {
     for (let i = 0; skills_list.length; i++) {
-      let skill_value: number = skills_list[i]['skillValue'];
-      skill_value = 5;
-      skills_list[i]['skillValue'] = skill_value;
+      for(let f = 0; skills_list[i]['skills'].length; f++){
+        const skill_value = 0;
+        skills_list[i]['skills'][f]['skillValue'] = skill_value;
+      }
     }
     skill_limiter = 0;
   }

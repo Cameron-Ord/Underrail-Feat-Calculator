@@ -1,9 +1,22 @@
 
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from 'vue';
+interface Skill {
+  skillName: string;
+  skillValue: number; 
+}
+
+interface SkillCategory {
+  category: string;
+  skills: Skill[]
+}
+import { onBeforeMount, ref, type Ref, nextTick } from 'vue';
 import { skill_state } from '../stores/skill_state';
 const skill_inst = skill_state();
-const skill_list: Ref<Array<{ skillName: string; skillValue: number }>> = ref(new Array())
+const skill_list: Ref<SkillCategory[]> = ref(new Array());
+const Selected: Ref<SkillCategory> = ref({ category: '', skills: [] });
+const first_index: Ref<number> = ref(0);
+const is_loaded: Ref<boolean> = ref(false);
+
 let interval_UID: number | undefined;
 const plus = '/svgs/plus.svg';
 const minus = '/svgs/minus.svg';
@@ -22,8 +35,10 @@ const increase_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
     apply_click_effect(event.target);
   }
 
+  const f = first_index.value
+
   if (lmtr >= 0 && lmtr < 1280) {
-    skill_inst.increase_skill(i, event);
+    skill_inst.increase_skill(f, i, event);
     const new_list = skill_inst.get_skill_list();
     skill_list.value = new Array();
     skill_list.value = new_list;
@@ -44,8 +59,10 @@ const decrease_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
     apply_click_effect(event.target);
   }
 
+  const f = first_index.value
+
   if (lmtr > 0 && lmtr <= 1280) {
-    skill_inst.decrease_skill(i, event);
+    skill_inst.decrease_skill(f, i, event);
     const new_list = skill_inst.get_skill_list();
     skill_list.value = new Array();
     skill_list.value = new_list;
@@ -58,6 +75,10 @@ const get_list = () => {
     skill_list.value = skill_inst.get_skill_list();
   } else {
     skill_list.value = remembered_list;
+  }
+  if(skill_list.value !== undefined){
+   Selected.value = skill_list.value[0];
+   is_loaded.value = true;
   }
 }
 
@@ -77,12 +98,10 @@ const apply_click_effect = (target: EventTarget | null) => {
     e.style.transition = '100ms ease-in-out';
     e.style.width = '27px';
     e.style.borderColor = 'var(--black)';
-    e.style.backgroundColor = 'var(--transp_orange)';
     let filename: string = extract_filename(e.src);
     const new_src: string = filename + "blk" + ".svg";
     e.src = new_src;
     setTimeout(()=>{
-      e.style.backgroundColor = '';
       e.style.color = '';
     e.style.width = '';
       e.style.borderColor = '';
@@ -144,6 +163,90 @@ const clear_interval_dec = (event: TouchEvent | null) => {
   }
 }
 
+const change_skill_tab = (j: number, target: EventTarget | null) => {
+  is_loaded.value = false;
+  set_style_on_btn(target);
+  first_index.value = j;
+  find_by_index(j);
+}
+
+const find_by_index = (j: number) => {
+  Selected.value = skill_list.value[j];
+  is_loaded.value = true;
+}
+
+const clear_styles = () => {
+  let nodes: NodeListOf<Element> | null = document.querySelectorAll('.category_target');
+  if(nodes !== null){
+    for(let i = 0; i < nodes.length; i++){
+      let node: Node = nodes[i];
+      if(node !== null && node instanceof HTMLElement){
+        node.style.transition = '350ms ease-in-out';
+        node.style.border = '';
+        node.style.borderRadius = '';
+        node.style.color = '';
+      }
+    }
+  }
+}
+
+const set_style_on_btn = (target: EventTarget | null) =>{
+  clear_styles();
+  if(target !== null){
+    if(target instanceof HTMLElement){
+      let t: HTMLElement = target as HTMLElement;
+      t.style.transition = '350ms ease-in-out';
+      t.style.border = 'solid var(--orange) 1px';
+      t.style.borderRadius = '5px';
+      t.style.color = 'var(--orange)';
+    }
+  }
+}
+
+const hover_effect = (target: EventTarget | null) => {
+  if(target !== null && target instanceof HTMLElement){
+    target.style.transition = '150ms ease-in-out';
+    target.style.color = 'var(--orange)';
+    target.style.cursor = 'pointer';
+  }
+}
+
+const clear_effect = (target: EventTarget | null, j: number) => {
+  if(target !== null && target instanceof HTMLElement){
+    target.style.transition = '150ms ease-in-out';
+    if(first_index.value !== j){
+      target.style.color = '';
+    }
+    target.style.cursor = '';
+  }
+}
+
+const before_enter = (el: Element) =>{
+  if(el instanceof HTMLElement){
+    let html_tag: HTMLElement = el as HTMLElement;
+    html_tag.style.opacity = '0';
+    html_tag.style.transition = '100ms ease-in-out';
+  }
+}
+
+const on_enter = async (el: Element, done: ()=> void) =>{
+  if(el instanceof HTMLElement){
+    await nextTick();
+    let html_tag: HTMLElement = el as HTMLElement;
+    void html_tag.offsetWidth;
+    html_tag.style.opacity = '1';
+  }
+  done();
+}
+
+const on_leave = async (el: Element, done: ()=> void) =>{
+  if(el instanceof HTMLElement){
+    let html_tag: HTMLElement = el as HTMLElement;
+    html_tag.style.transition = '100ms ease-in-out';
+    html_tag.style.opacity = '0';
+  }
+  done();
+}
 
 onBeforeMount(() => {
   get_list();
@@ -152,18 +255,28 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <div class="skills_div">
-    <div v-for="(skill, i) in skill_list" :key="i" class="loop_div">
-      <h3 class="skill_name">{{ skill.skillName }}</h3>
+  <transition appear
+    :css="false"
+    @before-enter="before_enter"
+    @enter="on_enter"
+    @leave="on_leave"
+  >
+  <div class="skills_div" v-if="is_loaded">
+    <div v-for="(item, i) in Selected['skills']" :key="i" class="sk_inner_loop">
+      <h3 class="skill_name">{{ item.skillName }}</h3>
       <div class="icon_value_div">
-        <p>{{ skill.skillValue }}</p>
+        <p class="skill_value">{{ item.skillValue }}</p>
         <img @click="increase_skill(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
           @touchend.prevent="clear_interval_inc($event)" :src="plus" alt="" class="svg">
         <img @click="decrease_skill(i, $event)" @touchstart.prevent="start_interval_dec(i, $event)"
           @touchend.prevent="clear_interval_dec($event)" :src="minus" alt="" class="svg">
-      </div>
+      </div>      
+    </div>
+    <div class="skill_tab_buttons">
+      <p v-for="(skill, j) in skill_list" :key="j" @click="change_skill_tab(j, $event.target)" class="category_target" @mouseenter="hover_effect($event.target)" @mouseleave="clear_effect($event.target, j)">{{ skill['category'] }}</p>
     </div>
   </div>
+  </transition>
 </template>
 
 <style lang="scss" scoped>
@@ -171,11 +284,28 @@ onBeforeMount(() => {
   display: grid;
   width: 80%;
   row-gap: 25px;
-  overflow-y: auto;
-  max-height: 300px;
   padding: 10px;
+  max-width: 375px;
 
-  >.loop_div {
+  >.skill_tab_buttons{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    row-gap: 15px;
+    column-gap: 15px;
+    >p{
+      padding: 5px;
+    }
+  }
+
+  >.sk_inner_loop{
+    border: solid var(--orange) 1px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -185,32 +315,32 @@ onBeforeMount(() => {
     justify-self: center;
     width: 90%;
     color: var(--orange);
-    border: solid var(--orange) 1px;
-    border-radius: 5px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-bottom: 7.5px;
-    padding-top: 7.5px;
-
-    >.skill_name {
-    
-    }
-
     >.icon_value_div {
-      display: flex;
-      align-items: center;
-      flex-direction: row;
-      column-gap: 15px;
-      justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    column-gap: 15px;
+    justify-content: space-evenly;
+    }
+    &:hover{
+      color: var(--white);
+      border: solid var(--white) 1px;
+    }
+    >.skill_value{
+
+    }
+    >.skill_name {
+  
     }
   }
+
 }
 
 
 @media only screen and (min-width: 770px) {
   .skills_div {
     width: 70%;
-    max-height: 450px;
+
   }
 }
 
@@ -218,10 +348,6 @@ onBeforeMount(() => {
   .skills_div {
     >.loop_div{
       transition: 150ms ease-in-out;
-      &:hover{
-        color: var(--white);
-        border: solid var(--white) 1px;
-      }
     }
   }
 }
