@@ -1,8 +1,7 @@
-
 <script setup lang="ts">
 interface Skill {
   skillName: string;
-  skillValue: number; 
+  skillValue: number;
 }
 
 interface SkillCategory {
@@ -31,7 +30,7 @@ const increase_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
     return
   }
 
-  if(event instanceof MouseEvent){
+  if (event instanceof MouseEvent) {
     apply_click_effect(event.target);
   }
 
@@ -55,7 +54,7 @@ const decrease_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
     return
   }
 
-  if(event instanceof MouseEvent){
+  if (event instanceof MouseEvent) {
     apply_click_effect(event.target);
   }
 
@@ -76,9 +75,9 @@ const get_list = () => {
   } else {
     skill_list.value = remembered_list;
   }
-  if(skill_list.value !== undefined){
-   Selected.value = skill_list.value[0];
-   is_loaded.value = true;
+  if (skill_list.value !== undefined) {
+    Selected.value = skill_list.value[0];
+    is_loaded.value = true;
   }
 }
 
@@ -92,7 +91,7 @@ const extract_filename = (f_filename: string): string => {
 
 
 const apply_click_effect = (target: EventTarget | null) => {
-  if(target instanceof HTMLImageElement){
+  if (target instanceof HTMLImageElement) {
     let e = target as HTMLImageElement;
     const orig_src: string = e.src;
     e.style.transition = '100ms ease-in-out';
@@ -101,9 +100,9 @@ const apply_click_effect = (target: EventTarget | null) => {
     let filename: string = extract_filename(e.src);
     const new_src: string = filename + "blk" + ".svg";
     e.src = new_src;
-    setTimeout(()=>{
+    setTimeout(() => {
       e.style.color = '';
-    e.style.width = '';
+      e.style.width = '';
       e.style.borderColor = '';
       let stripped_src: string = extract_filename(orig_src);
       e.src = stripped_src + ".svg";
@@ -114,7 +113,7 @@ const apply_click_effect = (target: EventTarget | null) => {
 
 const start_interval_inc = (i: number, event: TouchEvent | null) => {
   if (event !== null) {
-    if(event.target instanceof HTMLImageElement){
+    if (event.target instanceof HTMLImageElement) {
       let t: HTMLImageElement = event.target as HTMLImageElement;
       t.style.transition = '150ms ease-in-out';
       t.style.width = '30px';
@@ -126,7 +125,7 @@ const start_interval_inc = (i: number, event: TouchEvent | null) => {
 }
 const start_interval_dec = (i: number, event: TouchEvent | null) => {
   if (event !== null) {
-    if(event.target instanceof HTMLImageElement){
+    if (event.target instanceof HTMLImageElement) {
       let t: HTMLImageElement = event.target as HTMLImageElement;
       t.style.transition = '150ms ease-in-out';
       t.style.width = '30px';
@@ -138,11 +137,11 @@ const start_interval_dec = (i: number, event: TouchEvent | null) => {
 }
 
 const clear_interval_inc = (event: TouchEvent | null) => {
-  if(event !== null){
-    if(event.target instanceof HTMLImageElement){
-        let t: HTMLImageElement = event.target as HTMLImageElement;
-        t.style.transition = '150ms ease-in-out';
-        t.style.width = '';
+  if (event !== null) {
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement;
+      t.style.transition = '150ms ease-in-out';
+      t.style.width = '';
     }
   }
   if (interval_UID !== undefined) {
@@ -151,11 +150,11 @@ const clear_interval_inc = (event: TouchEvent | null) => {
 }
 
 const clear_interval_dec = (event: TouchEvent | null) => {
-  if(event !== null){
-    if(event.target instanceof HTMLImageElement){
-        let t: HTMLImageElement = event.target as HTMLImageElement;
-        t.style.transition = '150ms ease-in-out';
-        t.style.width = '';
+  if (event !== null) {
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement;
+      t.style.transition = '150ms ease-in-out';
+      t.style.width = '';
     }
   }
   if (interval_UID !== undefined) {
@@ -177,10 +176,10 @@ const find_by_index = (j: number) => {
 
 const clear_styles = () => {
   let nodes: NodeListOf<Element> | null = document.querySelectorAll('.category_target');
-  if(nodes !== null){
-    for(let i = 0; i < nodes.length; i++){
+  if (nodes !== null) {
+    for (let i = 0; i < nodes.length; i++) {
       let node: Node = nodes[i];
-      if(node !== null && node instanceof HTMLElement){
+      if (node !== null && node instanceof HTMLElement) {
         node.style.transition = '350ms ease-in-out';
         node.style.border = '';
         node.style.borderRadius = '';
@@ -190,10 +189,10 @@ const clear_styles = () => {
   }
 }
 
-const set_style_on_btn = (target: EventTarget | null) =>{
+const set_style_on_btn = (target: EventTarget | null) => {
   clear_styles();
-  if(target !== null){
-    if(target instanceof HTMLElement){
+  if (target !== null) {
+    if (target instanceof HTMLElement) {
       let t: HTMLElement = target as HTMLElement;
       t.style.transition = '350ms ease-in-out';
       t.style.border = 'solid var(--orange) 1px';
@@ -204,7 +203,7 @@ const set_style_on_btn = (target: EventTarget | null) =>{
 }
 
 const hover_effect = (target: EventTarget | null) => {
-  if(target !== null && target instanceof HTMLElement){
+  if (target !== null && target instanceof HTMLElement) {
     target.style.transition = '150ms ease-in-out';
     target.style.color = 'var(--orange)';
     target.style.cursor = 'pointer';
@@ -212,25 +211,25 @@ const hover_effect = (target: EventTarget | null) => {
 }
 
 const clear_effect = (target: EventTarget | null, j: number) => {
-  if(target !== null && target instanceof HTMLElement){
+  if (target !== null && target instanceof HTMLElement) {
     target.style.transition = '150ms ease-in-out';
-    if(first_index.value !== j){
+    if (first_index.value !== j) {
       target.style.color = '';
     }
     target.style.cursor = '';
   }
 }
 
-const before_enter = (el: Element) =>{
-  if(el instanceof HTMLElement){
+const before_enter = (el: Element) => {
+  if (el instanceof HTMLElement) {
     let html_tag: HTMLElement = el as HTMLElement;
     html_tag.style.opacity = '0';
     html_tag.style.transition = '100ms ease-in-out';
   }
 }
 
-const on_enter = async (el: Element, done: ()=> void) =>{
-  if(el instanceof HTMLElement){
+const on_enter = async (el: Element, done: () => void) => {
+  if (el instanceof HTMLElement) {
     await nextTick();
     let html_tag: HTMLElement = el as HTMLElement;
     void html_tag.offsetWidth;
@@ -239,8 +238,8 @@ const on_enter = async (el: Element, done: ()=> void) =>{
   done();
 }
 
-const on_leave = async (el: Element, done: ()=> void) =>{
-  if(el instanceof HTMLElement){
+const on_leave = async (el: Element, done: () => void) => {
+  if (el instanceof HTMLElement) {
     let html_tag: HTMLElement = el as HTMLElement;
     html_tag.style.transition = '100ms ease-in-out';
     html_tag.style.opacity = '0';
@@ -255,27 +254,24 @@ onBeforeMount(() => {
 </script>
 
 <template>
-  <transition appear
-    :css="false"
-    @before-enter="before_enter"
-    @enter="on_enter"
-    @leave="on_leave"
-  >
-  <div class="skills_div" v-if="is_loaded">
-    <div v-for="(item, i) in Selected['skills']" :key="i" class="sk_inner_loop">
-      <h3 class="skill_name">{{ item.skillName }}</h3>
-      <div class="icon_value_div">
-        <p class="skill_value">{{ item.skillValue }}</p>
-        <img @click="increase_skill(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
-          @touchend.prevent="clear_interval_inc($event)" :src="plus" alt="" class="svg">
-        <img @click="decrease_skill(i, $event)" @touchstart.prevent="start_interval_dec(i, $event)"
-          @touchend.prevent="clear_interval_dec($event)" :src="minus" alt="" class="svg">
-      </div>      
+  <transition appear :css="false" @before-enter="before_enter" @enter="on_enter" @leave="on_leave">
+    <div class="skills_div" v-if="is_loaded">
+      <div v-for="(item, i) in Selected['skills']" :key="i" class="sk_inner_loop">
+        <h3 class="skill_name">{{ item.skillName }}</h3>
+        <div class="icon_value_div">
+          <p class="skill_value">{{ item.skillValue }}</p>
+          <img @click="increase_skill(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
+            @touchend.prevent="clear_interval_inc($event)" :src="plus" alt="" class="svg">
+          <img @click="decrease_skill(i, $event)" @touchstart.prevent="start_interval_dec(i, $event)"
+            @touchend.prevent="clear_interval_dec($event)" :src="minus" alt="" class="svg">
+        </div>
+      </div>
+      <div class="skill_tab_buttons">
+        <p v-for="(skill, j) in skill_list" :key="j" @click="change_skill_tab(j, $event.target)" class="category_target"
+          @mouseenter="hover_effect($event.target)" @mouseleave="clear_effect($event.target, j)">{{ skill['category'] }}
+        </p>
+      </div>
     </div>
-    <div class="skill_tab_buttons">
-      <p v-for="(skill, j) in skill_list" :key="j" @click="change_skill_tab(j, $event.target)" class="category_target" @mouseenter="hover_effect($event.target)" @mouseleave="clear_effect($event.target, j)">{{ skill['category'] }}</p>
-    </div>
-  </div>
   </transition>
 </template>
 
@@ -287,19 +283,20 @@ onBeforeMount(() => {
   padding: 10px;
   max-width: 375px;
 
-  >.skill_tab_buttons{
+  >.skill_tab_buttons {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-evenly;
     row-gap: 15px;
     column-gap: 15px;
-    >p{
+
+    >p {
       padding: 5px;
     }
   }
 
-  >.sk_inner_loop{
+  >.sk_inner_loop {
     border: solid var(--orange) 1px;
     padding-top: 7.5px;
     padding-bottom: 7.5px;
@@ -315,38 +312,36 @@ onBeforeMount(() => {
     justify-self: center;
     width: 90%;
     color: var(--orange);
-    >.icon_value_div {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    column-gap: 15px;
-    justify-content: space-evenly;
-    }
-    &:hover{
-      color: var(--white);
-      border: solid var(--white) 1px;
-    }
-    >.skill_value{
 
+    >.icon_value_div {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      column-gap: 15px;
+      justify-content: space-evenly;
     }
-    >.skill_name {
-  
-    }
+
+    >.skill_value {}
+
+    >.skill_name {}
   }
 
 }
 
 
 @media only screen and (min-width: 770px) {
-  .skills_div {
-    width: 70%;
-
-  }
+  .skills_div {}
 }
 
 @media only screen and (min-width: 1024px) {
   .skills_div {
-    >.loop_div{
+    >.sk_inner_loop {
+
+      &:hover {
+        color: var(--white);
+        border: solid var(--white) 1px;
+      }
+
       transition: 150ms ease-in-out;
     }
   }

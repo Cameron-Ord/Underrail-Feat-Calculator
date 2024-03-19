@@ -41,19 +41,19 @@ const click_effect = (target: HTMLElement) => {
 }
 
 const release_effect = (target: HTMLElement) => {
-    target.style.color = '';
-    target.style.border = '';
-    target.style.borderRadius = ''
-    target.style.padding = '';
+  target.style.color = '';
+  target.style.border = '';
+  target.style.borderRadius = ''
+  target.style.padding = '';
 }
 
 const generate_list = async (event: TouchEvent | MouseEvent | null) => {
-  
-  if(event !== null){
-    if(event.target instanceof HTMLElement){
+
+  if (event !== null) {
+    if (event.target instanceof HTMLElement) {
       let target: HTMLElement = event.target as HTMLElement;
       click_effect(target);
-      setTimeout(()=>{
+      setTimeout(() => {
         release_effect(target);
       }, 150);
     }
@@ -131,8 +131,8 @@ const send_save_message = (title_input: string) => {
 }
 
 const commit_build = async (event: TouchEvent | MouseEvent | null) => {
-  if(event !== null){
-    if(event.target instanceof HTMLElement){
+  if (event !== null) {
+    if (event.target instanceof HTMLElement) {
       let target: HTMLElement = event.target as HTMLElement;
       click_effect(target);
     }
@@ -177,16 +177,16 @@ const set_style_for_target = (target: HTMLElement) => {
   target.style.padding = '5px';
 }
 
-const before_enter = (el: Element) =>{
-  if(el instanceof HTMLElement){
+const before_enter = (el: Element) => {
+  if (el instanceof HTMLElement) {
     let html_tag: HTMLElement = el as HTMLElement;
     html_tag.style.opacity = '0';
     html_tag.style.transition = '0.3s ease-in-out';
   }
 }
 
-const on_enter = async (el: Element, done: ()=> void) =>{
-  if(el instanceof HTMLElement){
+const on_enter = async (el: Element, done: () => void) => {
+  if (el instanceof HTMLElement) {
     await nextTick();
     let html_tag: HTMLElement = el as HTMLElement;
     void html_tag.offsetWidth;
@@ -195,8 +195,8 @@ const on_enter = async (el: Element, done: ()=> void) =>{
   done();
 }
 
-const on_leave = async (el: Element, done: ()=> void) =>{
-  if(el instanceof HTMLElement){
+const on_leave = async (el: Element, done: () => void) => {
+  if (el instanceof HTMLElement) {
     let html_tag: HTMLElement = el as HTMLElement;
     html_tag.style.transition = '0.3s ease-in-out';
     html_tag.style.opacity = '0';
@@ -211,30 +211,20 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     <div class="generate_btn_div">
       <p @click="generate_list($event)" class="generate_btn">Generate</p>
     </div>
-    <transition
-    :css="false"
-    @before-enter="before_enter"
-    @enter="on_enter"
-    @leave="on_leave"
-    >
+    <transition :css="false" @before-enter="before_enter" @enter="on_enter" @leave="on_leave">
       <div v-if="feats_list_exists" class="feat_list_div">
         <div class="feat_container" v-for="(feat, f) in retrieved_feat_list" :key="f">
           <p @click="handle_select_feat($event)" class="gen_feat_text">{{ feat['Feat'] }}</p>
         </div>
       </div>
     </transition>
-    <transition
-    :css="false"
-    @before-enter="before_enter"
-    @enter="on_enter"
-    @leave="on_leave"
-    >
-    <div class="build_saver" v-if="feats_list_exists && is_logged_in">
-      <input type="text" class="build_name_input" placeholder="build name..">
-      <p class="submit_tag" @click="commit_build($event)">Submit</p>
-      <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
-    </div>
-  </transition>
+    <transition :css="false" @before-enter="before_enter" @enter="on_enter" @leave="on_leave">
+      <div class="build_saver" v-if="feats_list_exists && is_logged_in">
+        <input type="text" class="build_name_input" placeholder="build name..">
+        <p class="submit_tag" @click="commit_build($event)">Submit</p>
+        <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
+      </div>
+    </transition>
   </article>
 </template>
 
@@ -252,8 +242,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     flex-direction: column;
     align-items: center;
 
-    >.class_name_input {
-    }
+    >.class_name_input {}
 
     >.submit_tag {
       cursor: pointer;
@@ -271,14 +260,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   >.generate_btn_div {
     display: flex;
     flex-wrap: wrap;
-    >.generate_btn{
+
+    >.generate_btn {
       transition: 100ms ease-in-out;
       color: var(--orange);
       padding: 5px;
       border-radius: 5px;
       border: solid var(--orange) 1px;
     }
-    
+
   }
 
   >.feat_list_div {
@@ -290,13 +280,11 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-evenly;
-    
+
     transition: 150ms ease-in-out;
-    border: solid var(--white) 1px;
     padding: 20px;
-    border-radius: 5px;
-    >.feat_container{
-    }
+
+    >.feat_container {}
   }
 }
 
@@ -304,39 +292,34 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
 @media only screen and (min-width: 770px) {
   .generator_article {
-    >.feat_list_div {
-
-    }
+    >.feat_list_div {}
   }
 }
 
 @media only screen and (min-width: 1024px) {
   .generator_article {
-     >.build_saver {
+    >.build_saver {
 
-    >.class_name_input {
-    }
+      >.class_name_input {}
 
-    >.submit_tag {
-      &:hover{
-        color: var(--white);
-        border: solid var(--white) 1px;
+      >.submit_tag {
+        &:hover {
+          color: var(--white);
+          border: solid var(--white) 1px;
+        }
       }
-    }
 
-    >.status_text {}
-  }
+      >.status_text {}
+    }
 
 
     >.feat_list_div {
- 
-        &:hover{
-          border: solid var(--orange) 1px;
-        }
-      >.feat_container{
-        >.gen_feat_text{
-          
-          &:hover{
+
+
+      >.feat_container {
+        >.gen_feat_text {
+
+          &:hover {
             transition: 125ms ease-in-out;
             color: var(--transp_orange);
             cursor: pointer;
@@ -345,14 +328,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
       }
 
     }
-    >.generate_btn_div{
-      >.generate_btn{
-        &:hover{
+
+    >.generate_btn_div {
+      >.generate_btn {
+        &:hover {
           color: var(--white);
           border: solid var(--white) 1px;
         }
-       }
       }
+    }
   }
 
 }

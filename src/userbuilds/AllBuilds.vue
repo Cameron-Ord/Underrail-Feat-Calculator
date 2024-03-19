@@ -279,7 +279,8 @@ const on_leave = async (el: Element, done: ()=> void) =>{
       justify-content: space-evenly;
       row-gap: 20px;
       column-gap: 10px;
-      max-width: 375px;
+      max-width: 475px;
+      width: 80%;
 
 
       >h3{
@@ -369,6 +370,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
       >.bfeats_container {
         transition: 150ms ease-in-out;
+        width: none;
       }
     }
     >.bcontrols {

@@ -91,6 +91,7 @@ const get_list = () => {
 }
 
 const start_interval_inc = (i: number, event: TouchEvent | null) => {
+  document.body.addEventListener('touchstart', touch_preventer);
   if (event !== null) {
     if(event.target instanceof HTMLImageElement){
       let t: HTMLImageElement = event.target as HTMLImageElement;
@@ -103,6 +104,7 @@ const start_interval_inc = (i: number, event: TouchEvent | null) => {
   }
 }
 const start_interval_dec = (i: number, event: TouchEvent | null) => {
+  document.body.addEventListener('touchstart', touch_preventer);
   if (event !== null) {
     if(event.target instanceof HTMLImageElement){
       let t: HTMLImageElement = event.target as HTMLImageElement;
@@ -114,8 +116,12 @@ const start_interval_dec = (i: number, event: TouchEvent | null) => {
     }, 100);
   }
 }
+const touch_preventer = (event: TouchEvent) => {
+  event.preventDefault();
+}
 
 const clear_interval_inc = (event: TouchEvent | null) => {
+  document.body.removeEventListener('touchstart', touch_preventer);
   if(event !== null){
     if(event.target instanceof HTMLImageElement){
         let t: HTMLImageElement = event.target as HTMLImageElement;
@@ -129,6 +135,7 @@ const clear_interval_inc = (event: TouchEvent | null) => {
 }
 
 const clear_interval_dec = (event: TouchEvent | null) => {
+  document.body.removeEventListener('touchstart', touch_preventer);
   if(event !== null){
     if(event.target instanceof HTMLImageElement){
         let t: HTMLImageElement = event.target as HTMLImageElement;
