@@ -137,6 +137,17 @@ export const skill_state = defineStore('skill_state', () => {
     return skills_list;
   }
 
+  const get_flattened_list = () => {
+    const flattened_list = [];
+    for(let i = 0; i < skills_list.length; i++){
+      const sub_list: Skill[] = skills_list[i]['skills'];
+      for(let f = 0; f < sub_list.length; f++){
+        flattened_list.push(sub_list[f]);
+      }
+    }
+
+  }
+
   const get_skill_list_len = () => {
     return skills_list.length;
   }
@@ -174,6 +185,7 @@ export const skill_state = defineStore('skill_state', () => {
     get_skill_limiter,
     increase_skill,
     decrease_skill,
-    get_skill_list_len
+    get_skill_list_len,
+    get_flattened_list
   }
 })

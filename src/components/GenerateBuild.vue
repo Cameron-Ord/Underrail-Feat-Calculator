@@ -117,7 +117,7 @@ const send_save_message = (title_input: string) => {
   return new Promise<AxiosResponse>((resolve, reject) => {
     axios.post(`${import.meta.env.VITE_APP_BASE_DOMAIN}/api/savebuild`, {
       stats: stat_inst.get_stat_list(),
-      skills: skill_inst.get_skill_list(),
+      skills: skill_inst.get_flattened_list(),
       feats: feats_inst.get_chosen_feats(),
       title: title_input,
       client_id: log_inst.get_client_id(),

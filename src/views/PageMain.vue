@@ -14,6 +14,7 @@ import { login_state } from '../stores/login_manager';
 const log_inst = login_state();
 const u_inst = universal_store();
 const builds_loaded: Ref<boolean> = ref(false);
+const usr_builds_loaded: Ref<boolean> = ref(false);
 const viewing_about: Ref<boolean> = ref(false);
 
 
@@ -26,6 +27,27 @@ const get_builds = async () => {
   let loaded = false;
   try {
     const response: AxiosResponse = await u_inst.fetch_db_builds();
+    if (response.statusText === "OK") {
+      u_inst.set_general_build(response.data);
+    }
+  } catch (error) {
+    usr_builds_loaded.value = loaded
+    console.error("Failed to fetch DB builds: ", error)
+    return
+  }
+  const result: boolean = u_inst.health_checker();
+  if (!result) {
+    usr_builds_loaded.value = loaded
+    return
+  }
+  loaded = true
+  usr_builds_loaded.value = loaded
+}
+
+const get_usr_builds = async () => {
+  let loaded = false;
+  try {
+    const response: AxiosResponse = await u_inst.fetch_user_builds();
     if (response.statusText === "OK") {
       u_inst.set_general_build(response.data);
     }
@@ -43,10 +65,12 @@ const get_builds = async () => {
   builds_loaded.value = loaded
 }
 
+
 onBeforeMount(() => {
   //loading the session if it exists.
   //if the result is true, then it will hide the account box
   get_builds();
+  get_usr_builds();
 })
 
 

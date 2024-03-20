@@ -271,9 +271,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     }
 
     >.bfeats_container {
-      border: solid var(--orange) 1px;
       padding: 15px;
-      border-radius: 5px;
       display: flex;
       flex-wrap: wrap;
       justify-content: space-evenly;
