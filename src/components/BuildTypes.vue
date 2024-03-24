@@ -96,7 +96,7 @@ onBeforeMount(() => {
 .build_types {
   display: grid;
   justify-items: center;
-  row-gap: 30px;
+  row-gap: 10px;
 
   >.header_types {
     display: flex;

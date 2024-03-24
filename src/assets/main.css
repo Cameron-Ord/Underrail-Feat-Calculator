@@ -70,7 +70,6 @@ h4 {
 }
 
 .build_name_input{
-  border-color: var(--orange);
   border-width: 1px;
   border-radius: 5px;
   padding: 5px;

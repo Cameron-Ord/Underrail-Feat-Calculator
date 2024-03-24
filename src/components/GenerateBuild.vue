@@ -247,7 +247,7 @@ const on_leave = async (el: Element, done: () => void) => {
   display: grid;
   align-items: center;
   justify-items: center;
-  row-gap: 30px;
+  row-gap: 10px;
   text-align: center;
 
   >.build_saver {

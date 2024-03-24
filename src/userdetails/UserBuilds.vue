@@ -164,6 +164,11 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   done();
 }
 
+
+const delete_build = () => {
+  u_inst.delete_build(index.value);
+}
+
 </script>
 
 <template>
@@ -173,7 +178,8 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     </div>
     <div class="build_container">
       <div class="build_title">
-        <p>{{ builds[index]['Build_Title'] }}</p>
+        <h3 class="title_text">{{ builds[index]['Build_Title'] }}</h3>
+        <p class="delete_tag" @click="delete_build">Delete</p>
       </div>
       <transition
         :css="false"
@@ -217,15 +223,34 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   display: grid;
   align-items: center;
   text-align: center;
-  row-gap: 25px;
+  row-gap: 50px;
 
   >.build_container {
     display: grid;
     align-items: center;
     justify-items: center;
-    row-gap: 20px;
+    row-gap: 50px;
 
-    >.build_title {}
+    >.build_title {
+      display:flex;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      column-gap: 15px;
+      row-gap: 10px;
+      
+      >.title_text{
+        color: var(--white);
+      }
+
+      >.delete_tag{
+        color: var(--orange);
+        border: solid var(--orange) 1px;
+        padding: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    }
 
     >.bstats_container {
       column-gap: 20px;

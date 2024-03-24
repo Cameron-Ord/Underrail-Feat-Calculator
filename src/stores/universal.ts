@@ -128,12 +128,38 @@ export const universal_store = defineStore('general_store', () => {
     }
   }
 
+
+  const post_delete_message = (i: number, client_id: number) =>{
+    return new Promise<AxiosResponse>((resolve, reject) => {
+      axios({
+        url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/delete-user-build`,
+        method: "DELETE",
+        data: {
+          Build_ID: user_build[i]['Build_ID'],
+          Client_ID: client_id,
+        }
+      }).then((response) => {
+        resolve(response)
+      }).catch((error) => {
+        reject(error)
+      })
+    })
+  }
+
+
+  const delete_build = async (i: number) => {
+    const client_data = retrieve_session_data();
+    if(client_data[0]['Client_ID_Value'] !== -1){
+      const response = await post_delete_message(i, client_data[0]['Client_ID_Value']);
+    }
+  }
+
   const get_value_state = () => {
     return switcher
   }
 
   return {
-    update_view_state, get_current_view, set_current_view, load_from_cookies, get_value_state, fetch_db_builds, get_general_builds, set_general_build, health_checker, fetch_user_builds, get_user_builds, set_user_builds, retrieve_session_data
+    update_view_state, delete_build, get_current_view, set_current_view, load_from_cookies, get_value_state, fetch_db_builds, get_general_builds, set_general_build, health_checker, fetch_user_builds, get_user_builds, set_user_builds, retrieve_session_data
   }
 })
 
