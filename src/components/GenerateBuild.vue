@@ -107,7 +107,7 @@ const generate_list = async (event: TouchEvent | MouseEvent | null) => {
 
 const get_build_title = (): { input: string, result: number } => {
   const input_tag: HTMLInputElement | null = document.querySelector('.build_name_input');
-  if (input_tag !== null && input_tag.value.length !== 0) {
+  if (input_tag !== null && input_tag.value.length > 3) {
     return { input: input_tag.value, result: 0 };
   }
   return { input: "", result: -1 };
@@ -135,6 +135,9 @@ const commit_build = async (event: TouchEvent | MouseEvent | null) => {
     if (event.target instanceof HTMLElement) {
       let target: HTMLElement = event.target as HTMLElement;
       click_effect(target);
+      setTimeout(()=>{
+        release_effect(target);
+      }, 150);
     }
   }
   console.log("Saving build..");
@@ -143,7 +146,18 @@ const commit_build = async (event: TouchEvent | MouseEvent | null) => {
     const response: AxiosResponse = await send_save_message(title_obj.input);
     status_text.value = response['data'];
     status_text_active.value = true;
+    clear_status();
+    return;
   }
+  status_text.value = "Build title must be atleast 3 characters.";
+  status_text_active.value = true;
+  clear_status();
+}
+
+const clear_status = () => {
+  setTimeout(()=> {
+    status_text_active.value = false;
+  }, 2400);
 }
 
 const handle_select_feat = (event: TouchEvent | MouseEvent) => {
@@ -222,9 +236,9 @@ const on_leave = async (el: Element, done: () => void) => {
       <div class="build_saver" v-if="feats_list_exists && is_logged_in">
         <input type="text" class="build_name_input" placeholder="build name..">
         <p class="submit_tag" @click="commit_build($event)">Submit</p>
-        <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
       </div>
     </transition>
+    <p class="status_text" v-if="status_text_active">{{ status_text }}</p>
   </article>
 </template>
 

@@ -116,5 +116,6 @@ const leave = (target: EventTarget | null) => {
     column-gap: 15px;
     row-gap: 10px;
     width: 80%;
+    text-align: center;
 }
 </style>

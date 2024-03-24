@@ -74,6 +74,7 @@ h4 {
   border-width: 1px;
   border-radius: 5px;
   padding: 5px;
+  width: 80%;
   color: var(--black);
 }
 
