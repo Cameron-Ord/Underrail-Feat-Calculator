@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref, nextTick } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref, nextTick } from 'vue';
 import { universal_store } from '../stores/universal'
 const u_inst = universal_store();
 const builds: Ref<Array<{
@@ -16,6 +16,26 @@ onBeforeMount(() => {
   const build_data: any = u_inst.get_user_builds();
   builds.value = build_data;
 })
+
+onMounted(()=>{
+  let text_nodes: NodeList = document.querySelectorAll('.card_tag');
+  for(let i = 0; i < text_nodes.length; i++){
+    if(text_nodes[i] !== null){
+      const text: string = (text_nodes[i] as HTMLElement).innerText;
+      if(text === viewing.value){
+        set_base(text_nodes[i] as HTMLElement);
+        return;
+      }
+    }
+  }
+})
+
+const set_base = (t: HTMLElement) => {
+  t.style.transition = '150ms ease-in-out';
+  t.style.borderRadius = '5px';
+  t.style.border = 'solid var(--orange) 1px';
+  t.style.color = 'var(--orange)';
+}
 
 
 const remove_style_for_target = (target: HTMLElement) => {
@@ -181,9 +201,9 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     </transition>
     </div>
     <div class="bcontrols">
-      <p @click="handle_selection($event)">Stats</p>
-      <p @click="handle_selection($event)">Skills</p>
-      <p @click="handle_selection($event)">Feats</p>
+      <p @click="handle_selection($event)" class="card_tag">Stats</p>
+      <p @click="handle_selection($event)" class="card_tag">Skills</p>
+      <p @click="handle_selection($event)" class="card_tag">Feats</p>
     </div>
     <div class="bcycler">
       <p @click="previous_build($event)">Prev</p>
