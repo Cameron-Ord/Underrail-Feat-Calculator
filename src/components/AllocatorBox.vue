@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import StatContainer from './StatContainer.vue';
-import SkillContainer from './SkillContainer.vue';
-
+import StatContainer from './StatContainer.vue'
+import SkillContainer from './SkillContainer.vue'
 </script>
 
 <template>
@@ -25,7 +24,7 @@ import SkillContainer from './SkillContainer.vue';
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    justify-items:center;
+    justify-items: center;
     width: 90%;
     row-gap: 50px;
   }
@@ -36,10 +35,9 @@ import SkillContainer from './SkillContainer.vue';
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
-    justify-items:center;
+    justify-items: center;
     width: 90%;
     row-gap: 50px;
   }
 }
-
 </style>

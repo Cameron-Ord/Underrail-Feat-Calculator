@@ -8,11 +8,10 @@ import router from './router'
 
 const app = createApp(App)
 const pinia = createPinia()
-import { useCookies } from 'vue3-cookies';
+import { useCookies } from 'vue3-cookies'
 
 app.use(pinia)
 app.use(router)
-app.use(useCookies);
-
+app.use(useCookies)
 
 app.mount('#app')

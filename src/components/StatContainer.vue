@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref } from 'vue';
+import { onBeforeMount, ref, type Ref } from 'vue'
 import { stat_state } from '../stores/stat_state'
-const stat_inst = stat_state();
+const stat_inst = stat_state()
 const stat_list: Ref<Array<{ statName: string; statValue: number }>> = ref(new Array())
-let interval_UID: number | undefined;
-const plus = '/svgs/plus.svg';
-const minus = '/svgs/minus.svg';
+let interval_UID: number | undefined
+const plus = '/svgs/plus.svg'
+const minus = '/svgs/minus.svg'
 
 const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
-  const lmtr: number = stat_inst.get_limiter_value();
-  const s_len: number = stat_inst.get_stat_list_len();
+  const lmtr: number = stat_inst.get_limiter_value()
+  const s_len: number = stat_inst.get_stat_list_len()
   if (i > s_len || i < 0) {
     return
   }
@@ -17,27 +17,27 @@ const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
     return
   }
 
-  if(event instanceof MouseEvent){
-    const min_stat_points: number = 3;
-    apply_click_effect(event.target);
-    const val: number = stat_inst.get_specific_value(i);
-    if(val === min_stat_points && interval_UID !== undefined){
-      clearInterval(interval_UID);
-      return;
+  if (event instanceof MouseEvent) {
+    const min_stat_points: number = 3
+    apply_click_effect(event.target)
+    const val: number = stat_inst.get_specific_value(i)
+    if (val === min_stat_points && interval_UID !== undefined) {
+      clearInterval(interval_UID)
+      return
     }
   }
 
   if (lmtr > 21 && lmtr <= 46) {
-    stat_inst.decrease_stat(i, event);
-    const new_list = stat_inst.get_stat_list();
-    stat_list.value = new Array();
-    stat_list.value = new_list;
+    stat_inst.decrease_stat(i, event)
+    const new_list = stat_inst.get_stat_list()
+    stat_list.value = new Array()
+    stat_list.value = new_list
   }
 }
 
 const increase_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
-  const lmtr: number = stat_inst.get_limiter_value();
-  const s_len: number = stat_inst.get_stat_list_len();
+  const lmtr: number = stat_inst.get_limiter_value()
+  const s_len: number = stat_inst.get_stat_list_len()
   if (i > s_len || i < 0) {
     return
   }
@@ -45,125 +45,123 @@ const increase_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
     return
   }
 
-  if(event instanceof MouseEvent){
-    const max_stat_points: number = 20;
-    apply_click_effect(event.target);
-    const val: number = stat_inst.get_specific_value(i);
-    if(val === max_stat_points && interval_UID !== undefined){
-      clearInterval(interval_UID);
-      return;
+  if (event instanceof MouseEvent) {
+    const max_stat_points: number = 20
+    apply_click_effect(event.target)
+    const val: number = stat_inst.get_specific_value(i)
+    if (val === max_stat_points && interval_UID !== undefined) {
+      clearInterval(interval_UID)
+      return
     }
   }
 
   if (lmtr >= 21 && lmtr < 46) {
-    stat_inst.increase_stat(i, event);
-    const new_list = stat_inst.get_stat_list();
-    stat_list.value = new Array();
-    stat_list.value = new_list;
+    stat_inst.increase_stat(i, event)
+    const new_list = stat_inst.get_stat_list()
+    stat_list.value = new Array()
+    stat_list.value = new_list
   }
 }
 
 const extract_filename = (f_filename: string): string => {
-  let index = f_filename.indexOf('/svgs/');
-  let filename = f_filename.substring(index);
-  let char_index = filename.lastIndexOf('.');
-  let src_str = filename.substring(0, char_index);
-  return src_str;
+  let index = f_filename.indexOf('/svgs/')
+  let filename = f_filename.substring(index)
+  let char_index = filename.lastIndexOf('.')
+  let src_str = filename.substring(0, char_index)
+  return src_str
 }
 
-
 const apply_click_effect = (target: EventTarget | null) => {
-  if(target instanceof HTMLImageElement){
-    let e = target as HTMLImageElement;
-    const orig_src: string = e.src;
-    e.style.transition = '100ms ease-in-out';
-    e.style.width = '27px';
-    e.style.borderColor = 'var(--black)';
-    let filename: string = extract_filename(e.src);
-    const new_src: string = filename + "blk" + ".svg";
-    e.src = new_src;
-    setTimeout(()=>{
-      e.style.color = '';
-      e.style.width = '';
-      e.style.borderColor = '';
-      let stripped_src: string = extract_filename(orig_src);
-      e.src = stripped_src + ".svg";
-    }, 100);
+  if (target instanceof HTMLImageElement) {
+    let e = target as HTMLImageElement
+    const orig_src: string = e.src
+    e.style.transition = '100ms ease-in-out'
+    e.style.width = '27px'
+    e.style.borderColor = 'var(--black)'
+    let filename: string = extract_filename(e.src)
+    const new_src: string = filename + 'blk' + '.svg'
+    e.src = new_src
+    setTimeout(() => {
+      e.style.color = ''
+      e.style.width = ''
+      e.style.borderColor = ''
+      let stripped_src: string = extract_filename(orig_src)
+      e.src = stripped_src + '.svg'
+    }, 100)
   }
 }
 
 const get_list = () => {
-  const remembered_list: any = stat_inst.load_from_cookies();
+  const remembered_list: any = stat_inst.load_from_cookies()
   if (remembered_list == null) {
-    stat_list.value = stat_inst.get_stat_list();
-    stat_inst.set_base_cookies();
+    stat_list.value = stat_inst.get_stat_list()
+    stat_inst.set_base_cookies()
   } else {
-    stat_list.value = remembered_list;
+    stat_list.value = remembered_list
   }
 }
 
 const start_interval_inc = (i: number, event: TouchEvent | null) => {
-  document.body.addEventListener('touchstart', touch_preventer);
+  document.body.addEventListener('touchstart', touch_preventer)
   if (event !== null) {
-    if(event.target instanceof HTMLImageElement){
-      let t: HTMLImageElement = event.target as HTMLImageElement;
-      t.style.transition = '150ms ease-in-out';
-      t.style.width = '30px';
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement
+      t.style.transition = '150ms ease-in-out'
+      t.style.width = '30px'
     }
     interval_UID = setInterval(() => {
-      increase_stat(i, event);
-    }, 100);
+      increase_stat(i, event)
+    }, 100)
   }
 }
 const start_interval_dec = (i: number, event: TouchEvent | null) => {
-  document.body.addEventListener('touchstart', touch_preventer);
+  document.body.addEventListener('touchstart', touch_preventer)
   if (event !== null) {
-    if(event.target instanceof HTMLImageElement){
-      let t: HTMLImageElement = event.target as HTMLImageElement;
-      t.style.transition = '150ms ease-in-out';
-      t.style.width = '30px';
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement
+      t.style.transition = '150ms ease-in-out'
+      t.style.width = '30px'
     }
     interval_UID = setInterval(() => {
-      decrease_stat(i, event);
-    }, 100);
+      decrease_stat(i, event)
+    }, 100)
   }
 }
 const touch_preventer = (event: TouchEvent) => {
-  event.preventDefault();
+  event.preventDefault()
 }
 
 const clear_interval_inc = (event: TouchEvent | null) => {
-  document.body.removeEventListener('touchstart', touch_preventer);
-  if(event !== null){
-    if(event.target instanceof HTMLImageElement){
-        let t: HTMLImageElement = event.target as HTMLImageElement;
-        t.style.transition = '150ms ease-in-out';
-        t.style.width = '';
+  document.body.removeEventListener('touchstart', touch_preventer)
+  if (event !== null) {
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement
+      t.style.transition = '150ms ease-in-out'
+      t.style.width = ''
     }
   }
   if (interval_UID !== undefined) {
-    clearInterval(interval_UID);
+    clearInterval(interval_UID)
   }
 }
 
 const clear_interval_dec = (event: TouchEvent | null) => {
-  document.body.removeEventListener('touchstart', touch_preventer);
-  if(event !== null){
-    if(event.target instanceof HTMLImageElement){
-        let t: HTMLImageElement = event.target as HTMLImageElement;
-        t.style.transition = '150ms ease-in-out';
-        t.style.width = '';
+  document.body.removeEventListener('touchstart', touch_preventer)
+  if (event !== null) {
+    if (event.target instanceof HTMLImageElement) {
+      let t: HTMLImageElement = event.target as HTMLImageElement
+      t.style.transition = '150ms ease-in-out'
+      t.style.width = ''
     }
   }
   if (interval_UID !== undefined) {
-    clearInterval(interval_UID);
+    clearInterval(interval_UID)
   }
 }
 
 onBeforeMount(() => {
-  get_list();
+  get_list()
 })
-
 </script>
 
 <template>
@@ -172,10 +170,22 @@ onBeforeMount(() => {
       <h3 class="stat_name">{{ stat.statName }}</h3>
       <div class="icon_value_div">
         <p>{{ stat.statValue }}</p>
-        <img @click="increase_stat(i, $event)" @touchstart.prevent="start_interval_inc(i, $event)"
-          @touchend.prevent="clear_interval_inc($event)" :src="plus" alt="" class="svg">
-        <img @click="decrease_stat(i, $event)" @touchstart.prevent="start_interval_dec(i, $event)"
-          @touchend.prevent="clear_interval_dec($event)" :src="minus" alt="" class="svg">
+        <img
+          @click="increase_stat(i, $event)"
+          @touchstart.prevent="start_interval_inc(i, $event)"
+          @touchend.prevent="clear_interval_inc($event)"
+          :src="plus"
+          alt=""
+          class="svg"
+        />
+        <img
+          @click="decrease_stat(i, $event)"
+          @touchstart.prevent="start_interval_dec(i, $event)"
+          @touchend.prevent="clear_interval_dec($event)"
+          :src="minus"
+          alt=""
+          class="svg"
+        />
       </div>
     </div>
   </div>
@@ -188,7 +198,7 @@ onBeforeMount(() => {
   row-gap: 25px;
   padding: 5px;
   max-width: 375px;
-  >.loop_div {
+  > .loop_div {
     border: solid var(--orange) 1px;
     padding-top: 7.5px;
     padding-bottom: 7.5px;
@@ -204,11 +214,10 @@ onBeforeMount(() => {
     justify-self: center;
     width: 90%;
     color: var(--orange);
-    >.stat_name {
-      
+    > .stat_name {
     }
 
-    >.icon_value_div {
+    > .icon_value_div {
       align-items: center;
       display: flex;
       flex-direction: row;
@@ -217,7 +226,6 @@ onBeforeMount(() => {
     }
   }
 }
-
 
 @media only screen and (min-width: 770px) {
   .stats_div {
@@ -228,13 +236,12 @@ onBeforeMount(() => {
 @media only screen and (min-width: 1024px) {
   .stats_div {
     row-gap: 40px;
-    
-    >.loop_div{
+
+    > .loop_div {
       transition: 150ms ease-in-out;
-      &:hover{
+      &:hover {
         color: var(--white);
         border: solid var(--white) 1px;
-
       }
     }
   }

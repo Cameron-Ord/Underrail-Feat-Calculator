@@ -1,35 +1,31 @@
 <script setup lang="ts">
-
 const handle_click = (event_target: EventTarget | null) => {
   if (event_target) {
     if (event_target instanceof HTMLElement) {
-      const target_text = (event_target as HTMLElement).textContent;
+      const target_text = (event_target as HTMLElement).textContent
       switch (target_text) {
-        case "GitHub":
+        case 'GitHub':
           window.open('https://github.com/Cameron-Ord')
-          break;
-        case "Portfolio":
+          break
+        case 'Portfolio':
           window.open('https://portfolio.cameron-ord.online/')
-          break;
-        case "Front end code":
-          window.open('https://github.com/Cameron-Ord/Underrail-Feat-Calculator');
-          break;
-        case "Back end code":
+          break
+        case 'Front end code':
+          window.open('https://github.com/Cameron-Ord/Underrail-Feat-Calculator')
+          break
+        case 'Back end code':
           window.open('https://github.com/Cameron-Ord/UnderrailFeatBackend')
-          break;
-        case "LinkedIn":
-          window.open('https://ca.linkedin.com/in/camord34');
-          break;
+          break
+        case 'LinkedIn':
+          window.open('https://ca.linkedin.com/in/camord34')
+          break
         default:
-          break;
+          break
       }
     }
   }
 }
-
 </script>
-
-
 
 <template>
   <article class="about_aside">
@@ -53,7 +49,6 @@ const handle_click = (event_target: EventTarget | null) => {
   justify-content: space-evenly;
   color: var(--orange);
 }
-
 
 @media only screen and (min-width: 770px) {
   .about_aside {
