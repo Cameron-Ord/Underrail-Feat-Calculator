@@ -48,6 +48,7 @@ const login = async () => {
       const result: boolean = log_inst.save_response(resp_data);
       log_inst.set_login_status(result);
       logged_in.value = log_inst.get_login_status();
+      window.location.reload();
     }
   } catch (error: any) {
     console.log(error['response']['data']);

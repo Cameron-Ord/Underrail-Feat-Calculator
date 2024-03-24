@@ -88,8 +88,9 @@ export const stat_state = defineStore('stat_state', () => {
         stat_limiter = p_limtr;
         mutate_array(p_cookie);
         return stats_list;
+      } else {
+        return null;
       }
-      return null;
     } catch (error) {
       console.log("Error parsing JSON : ", error);
       return null;
@@ -98,6 +99,10 @@ export const stat_state = defineStore('stat_state', () => {
 
   const get_stat_list = () => {
     return stats_list;
+  }
+
+  const set_base_cookies = () => {
+    cookies.set('stat_cookie', JSON.stringify(stats_list));
   }
 
   const get_stat_list_len = () => {
@@ -141,7 +146,8 @@ export const stat_state = defineStore('stat_state', () => {
     get_limiter_value,
     increase_stat,
     decrease_stat,
-    get_stat_list_len
+    get_stat_list_len,
+    set_base_cookies
   }
 })
 

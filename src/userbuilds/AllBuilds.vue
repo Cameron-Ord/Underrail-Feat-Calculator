@@ -175,7 +175,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     </div>
     <div class="build_container">
       <div class="build_title">
-        <p>{{ builds[index]['Build_Title'] }}</p>
+        <h3 class="title_text">{{ builds[index]['Build_Title'] }}</h3>
       </div>
       <transition
         :css="false"
@@ -219,15 +219,25 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   display: grid;
   align-items: center;
   text-align: center;
-  row-gap: 25px;
+  row-gap: 50px;
 
   >.build_container {
     display: grid;
     align-items: center;
     justify-items: center;
-    row-gap: 20px;
+    row-gap: 50px;
 
-    >.build_title {}
+    >.build_title {
+      display:flex;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      column-gap: 15px;
+      row-gap: 10px;
+      >.title_text{
+        color: var(--white);
+      }
+    }
 
     >.bstats_container {
       column-gap: 20px;
@@ -310,6 +320,9 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
       >h3{
         color: var(--orange);
+        padding: 5px;
+        border-radius: 5px;
+        border: solid var(--orange) 1px;
       }
       >p {}
     }

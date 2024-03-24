@@ -77,7 +77,11 @@ export const feats_state = defineStore('feats_state', () => {
     return chosen_feats;
   }
 
+  const get_chosen_feats_len = () =>{
+    return chosen_feats.length;
+  }
+
   return {
-    feats, reset_chosen, add_to_chosen, reset_chosen_styles, remove_from_chosen, set_feats, get_feats, reset_feat_list, get_chosen_feats, check_if_chosen
+    feats, reset_chosen, get_chosen_feats_len, add_to_chosen, reset_chosen_styles, remove_from_chosen, set_feats, get_feats, reset_feat_list, get_chosen_feats, check_if_chosen
   }
 })

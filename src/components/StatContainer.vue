@@ -96,6 +96,7 @@ const get_list = () => {
   const remembered_list: any = stat_inst.load_from_cookies();
   if (remembered_list == null) {
     stat_list.value = stat_inst.get_stat_list();
+    stat_inst.set_base_cookies();
   } else {
     stat_list.value = remembered_list;
   }

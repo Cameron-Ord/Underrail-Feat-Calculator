@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, onMounted, ref, type Ref, nextTick } from 'vue';
+import { onBeforeMount, onUpdated, onMounted, ref, type Ref, nextTick } from 'vue';
 import { universal_store } from '../stores/universal'
 const u_inst = universal_store();
 const builds: Ref<Array<{
@@ -11,10 +11,15 @@ const builds: Ref<Array<{
 }>> = ref(new Array);
 const index: Ref<number> = ref(0);
 const viewing: Ref<string> = ref("Feats");
+const is_open: Ref<boolean> = ref(false);
+const status_msg: Ref<string> = ref("");
 
 onBeforeMount(() => {
   const build_data: any = u_inst.get_user_builds();
   builds.value = build_data;
+  if(builds.value.length > 0){
+    is_open.value = true;
+  }
 })
 
 onMounted(()=>{
@@ -164,10 +169,19 @@ const on_leave = async (el: Element, done: ()=> void) =>{
   done();
 }
 
+const status_msg_active: Ref<boolean> = ref(false);
 
-const delete_build = () => {
-  u_inst.delete_build(index.value);
+const delete_build = async () => {
+  status_msg.value = await u_inst.delete_build(index.value);
+  status_msg_active.value = true;
+  setTimeout(()=>{
+    status_msg_active.value = false;
+  }, 2000)
 }
+
+onUpdated(()=>{
+
+})
 
 </script>
 
@@ -176,11 +190,12 @@ const delete_build = () => {
     <div class="build_header">
       <h2>Builds</h2>
     </div>
-    <div class="build_container">
+    <div class="build_container" v-if="is_open">
       <div class="build_title">
         <h3 class="title_text">{{ builds[index]['Build_Title'] }}</h3>
         <p class="delete_tag" @click="delete_build">Delete</p>
       </div>
+      <p v-if="status_msg_active">{{ status_msg }}</p>
       <transition
         :css="false"
         @before-enter="before_enter"
@@ -204,14 +219,14 @@ const delete_build = () => {
           <p>{{ stat['Value'] }}</p>
         </div>
       </div>
-    </transition>
+      </transition>
     </div>
-    <div class="bcontrols">
+    <div class="bcontrols" v-if="is_open">
       <p @click="handle_selection($event)" class="card_tag">Stats</p>
       <p @click="handle_selection($event)" class="card_tag">Skills</p>
       <p @click="handle_selection($event)" class="card_tag">Feats</p>
     </div>
-    <div class="bcycler">
+    <div class="bcycler" v-if="is_open">
       <p @click="previous_build($event)">Prev</p>
       <p @click="next_build($event)">Next</p>
     </div>
@@ -336,6 +351,9 @@ const delete_build = () => {
 
       >h3{
         color: var(--orange);
+        padding: 5px;
+        border-radius: 5px;
+        border: solid var(--orange) 1px;
       }
       >p {}
     }

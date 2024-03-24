@@ -84,6 +84,7 @@ const get_list = () => {
   const remembered_list: any = skill_inst.load_from_cookies();
   if (remembered_list == null) {
     skill_list.value = skill_inst.get_skill_list();
+    skill_inst.set_base_cookies();
   } else {
     skill_list.value = remembered_list;
   }

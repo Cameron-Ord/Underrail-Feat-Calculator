@@ -96,8 +96,10 @@ const before_enter = (el: Element) => {
     let children: NodeListOf<ChildNode> = el.childNodes;
     if(children){
       for(let c = 0; c < children.length; c++){
-        let mut_child:HTMLElement = children[c] as HTMLElement;
-        mut_child.style.opacity = '0';
+       if(children[c] instanceof HTMLElement && children[c]){
+        let mut_child: HTMLElement = children[c] as HTMLElement;
+          mut_child.style.opacity = '0';
+       }
       }
     }
   }
@@ -110,13 +112,16 @@ const on_enter = async (el: Element, done: () => void) => {
     let children: NodeListOf<ChildNode> = el.childNodes;
     if(children){
      for(let c = 0; c < children.length; c++){
+      if(children[c] instanceof HTMLElement && children[c]){
         let mut_child: HTMLElement = children[c] as HTMLElement;
-        mut_child.style.transition = '0.3s ease-in-out';
-        void mut_child.offsetWidth;
-        setTimeout(()=>{
-          mut_child.style.opacity = '0.5';
-        },25 + timeout_len);
-        timeout_len += 50;
+          mut_child.style.transition = '0.3s ease-in-out';
+          void mut_child.offsetWidth;
+          setTimeout(()=>{     
+              mut_child.style.opacity = '0.5';
+            
+          },25 + timeout_len);
+          timeout_len += 50;
+        }
       }
     }
   }
@@ -129,12 +134,14 @@ const after_enter = (el: Element) => {
     let children: NodeListOf<ChildNode> = el.childNodes;
     if(children){
      for(let c = 0; c < children.length; c++){
+      if(children[c] instanceof HTMLElement && children[c]){
         let mut_child: HTMLElement = children[c] as HTMLElement;
-        mut_child.style.transition = '0.3s ease-in-out';
-        setTimeout(()=>{
-          mut_child.style.opacity = '1';
-        },25 + timeout_len);
-        timeout_len += 50;
+          mut_child.style.transition = '0.3s ease-in-out';
+          setTimeout(()=>{
+              mut_child.style.opacity = '1';
+          },25 + timeout_len);
+          timeout_len += 50;
+        } 
       }
     }
   }

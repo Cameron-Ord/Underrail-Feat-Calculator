@@ -107,7 +107,7 @@ const generate_list = async (event: TouchEvent | MouseEvent | null) => {
 
 const get_build_title = (): { input: string, result: number } => {
   const input_tag: HTMLInputElement | null = document.querySelector('.build_name_input');
-  if (input_tag !== null && input_tag.value.length > 3) {
+  if (input_tag !== null && input_tag.value.length >= 3) {
     return { input: input_tag.value, result: 0 };
   }
   return { input: "", result: -1 };
@@ -130,7 +130,7 @@ const send_save_message = (title_input: string) => {
   })
 }
 
-const commit_build = async (event: TouchEvent | MouseEvent | null) => {
+const on_click = (event: TouchEvent | MouseEvent | null) => {
   if (event !== null) {
     if (event.target instanceof HTMLElement) {
       let target: HTMLElement = event.target as HTMLElement;
@@ -140,18 +140,48 @@ const commit_build = async (event: TouchEvent | MouseEvent | null) => {
       }, 150);
     }
   }
-  console.log("Saving build..");
+}
+
+const do_axios_call = async () => {
   const title_obj: { input: string, result: number } = get_build_title();
-  if (title_obj['result'] !== -1) {
+  if(title_obj.result !== -1){
     const response: AxiosResponse = await send_save_message(title_obj.input);
     status_text.value = response['data'];
     status_text_active.value = true;
     clear_status();
-    return;
+  } else {
+    status_text.value = "Build title must be atleast 3 characters.";
+    status_text_active.value = true;
+    clear_status();
   }
-  status_text.value = "Build title must be atleast 3 characters.";
-  status_text_active.value = true;
-  clear_status();
+}
+
+const commit_build = async (event: TouchEvent | MouseEvent | null) => {
+  console.log("Saving build..");
+  on_click(event);
+  const result: boolean = check_list_contents();
+  if(result){
+    do_axios_call();
+    return;
+  } else if (!result){
+    status_text.value = "Atleast one of each: Stats, Skills, and Feats must be selected";
+    status_text_active.value = true;
+    clear_status();
+  }
+    
+}
+
+const check_list_contents = (): boolean => {
+  const f_len: number = feats_inst.get_chosen_feats_len();
+  const sk_len: number = skill_inst.get_flattened_list_len();
+  const st_len: number = stat_inst.get_stat_list_len();
+  const len_arr: Array<number> = [f_len, sk_len, st_len];
+  for(let i = 0; i < len_arr.length; i++){
+    if(len_arr[i] === 0){
+      return false;
+    }
+  }
+  return true;
 }
 
 const clear_status = () => {

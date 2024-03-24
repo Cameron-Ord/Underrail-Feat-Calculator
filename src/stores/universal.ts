@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { useCookies } from 'vue3-cookies';
-import axios, { type AxiosResponse } from 'axios';
+import axios, { AxiosError, type AxiosResponse } from 'axios';
 const { cookies } = useCookies()
 
 interface builds_interface {
@@ -129,14 +129,14 @@ export const universal_store = defineStore('general_store', () => {
   }
 
 
-  const post_delete_message = (i: number, client_id: number) =>{
+  const post_delete_message = (i: number, id: number) =>{
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
         url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/delete-user-build`,
         method: "DELETE",
         data: {
-          Build_ID: user_build[i]['Build_ID'],
-          Client_ID: client_id,
+          build_id: user_build[i]['Build_ID'],
+          client_id: id,
         }
       }).then((response) => {
         resolve(response)
@@ -147,11 +147,21 @@ export const universal_store = defineStore('general_store', () => {
   }
 
 
-  const delete_build = async (i: number) => {
+  const delete_build = async (i: number): Promise<string> => {
     const client_data = retrieve_session_data();
     if(client_data[0]['Client_ID_Value'] !== -1){
-      const response = await post_delete_message(i, client_data[0]['Client_ID_Value']);
+      try{
+      const response: AxiosResponse = await post_delete_message(i, client_data[0]['Client_ID_Value']);
+      if(response.statusText === "OK"){
+        return response['data'];
+      }
+    } catch (error) {
+      if(error instanceof AxiosError){
+        return error.response?.data;
+      }
     }
+    }
+    return "Deletion failed"
   }
 
   const get_value_state = () => {

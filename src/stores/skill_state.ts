@@ -125,8 +125,9 @@ export const skill_state = defineStore('skill_state', () => {
         skill_limiter = p_limtr;
         mutate_array(p_cookie);
         return skills_list;
+      } else {
+        return null;
       }
-      return null;
     } catch (error) {
       console.log("Error parsing JSON : ", error);
       return null;
@@ -145,7 +146,18 @@ export const skill_state = defineStore('skill_state', () => {
         flattened_list.push(sub_list[f]);
       }
     }
+    return flattened_list;
+  }
 
+  const get_flattened_list_len = () => {
+    const flattened_list = [];
+    for(let i = 0; i < skills_list.length; i++){
+      const sub_list: Skill[] = skills_list[i]['skills'];
+      for(let f = 0; f < sub_list.length; f++){
+        flattened_list.push(sub_list[f]);
+      }
+    }
+    return flattened_list.length;;
   }
 
   const get_skill_list_len = () => {
@@ -176,6 +188,10 @@ export const skill_state = defineStore('skill_state', () => {
 
   }
 
+  const set_base_cookies = () => {
+    cookies.set('skill_cookie', JSON.stringify(skills_list));
+  }
+
   const get_specific_value = (i: number, f: number) => {
     return skills_list[i]['skills'][f]['skillValue'];
   }
@@ -184,6 +200,7 @@ export const skill_state = defineStore('skill_state', () => {
   return {
     skills_list,
     get_specific_value,
+    set_base_cookies,
     load_from_cookies,
     get_skill_list,
     reset_all_skills,
@@ -191,6 +208,7 @@ export const skill_state = defineStore('skill_state', () => {
     increase_skill,
     decrease_skill,
     get_skill_list_len,
-    get_flattened_list
+    get_flattened_list,
+    get_flattened_list_len
   }
 })

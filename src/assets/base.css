@@ -17,22 +17,22 @@ h5 {
 }
 
 h1 {
-  font-size: clamp(1.5em, 2vw, 2em);
+  font-size: clamp(1.15em, 1.5vw, 1.25em);
 }
 
 h2 {
-  font-size: clamp(1.25em, 2vw, 1.75em);
+  font-size: clamp(1.10em, 1.5vw, 1.20em);
 }
 
 h3 {
-  font-size: clamp(1em, 2vw, 1.3em);
+  font-size: clamp(1.05em, 1.5vw, 1.15em);
 }
 
 p {
   padding: 0px;
   word-break: break-word;
   margin: 0px;
-  font-size: clamp(1em, 2vw, 1.3em);
+  font-size: clamp(1em, 1.5vw, 1.10em);
 }
 
 img {
