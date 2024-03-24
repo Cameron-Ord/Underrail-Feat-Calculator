@@ -7,6 +7,8 @@ import AllocatorBox from '../components/AllocatorBox.vue';
 import AboutAside from '../about/AboutAside.vue';
 import AboutButton from '../components/AboutButton.vue';
 import AccountBox from '../components/AccountBox.vue';
+import UserBuilds from '../userdetails/UserBuilds.vue';
+import BuildSwitch from '../components/BuildSwitch.vue';
 import { onBeforeMount, nextTick, ref, type Ref } from 'vue';
 import { universal_store } from '../stores/universal'
 import type { AxiosResponse } from 'axios';
@@ -16,11 +18,12 @@ const u_inst = universal_store();
 const builds_loaded: Ref<boolean> = ref(false);
 const usr_builds_loaded: Ref<boolean> = ref(false);
 const viewing_about: Ref<boolean> = ref(false);
+const current_build_view: Ref<string> = ref("public");
 
 
 //modifying visibility for the about section 
 const switch_about = (signal: boolean) => {
-  viewing_about.value = signal
+  viewing_about.value = signal;
 }
 
 const get_builds = async () => {
@@ -31,38 +34,48 @@ const get_builds = async () => {
       u_inst.set_general_build(response.data);
     }
   } catch (error) {
-    usr_builds_loaded.value = loaded
-    console.error("Failed to fetch DB builds: ", error)
+    builds_loaded.value = loaded;
+    console.error("Failed to fetch DB builds: ", error);
     return
   }
   const result: boolean = u_inst.health_checker();
   if (!result) {
-    usr_builds_loaded.value = loaded
+    builds_loaded.value = loaded;
     return
   }
-  loaded = true
-  usr_builds_loaded.value = loaded
+  loaded = true;
+  builds_loaded.value = loaded;
+}
+
+interface session_d{
+  Client_Session_Token: string,
+  Client_ID_Value: number 
 }
 
 const get_usr_builds = async () => {
   let loaded = false;
-  try {
-    const response: AxiosResponse = await u_inst.fetch_user_builds();
-    if (response.statusText === "OK") {
-      u_inst.set_general_build(response.data);
+  const s_data: session_d[] = u_inst.retrieve_session_data();
+  if(s_data[0]['Client_ID_Value'] !== -1){
+    try {
+      const response: AxiosResponse = await u_inst.fetch_user_builds(s_data);
+      if (response.statusText === "OK") {
+        u_inst.set_user_builds(response.data);
+      }
+    } catch (error) {
+      usr_builds_loaded.value = loaded
+      console.error("Failed to fetch DB builds: ", error);
+      return
     }
-  } catch (error) {
-    builds_loaded.value = loaded
-    console.error("Failed to fetch DB builds: ", error)
-    return
+    const result: boolean = u_inst.health_checker();
+    if (!result) {
+      usr_builds_loaded.value = loaded;
+      return
+    }
+    loaded = true;
+  } else {
+    current_build_view.value = "public";
   }
-  const result: boolean = u_inst.health_checker();
-  if (!result) {
-    builds_loaded.value = loaded
-    return
-  }
-  loaded = true
-  builds_loaded.value = loaded
+  usr_builds_loaded.value = loaded;
 }
 
 
@@ -71,7 +84,11 @@ onBeforeMount(() => {
   //if the result is true, then it will hide the account box
   get_builds();
   get_usr_builds();
+  u_inst.set_current_view(current_build_view.value);
 })
+
+
+
 
 
 const before_enter = (el: Element) => {
@@ -131,6 +148,10 @@ const on_leave = async (el: Element, done: ()=>void) => {
   done();
 }
 
+const update_build_view = (text: string) => {
+  current_build_view.value = text;
+}
+
 </script>
 
 
@@ -148,16 +169,18 @@ const on_leave = async (el: Element, done: ()=>void) => {
     <section class="generate_section">
       <generate-build></generate-build>
     </section>
-     <transition 
+    <section class="user_builds">
+      <transition 
       @before-enter="before_enter" 
       @enter="on_enter"
       @after-enter="after_enter" 
       @before-leave="before_leave" 
       @leave="on_leave">
-    <section class="user_builds" v-if="builds_loaded">
-      <all-builds></all-builds>
+        <all-builds v-if="builds_loaded && current_build_view === 'public'"></all-builds>
+        <user-builds v-else-if="usr_builds_loaded && current_build_view === 'private'"></user-builds>
+      </transition>
+      <build-switch v-if="usr_builds_loaded" :update_build_view="update_build_view"></build-switch>
     </section>
-     </transition>
     <transition 
       @before-enter="before_enter" 
       @enter="on_enter"
@@ -204,6 +227,7 @@ const on_leave = async (el: Element, done: ()=>void) => {
   >.user_builds {
     display: grid;
     align-items: center;
+    row-gap: 50px;
   }
 
   >.about_section {

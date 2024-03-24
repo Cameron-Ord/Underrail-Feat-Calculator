@@ -208,12 +208,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     >.build_title {}
 
     >.bstats_container {
-
+      column-gap: 20px;
       row-gap: 20px;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
+      justify-content: space-evenly;
       width: 80%;
-      max-width: 375px;
+      max-width: 475px;
 
       >h3{
         color: var(--orange);
@@ -241,11 +244,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     }
 
     >.bskills_container {
+      column-gap: 20px;
       row-gap: 20px;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
+      justify-content: space-evenly;
       width: 80%;
-      max-width: 375px;
+      max-width: 475px;
 
 
 
@@ -271,16 +278,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     }
 
     >.bfeats_container {
-      border: solid var(--orange) 1px;
-      padding: 15px;
-      border-radius: 5px;
+      column-gap: 20px;
+      row-gap: 20px;
       display: flex;
       flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
       justify-content: space-evenly;
-      row-gap: 20px;
-      column-gap: 10px;
-      max-width: 475px;
       width: 80%;
+      max-width: 475px;
 
 
       >h3{

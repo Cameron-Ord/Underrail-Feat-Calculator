@@ -18,7 +18,13 @@ const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
   }
 
   if(event instanceof MouseEvent){
+    const min_stat_points: number = 3;
     apply_click_effect(event.target);
+    const val: number = stat_inst.get_specific_value(i);
+    if(val === min_stat_points && interval_UID !== undefined){
+      clearInterval(interval_UID);
+      return;
+    }
   }
 
   if (lmtr > 21 && lmtr <= 46) {
@@ -32,7 +38,6 @@ const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
 const increase_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
   const lmtr: number = stat_inst.get_limiter_value();
   const s_len: number = stat_inst.get_stat_list_len();
-  console.log(s_len)
   if (i > s_len || i < 0) {
     return
   }
@@ -41,7 +46,13 @@ const increase_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
   }
 
   if(event instanceof MouseEvent){
+    const max_stat_points: number = 20;
     apply_click_effect(event.target);
+    const val: number = stat_inst.get_specific_value(i);
+    if(val === max_stat_points && interval_UID !== undefined){
+      clearInterval(interval_UID);
+      return;
+    }
   }
 
   if (lmtr >= 21 && lmtr < 46) {

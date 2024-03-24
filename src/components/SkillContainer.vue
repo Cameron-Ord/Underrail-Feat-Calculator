@@ -8,6 +8,7 @@ interface SkillCategory {
   category: string;
   skills: Skill[]
 }
+
 import { onBeforeMount, ref, type Ref, nextTick } from 'vue';
 import { skill_state } from '../stores/skill_state';
 const skill_inst = skill_state();
@@ -30,11 +31,18 @@ const increase_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
     return
   }
 
-  if (event instanceof MouseEvent) {
-    apply_click_effect(event.target);
-  }
 
   const f = first_index.value
+
+  if (event instanceof MouseEvent) {
+    const max_skill_points: number = 160;
+    apply_click_effect(event.target);
+    const val: number = skill_inst.get_specific_value(i, f);
+    if(val === max_skill_points && interval_UID !== undefined){
+      clearInterval(interval_UID);
+      return;
+    }
+  }
 
   if (lmtr >= 0 && lmtr < 1280) {
     skill_inst.increase_skill(f, i, event);
@@ -53,12 +61,16 @@ const decrease_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
   if (!event) {
     return
   }
-
-  if (event instanceof MouseEvent) {
-    apply_click_effect(event.target);
-  }
-
   const f = first_index.value
+  if (event instanceof MouseEvent) {
+    const min_skill_points: number = 0;
+    apply_click_effect(event.target);
+    const val: number = skill_inst.get_specific_value(i, f);
+    if(val === min_skill_points && interval_UID !== undefined){
+      clearInterval(interval_UID);
+      return;
+    }
+  }
 
   if (lmtr > 0 && lmtr <= 1280) {
     skill_inst.decrease_skill(f, i, event);
@@ -77,8 +89,31 @@ const get_list = () => {
   }
   if (skill_list.value !== undefined) {
     Selected.value = skill_list.value[0];
+    get_target(skill_list.value[0]['category']);
     is_loaded.value = true;
   }
+}
+// get list is called before mount, need to await the next tick
+const get_target = async (target_str: string) => {
+  await nextTick();
+  let str_nodes: NodeList = document.querySelectorAll('.category_target');
+  for(let i = 0; i < str_nodes.length; i++){
+    const node: Node | null = str_nodes[i];
+    if(node !== null && node instanceof HTMLElement){
+      const text: string = node.innerText;
+      if(text === target_str){
+        set_base_style(node);
+        return;
+      }
+    }
+  }
+}
+
+const set_base_style = (t: HTMLElement) => {
+  t.style.transition = '350ms ease-in-out';
+  t.style.border = 'solid var(--orange) 1px';
+  t.style.borderRadius = '5px';
+  t.style.color = 'var(--orange)';
 }
 
 const extract_filename = (f_filename: string): string => {

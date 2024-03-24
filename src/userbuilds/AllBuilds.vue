@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeMount, ref, type Ref, nextTick } from 'vue';
+import { onBeforeMount, onMounted, ref, type Ref, nextTick } from 'vue';
 import { universal_store } from '../stores/universal'
 const u_inst = universal_store();
 const builds: Ref<Array<{
@@ -17,6 +17,26 @@ onBeforeMount(() => {
   builds.value = build_data;
 })
 
+onMounted(()=>{
+  let text_nodes: NodeList = document.querySelectorAll('.card_tag');
+  for(let i = 0; i < text_nodes.length; i++){
+    if(text_nodes[i] !== null){
+      const text: string = (text_nodes[i] as HTMLElement).innerText;
+      if(text === viewing.value){
+        set_base(text_nodes[i] as HTMLElement);
+        return;
+      }
+    }
+  }
+})
+
+
+const set_base = (t: HTMLElement) => {
+  t.style.transition = '150ms ease-in-out';
+  t.style.borderRadius = '5px';
+  t.style.border = 'solid var(--orange) 1px';
+  t.style.color = 'var(--orange)';
+}
 
 const remove_style_for_target = (target: HTMLElement) => {
   target.style.transition = '150ms ease-in-out';
@@ -65,17 +85,19 @@ const set_style_on_btn = (target: EventTarget | null) =>{
 const handle_selection = (event: MouseEvent | TouchEvent) => {
   if (event.target !== null) {
     let target: HTMLElement = event.target as HTMLElement;
-    set_style_on_btn(target);
     const text: string = (event.target as HTMLElement).innerText;
     switch (text) {
       case "Stats":
         viewing.value = text;
+        set_style_on_btn(target);
         break;
       case "Skills":
         viewing.value = text;
+        set_style_on_btn(target);
         break;
       case "Feats":
         viewing.value = text;
+        set_style_on_btn(target);
         break;
       default:
         break;
@@ -181,9 +203,9 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     </transition>
     </div>
     <div class="bcontrols">
-      <p @click="handle_selection($event)">Stats</p>
-      <p @click="handle_selection($event)">Skills</p>
-      <p @click="handle_selection($event)">Feats</p>
+      <p @click="handle_selection($event)" class="card_tag">Stats</p>
+      <p @click="handle_selection($event)" class="card_tag">Skills</p>
+      <p @click="handle_selection($event)" class="card_tag">Feats</p>
     </div>
     <div class="bcycler">
       <p @click="previous_build($event)">Prev</p>
@@ -208,12 +230,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     >.build_title {}
 
     >.bstats_container {
-
+      column-gap: 20px;
       row-gap: 20px;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
+      justify-content: space-evenly;
       width: 80%;
-      max-width: 375px;
+      max-width: 475px;
 
       >h3{
         color: var(--orange);
@@ -226,7 +251,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
         padding-left: 8px;
         padding-right: 8px;
 
-      border-radius: 5px;
+        border-radius: 5px;
         display: flex;
         flex-direction: row;
         row-gap: 20px;
@@ -241,13 +266,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     }
 
     >.bskills_container {
+      column-gap: 20px;
       row-gap: 20px;
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
+      justify-content: space-evenly;
       width: 80%;
-      max-width: 375px;
-
-
+      max-width: 475px;
 
       >.skills_loop_cont {
         border: solid var(--orange) 1px;
@@ -256,7 +283,7 @@ const on_leave = async (el: Element, done: ()=> void) =>{
         padding-left: 8px;
         padding-right: 8px;
 
-      border-radius: 5px;
+        border-radius: 5px;
         display: flex;
         flex-direction: row;
         row-gap: 10px;
@@ -271,15 +298,15 @@ const on_leave = async (el: Element, done: ()=> void) =>{
     }
 
     >.bfeats_container {
-      padding: 15px;
+      column-gap: 20px;
+      row-gap: 20px;
       display: flex;
       flex-wrap: wrap;
+      text-align: center;
+      align-items: center;
       justify-content: space-evenly;
-      row-gap: 20px;
-      column-gap: 10px;
-      max-width: 475px;
       width: 80%;
-
+      max-width: 475px;
 
       >h3{
         color: var(--orange);
@@ -363,12 +390,10 @@ const on_leave = async (el: Element, done: ()=> void) =>{
 
       >.bskills_container {
         transition: 150ms ease-in-out;
-
       }
 
       >.bfeats_container {
         transition: 150ms ease-in-out;
-        width: none;
       }
     }
     >.bcontrols {

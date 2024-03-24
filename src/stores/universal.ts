@@ -18,6 +18,7 @@ interface session_d{
 export const universal_store = defineStore('general_store', () => {
   let general_build: builds_interface[];
   let user_build: builds_interface[];
+  let current_view: string;
 
   const fetch_db_builds = (): Promise<AxiosResponse<any, any>>  => {
     return new Promise<AxiosResponse>((resolve, reject) => {
@@ -30,6 +31,14 @@ export const universal_store = defineStore('general_store', () => {
         reject(error)
       })
     })
+  }
+
+  const set_current_view = (val: string) => {
+    current_view = val;
+  }
+
+  const get_current_view = () => {
+    return current_view;
   }
 
   const retrieve_session_data = (): session_d[] => {
@@ -46,9 +55,7 @@ export const universal_store = defineStore('general_store', () => {
     return [{Client_Session_Token: "", Client_ID_Value: -1}];
   }
 
-  const fetch_user_builds = (): Promise<AxiosResponse<any, any>> => {
-    const s_data: session_d[] = retrieve_session_data();
-    console.log(s_data[0]['Client_Session_Token']);
+  const fetch_user_builds = (s_data: session_d[]): Promise<AxiosResponse<any, any>> => {
     return new Promise<AxiosResponse>((resolve, reject) => {
       axios({
         url: `${import.meta.env.VITE_APP_BASE_DOMAIN}/api/get-user-builds`,
@@ -126,6 +133,7 @@ export const universal_store = defineStore('general_store', () => {
   }
 
   return {
-    update_view_state, load_from_cookies, get_value_state, fetch_db_builds, get_general_builds, set_general_build, health_checker, fetch_user_builds, get_user_builds, set_user_builds
+    update_view_state, get_current_view, set_current_view, load_from_cookies, get_value_state, fetch_db_builds, get_general_builds, set_general_build, health_checker, fetch_user_builds, get_user_builds, set_user_builds, retrieve_session_data
   }
 })
+

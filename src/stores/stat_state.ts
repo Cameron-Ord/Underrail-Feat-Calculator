@@ -126,11 +126,16 @@ export const stat_state = defineStore('stat_state', () => {
     }
   }
 
+  const get_specific_value = (i: number) => {
+    return stats_list[i]['statValue'];
+  }
+
 
 
   return {
     load_from_cookies,
     stats_list,
+    get_specific_value,
     get_stat_list,
     reset_all_stats,
     get_limiter_value,

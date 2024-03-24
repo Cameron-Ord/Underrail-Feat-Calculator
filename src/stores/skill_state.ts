@@ -176,9 +176,14 @@ export const skill_state = defineStore('skill_state', () => {
 
   }
 
+  const get_specific_value = (i: number, f: number) => {
+    return skills_list[i]['skills'][f]['skillValue'];
+  }
+
 
   return {
     skills_list,
+    get_specific_value,
     load_from_cookies,
     get_skill_list,
     reset_all_skills,
