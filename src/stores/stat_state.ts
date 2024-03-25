@@ -66,7 +66,9 @@ export const stat_state = defineStore('stat_state', () => {
   ) => {
     stats_list[i]['statValue'] = updated_list[i]['statValue']
     try {
-      cookies.set('stat_cookie', JSON.stringify(stats_list))
+      const new_date: Date = new Date();
+      new_date.setFullYear(new_date.getFullYear() + 100);
+      cookies.set('stat_cookie', JSON.stringify(stats_list), new_date)
     } catch (error) {
       console.log('Error parsing JSON : ', error)
     }
@@ -102,7 +104,9 @@ export const stat_state = defineStore('stat_state', () => {
   }
 
   const set_base_cookies = () => {
-    cookies.set('stat_cookie', JSON.stringify(stats_list))
+    const new_date: Date = new Date();
+    new_date.setFullYear(new_date.getFullYear() + 100);
+    cookies.set('stat_cookie', JSON.stringify(stats_list), new_date)
   }
 
   const get_stat_list_len = () => {
@@ -125,7 +129,9 @@ export const stat_state = defineStore('stat_state', () => {
   const set_limiter = (num: number) => {
     stat_limiter = num
     try {
-      cookies.set('stat_limiter', JSON.stringify(stat_limiter))
+      const new_date: Date = new Date();
+      new_date.setFullYear(new_date.getFullYear() + 100);
+      cookies.set('stat_limiter', JSON.stringify(stat_limiter), new_date);
     } catch (error) {
       console.log('Error during stringification : ', error)
     }

@@ -115,7 +115,9 @@ export const universal_store = defineStore('general_store', () => {
 
   const save_as_cookie = (v_switcher: boolean) => {
     const view_state: boolean = v_switcher
-    cookies.set('view_state', JSON.stringify(view_state))
+    const new_date: Date = new Date();
+    new_date.setFullYear(new_date.getFullYear() + 100);
+    cookies.set('view_state', JSON.stringify(view_state), new_date);
   }
 
   // not used anymore

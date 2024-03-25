@@ -32,7 +32,9 @@ export const types_state = defineStore('types_state', () => {
   const chosen_list: Array<string> = new Array()
 
   const save_selection = () => {
-    cookies.set('type_selection', JSON.stringify(chosen_list))
+    const new_date: Date = new Date();
+    new_date.setFullYear(new_date.getFullYear() + 100);
+    cookies.set('type_selection', JSON.stringify(chosen_list), new_date);
   }
 
   const get_default_list = () => {

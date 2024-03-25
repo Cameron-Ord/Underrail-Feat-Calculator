@@ -117,7 +117,9 @@ export const skill_state = defineStore('skill_state', () => {
   const set_list_values = (updated_list: SkillCategory[], i: number, f: number) => {
     skills_list[i]['skills'][f]['skillValue'] = updated_list[i]['skills'][f]['skillValue']
     try {
-      cookies.set('skill_cookie', JSON.stringify(skills_list))
+      const new_date: Date = new Date();
+      new_date.setFullYear(new_date.getFullYear() + 100);
+      cookies.set('skill_cookie', JSON.stringify(skills_list), new_date);
     } catch (error) {
       console.log('Error parsing JSON : ', error)
     }
@@ -195,14 +197,18 @@ export const skill_state = defineStore('skill_state', () => {
   const set_limiter = (num: number) => {
     skill_limiter = num
     try {
-      cookies.set('skill_limiter', JSON.stringify(skill_limiter))
+      const new_date: Date = new Date();
+      new_date.setFullYear(new_date.getFullYear() + 100);
+      cookies.set('skill_limiter', JSON.stringify(skill_limiter), new_date);
     } catch (error) {
       console.log('Error during stringification : ', error)
     }
   }
 
   const set_base_cookies = () => {
-    cookies.set('skill_cookie', JSON.stringify(skills_list))
+    const new_date: Date = new Date();
+    new_date.setFullYear(new_date.getFullYear() + 100);
+    cookies.set('skill_cookie', JSON.stringify(skills_list), new_date);
   }
 
   const get_specific_value = (i: number, f: number) => {
