@@ -21,58 +21,40 @@ let interval_UID: number | undefined
 const plus = '/svgs/plus.svg'
 const minus = '/svgs/minus.svg'
 
-const increase_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
+const increase_skill = (skill_name: string, event: MouseEvent | TouchEvent | null) => {
+  const list = skill_inst.get_flattened_list();  
   const lmtr: number = skill_inst.get_skill_limiter()
-  const s_len: number = skill_inst.get_skill_list_len()
-  if (i > s_len || i < 0) {
-    return
-  }
+
   if (!event) {
     return
   }
 
-  const f = first_index.value
 
   if (event instanceof MouseEvent) {
-    const max_skill_points: number = 160
     apply_click_effect(event.target)
-    const val: number = skill_inst.get_specific_value(i, f)
-    if (val === max_skill_points && interval_UID !== undefined) {
-      clearInterval(interval_UID)
-      return
-    }
   }
 
-  if (lmtr >= 0 && lmtr < 1280) {
-    skill_inst.increase_skill(f, i, event)
-    const new_list = skill_inst.get_skill_list()
-    skill_list.value = new Array()
-    skill_list.value = new_list
-  }
+    
+    if (lmtr >= 0 && lmtr < 1280) {
+      skill_inst.increase_skill(skill_name, event)
+      const new_list = skill_inst.get_skill_list()
+      skill_list.value = new Array()
+      skill_list.value = new_list
+    }
 }
 
-const decrease_skill = (i: number, event: MouseEvent | TouchEvent | null) => {
+const decrease_skill = (skill_name: string, event: MouseEvent | TouchEvent | null) => {
   const lmtr: number = skill_inst.get_skill_limiter()
-  const s_len: number = skill_inst.get_skill_list_len()
-  if (i > s_len || i < 0) {
-    return
-  }
   if (!event) {
     return
   }
-  const f = first_index.value
+
   if (event instanceof MouseEvent) {
-    const min_skill_points: number = 0
     apply_click_effect(event.target)
-    const val: number = skill_inst.get_specific_value(i, f)
-    if (val === min_skill_points && interval_UID !== undefined) {
-      clearInterval(interval_UID)
-      return
-    }
   }
 
   if (lmtr > 0 && lmtr <= 1280) {
-    skill_inst.decrease_skill(f, i, event)
+    skill_inst.decrease_skill(skill_name, event)
     const new_list = skill_inst.get_skill_list()
     skill_list.value = new Array()
     skill_list.value = new_list
@@ -144,7 +126,7 @@ const apply_click_effect = (target: EventTarget | null) => {
   }
 }
 
-const start_interval_inc = (i: number, event: TouchEvent | null) => {
+const start_interval_inc = (skill_name: string, event: TouchEvent | null) => {
   if (event !== null) {
     if (event.target instanceof HTMLImageElement) {
       let t: HTMLImageElement = event.target as HTMLImageElement
@@ -152,11 +134,11 @@ const start_interval_inc = (i: number, event: TouchEvent | null) => {
       t.style.width = '30px'
     }
     interval_UID = setInterval(() => {
-      increase_skill(i, event)
+      increase_skill(skill_name, event)
     }, 10)
   }
 }
-const start_interval_dec = (i: number, event: TouchEvent | null) => {
+const start_interval_dec = (skill_name:string, event: TouchEvent | null) => {
   if (event !== null) {
     if (event.target instanceof HTMLImageElement) {
       let t: HTMLImageElement = event.target as HTMLImageElement
@@ -164,7 +146,7 @@ const start_interval_dec = (i: number, event: TouchEvent | null) => {
       t.style.width = '30px'
     }
     interval_UID = setInterval(() => {
-      decrease_skill(i, event)
+      decrease_skill(skill_name, event)
     }, 10)
   }
 }
@@ -293,16 +275,16 @@ onBeforeMount(() => {
         <div class="icon_value_div">
           <p class="skill_value">{{ item.skillValue }}</p>
           <img
-            @click="increase_skill(i, $event)"
-            @touchstart.prevent="start_interval_inc(i, $event)"
+            @click="increase_skill(item.skillName, $event)"
+            @touchstart.prevent="start_interval_inc(item.skillName, $event)"
             @touchend.prevent="clear_interval_inc($event)"
             :src="plus"
             alt=""
             class="svg"
           />
           <img
-            @click="decrease_skill(i, $event)"
-            @touchstart.prevent="start_interval_dec(i, $event)"
+            @click="decrease_skill(item.skillName, $event)"
+            @touchstart.prevent="start_interval_dec(item.skillName, $event)"
             @touchend.prevent="clear_interval_dec($event)"
             :src="minus"
             alt=""
@@ -376,6 +358,7 @@ onBeforeMount(() => {
     }
 
     > .skill_name {
+      max-width: 150px;
     }
   }
 }

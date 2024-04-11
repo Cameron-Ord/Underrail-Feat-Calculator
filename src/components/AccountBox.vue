@@ -123,7 +123,8 @@ const user_logout = () => {
   window.location.reload()
 }
 
-const before_enter = (el: Element) => {
+const before_enter = async (el: Element) => {
+  await nextTick()
   if (el instanceof HTMLElement) {
     let h_el: HTMLElement = el as HTMLElement
     h_el.style.opacity = '0'
@@ -132,14 +133,9 @@ const before_enter = (el: Element) => {
 }
 
 const on_enter = async (el: Element, done: () => void) => {
+  await nextTick()
   if (el instanceof HTMLElement) {
-    await nextTick()
     let h_el: HTMLElement = el as HTMLElement
-    /*
-    fuck you fuck you fuck you fuck you 
-    fuck you fuck you fuck you fuck you fuck 
-    you just FUCK you (forcing reflow) FUCK OFF MAN.
-    */
     void h_el.offsetWidth
     h_el.style.opacity = '1'
   }

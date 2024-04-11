@@ -18,13 +18,7 @@ const decrease_stat = (i: number, event: MouseEvent | TouchEvent | null) => {
   }
 
   if (event instanceof MouseEvent) {
-    const min_stat_points: number = 3
     apply_click_effect(event.target)
-    const val: number = stat_inst.get_specific_value(i)
-    if (val === min_stat_points && interval_UID !== undefined) {
-      clearInterval(interval_UID)
-      return
-    }
   }
 
   if (lmtr > 21 && lmtr <= 46) {

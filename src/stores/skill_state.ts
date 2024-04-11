@@ -12,6 +12,11 @@ interface SkillCategory {
   skills: Skill[]
 }
 
+interface FlatList {
+  skillName: string,
+  skillValue: number
+}
+
 export const skill_state = defineStore('skill_state', () => {
   let skill_limiter: number = 0
   const max_skill_points = 1280
@@ -73,13 +78,27 @@ export const skill_state = defineStore('skill_state', () => {
     }
   ]
 
-  const increase_skill = (index: number, findex: number, event: MouseEvent | TouchEvent) => {
-    const current_skill_value = skills_list[index]['skills'][findex]['skillValue']
-    const max_increase = Math.min(max_skill_points - skill_limiter, 160 - current_skill_value)
+  const retrieve_skill_value = (list: FlatList[], list_len: number, skill_name: string) => {
+    for(let i = 0; i < list_len; i++){
+      if(list[i]['skillName'] === skill_name){
+        return [list[i]['skillValue'], i]
+      }
+    }
+    return [-1, -1]
+  }
+
+  const increase_skill = (skill_name: string, event: MouseEvent | TouchEvent) => {
+    const list = get_flattened_list();
+    const list_len = get_flattened_list_len();
+    const [skill_value, index] = retrieve_skill_value(list, list_len, skill_name);
+    if(skill_value < 0 || index < 0){
+      return;
+    }
+    const max_increase = Math.min(max_skill_points - skill_limiter, 160 - skill_value)
     if (max_increase > 0) {
       let updated_limiter: number = skill_limiter
       let increase_amount: number
-      const updated_list: SkillCategory[] = [...skills_list]
+      const updated_list: FlatList[] = [...list]
       if (event.shiftKey) {
         increase_amount = Math.min(5, max_increase)
       } else if (event.ctrlKey) {
@@ -87,19 +106,42 @@ export const skill_state = defineStore('skill_state', () => {
       } else {
         increase_amount = Math.min(1, max_increase)
       }
-      updated_list[index]['skills'][findex]['skillValue'] += increase_amount
+      updated_list[index]['skillValue'] += increase_amount
       updated_limiter += increase_amount
       set_limiter(updated_limiter)
-      set_list_values(updated_list, index, findex)
+    
+      const [j_index, k_index, skill_value] = get_multidimensional_index(skill_name, list, index)
+      if(j_index < 0 || k_index < 0 || skill_value < 0){
+        return
+      }
+      set_list_values(skill_value, j_index, k_index)
     }
   }
 
-  const decrease_skill = (index: number, findex: number, event: MouseEvent | TouchEvent) => {
-    const current_skill_value = skills_list[index]['skills'][findex]['skillValue']
+  const get_multidimensional_index = (skill_name: string,list: FlatList[], list_index: number): [number, number, number] => {
+    for(let j = 0; j < skills_list.length; j++){
+      for(let k = 0; k < skills_list[j]['skills'].length; k++){
+        if(skill_name === skills_list[j]['skills'][k]['skillName']){
+          return [j, k, list[list_index]['skillValue']]
+        }
+      }
+    }
+    return [-1, -1, -1]
+  }
+
+  const decrease_skill = (skill_name: string, event: MouseEvent | TouchEvent) => {
+    const list = get_flattened_list();
+    const list_len = get_flattened_list_len();
+    const [skill_value, index] = retrieve_skill_value(list, list_len, skill_name);
+    if(skill_value < 0 || index < 0){
+      return;
+    }
+    
+    const current_skill_value = skill_value
     if (current_skill_value > min_skill_points) {
       let updated_limiter: number = skill_limiter
       let decrease_amount: number
-      const updated_list: SkillCategory[] = [...skills_list]
+      const updated_list: FlatList[] = [...list]
       if (event.shiftKey) {
         decrease_amount = Math.min(5, current_skill_value)
       } else if (event.ctrlKey) {
@@ -107,15 +149,19 @@ export const skill_state = defineStore('skill_state', () => {
       } else {
         decrease_amount = Math.min(1, current_skill_value)
       }
-      updated_list[index]['skills'][findex]['skillValue'] -= decrease_amount
+      updated_list[index]['skillValue'] -= decrease_amount
       updated_limiter -= decrease_amount
       set_limiter(updated_limiter)
-      set_list_values(updated_list, index, findex)
+      const [j_index, k_index, skill_value] = get_multidimensional_index(skill_name, updated_list, index)
+      if(j_index < 0 || k_index < 0 || skill_value < 0){
+        return
+      }
+      set_list_values(skill_value, j_index, k_index)
     }
   }
 
-  const set_list_values = (updated_list: SkillCategory[], i: number, f: number) => {
-    skills_list[i]['skills'][f]['skillValue'] = updated_list[i]['skills'][f]['skillValue']
+  const set_list_values = (skill_value: number, j: number, k: number) => {
+    skills_list[j]['skills'][k]['skillValue'] = skill_value
     try {
       const new_date: Date = new Date();
       new_date.setFullYear(new_date.getFullYear() + 100);
