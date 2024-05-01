@@ -180,21 +180,6 @@ const update_build_view = (text: string) => {
       </transition>
       <build-switch v-if="usr_builds_loaded" :update_build_view="update_build_view"></build-switch>
     </section>
-    <transition
-      @before-enter="before_enter"
-      @enter="on_enter"
-      @after-enter="after_enter"
-      @before-leave="before_leave"
-      @leave="on_leave"
-    >
-      <section class="about_section" v-if="viewing_about">
-        <about-section></about-section>
-        <about-aside></about-aside>
-      </section>
-    </transition>
-    <section class="about_switch">
-      <about-button :switch_about="switch_about"></about-button>
-    </section>
   </main>
 </template>
 
